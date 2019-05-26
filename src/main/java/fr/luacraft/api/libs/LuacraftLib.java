@@ -2,7 +2,9 @@ package fr.luacraft.api.libs;
 
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
+import fr.luacraft.api.LuaMod;
 import fr.luacraft.api.LuaVector3;
+import fr.luacraft.core.Luacraft;
 
 /**
  * Base luacraft library
@@ -25,16 +27,15 @@ public class LuacraftLib
     };
 
     /**
-     * Find a meta table
+     * Get mod
      */
-    public static JavaFunction FindMetaTable = new JavaFunction()
+    public static JavaFunction GetMod = new JavaFunction()
     {
         @Override
         public int invoke(LuaState l)
         {
-            String meta = l.checkString(1);
-            l.getField(LuaState.REGISTRYINDEX, meta);
-            l.getMetatable(-2);
+            LuaMod mod = new LuaMod(Luacraft.getInstance().getProxy().getCurrentMod());
+            l.pushJavaObject(mod);
             return 1;
         }
     };
@@ -52,8 +53,8 @@ public class LuacraftLib
         /** Luacraft table */
         l.newTable();
 
-        l.pushJavaFunction(FindMetaTable);
-        l.setField(-2, "findMetaTable");
+        l.pushJavaFunction(GetMod);
+        l.setField(-2, "getMod");
 
         l.setGlobal("luacraft");
     }

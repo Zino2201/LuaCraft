@@ -18,4 +18,9 @@ public class LuaObject
     {
         return id;
     }
+
+    public Object getContainedObject()
+    {
+        return null;
+    }
 }

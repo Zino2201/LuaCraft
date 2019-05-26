@@ -1,5 +1,7 @@
 package fr.luacraft.core;
 
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.ModMetadata;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.File;
@@ -9,23 +11,24 @@ import java.util.List;
 /**
  * Represents a Lua mod
  */
-public class LuaMod
+public class LuacraftMod extends DummyModContainer
 {
     public static final String MOD_INFO_FILENAME = "luamod.json";
 
-    private String modid;
-    private String name;
-    private String version;
-    private String luacraftversion;
-    private String description;
     private File modDir;
     private List<File> scripts;
 
-    public LuaMod(File modDir, File infoFile)
+    public LuacraftMod(File modDir, File infoFile)
     {
+        super(new ModMetadata());
+
+        ModMetadata meta = getMetadata();
+        meta.modId = modDir.getName();
+        meta.name = meta.modId;
+
         this.scripts = new ArrayList<File>();
-        this.modid = modDir.getName();
         this.modDir = modDir;
+
         // TODO: Read JSON
         lookForScripts(modDir);
     }
@@ -57,16 +60,34 @@ public class LuaMod
      */
     public ResourceLocation getResource(String name)
     {
-        return new ResourceLocation(modid, name);
+        return new ResourceLocation(getMetadata().modId, name);
     }
 
-    /**
-     * Get mod id
-     * @return
-     */
-    public String getModID()
+    @Override
+    public Class<?> getCustomResourcePackClass()
     {
-        return modid;
+        try
+        {
+            return Class.forName("fr.luacraft.core.LuacraftFolderResourcePack", true, getClass().getClassLoader());
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public File getSource()
+    {
+        return modDir;
+    }
+
+    @Override
+    public Object getMod()
+    {
+        return this;
     }
 
     /**

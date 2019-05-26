@@ -2,6 +2,7 @@ package fr.luacraft.api;
 
 import fr.luacraft.classes.LuacraftBlock;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 
 /**
@@ -43,5 +44,11 @@ public class LuaBlock extends LuaObject
     public String getTypeName()
     {
         return "Block";
+    }
+
+    @Override
+    public Object getContainedObject()
+    {
+        return getBlock();
     }
 }

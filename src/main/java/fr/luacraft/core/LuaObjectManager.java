@@ -1,5 +1,6 @@
 package fr.luacraft.core;
 
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fr.luacraft.api.LuaBlock;
 import fr.luacraft.api.LuaItem;
@@ -9,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated
 public class LuaObjectManager
 {
     public static HashMap<String, Class> classes = new HashMap<String, Class>();
@@ -37,7 +39,10 @@ public class LuaObjectManager
             try
             {
                 LuaObject object = (LuaObject) objectClass.getConstructor(String.class).newInstance(id);
-                objectsToRegister.add(object);
+                if(object instanceof LuaBlock)
+                    GameRegistry.registerBlock(((LuaBlock) object).getBlock(), ((LuaBlock) object).getID());
+                else if(object instanceof LuaItem)
+                    GameRegistry.registerItem(((LuaItem) object).getItem(), ((LuaItem) object).getID());
                 return (T) object;
             }
             catch (InstantiationException e)
@@ -65,10 +70,7 @@ public class LuaObjectManager
     {
         for(Object object : objectsToRegister)
         {
-            if(object instanceof LuaBlock)
-                GameRegistry.registerBlock(((LuaBlock) object).getBlock(), ((LuaBlock) object).getID());
-            else if(object instanceof LuaItem)
-                GameRegistry.registerItem(((LuaItem) object).getItem(), ((LuaItem) object).getID());
+
         }
     }
 }

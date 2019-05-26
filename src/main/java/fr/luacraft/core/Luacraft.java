@@ -104,7 +104,7 @@ public class Luacraft
      * Get proxy
      * @return
      */
-    public static SharedProxy getProxy()
+    public SharedProxy getProxy()
     {
         return proxy;
     }

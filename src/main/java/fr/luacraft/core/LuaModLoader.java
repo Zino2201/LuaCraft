@@ -1,5 +1,11 @@
 package fr.luacraft.core;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
+import net.minecraft.client.Minecraft;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
@@ -20,12 +26,12 @@ public class LuaModLoader
     /**
      * Mods
      */
-    public List<LuaMod> mods;
+    public List<LuacraftMod> mods;
 
     public LuaModLoader()
     {
         this.searchPaths = new ArrayList<String>();
-        this.mods = new ArrayList<LuaMod>();
+        this.mods = new ArrayList<LuacraftMod>();
     }
 
     /**
@@ -51,22 +57,24 @@ public class LuaModLoader
             {
                 if(file.isDirectory())
                 {
-                    File infoFile = new File(file, LuaMod.MOD_INFO_FILENAME);
+                    File infoFile = new File(file, LuacraftMod.MOD_INFO_FILENAME);
                     if(infoFile.exists() && !infoFile.isDirectory())
-                        register(new LuaMod(file, infoFile));
+                        register(new LuacraftMod(file, infoFile));
                 }
             }
         }
         Luacraft.getLogger().log(Level.INFO, "Active mods: " + mods.size());
+        //Minecraft.getMinecraft().refreshResources();
     }
 
     /**
      * Register a mod
      * @param mod
      */
-    public void register(LuaMod mod)
+    public void register(LuacraftMod mod)
     {
         mods.add(mod);
+        FMLCommonHandler.instance().addModToResourcePack(mod);
     }
 
     /**
@@ -74,10 +82,10 @@ public class LuaModLoader
      * @param modid
      * @return
      */
-    public LuaMod getModByID(String modid)
+    public LuacraftMod getModByID(String modid)
     {
-        for(LuaMod mod : mods)
-            if(modid == mod.getModID())
+        for(LuacraftMod mod : mods)
+            if(modid == mod.getModId())
                 return mod;
         Luacraft.getLogger().log(Level.ERROR, "No mods are using modid " + modid);
         return null;
@@ -87,7 +95,7 @@ public class LuaModLoader
      * Get mods list
      * @return
      */
-    public List<LuaMod> getMods()
+    public List<LuacraftMod> getMods()
     {
         return mods;
     }

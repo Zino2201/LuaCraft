@@ -2,20 +2,27 @@ package fr.luacraft.proxy;
 
 import com.naef.jnlua.LuaState;
 import com.naef.jnlua.NativeSupport;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import fr.luacraft.api.LuaBlock;
 import fr.luacraft.api.LuaItem;
+import fr.luacraft.api.LuaMod;
+import fr.luacraft.api.libs.HookLib;
 import fr.luacraft.api.libs.LuacraftLib;
 import fr.luacraft.api.libs.MinecraftLib;
 import fr.luacraft.command.CommandLuacraft;
-import fr.luacraft.core.LuaMod;
+import fr.luacraft.core.LuacraftMod;
 import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.LuaObjectManager;
 import fr.luacraft.core.Luacraft;
 import net.minecraft.client.gui.GuiScreen;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +38,11 @@ public class SharedProxy
 
     protected LuaState luaState;
     protected String scriptPrefix;
+
+    /**
+     * Current mod
+     */
+    private LuacraftMod currentMod;
 
     public SharedProxy()
     {
@@ -52,7 +64,6 @@ public class SharedProxy
 
         synchronized (luaState)
         {
-
             /** Load lua libraries */
             luaState.openLib(LuaState.Library.BASE);
             luaState.openLib(LuaState.Library.PACKAGE);
@@ -73,6 +84,7 @@ public class SharedProxy
             /** Load shared libraries */
             LuacraftLib.Initialize(luaState);
             MinecraftLib.Initialize(luaState);
+            HookLib.Initialize(luaState);
 
             /** Execute scripts */
             executeScripts();
@@ -118,8 +130,12 @@ public class SharedProxy
 
     public void executeScripts()
     {
-        for(LuaMod mod : Luacraft.getInstance().getModLoader().getMods())
+        ModContainer luacraftModContainer = FMLCommonHandler.instance().findContainerFor(Luacraft.getInstance());
+
+        for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
+            setCurrentMod(mod);
+
             for(File script : mod.getScripts())
             {
                 if(script.getName().contains(scriptPrefix) || script.getName().contains(SHARED_SCRIPT_PREFIX))
@@ -127,7 +143,7 @@ public class SharedProxy
                     try
                     {
                         FileInputStream in = new FileInputStream(script);
-                        luaState.load(in, script.getName(), "t");
+                        luaState.load(in, script.getPath(), "t");
                         luaState.call(0, 0);
                         in.close();
                     }
@@ -142,5 +158,37 @@ public class SharedProxy
                 }
             }
         }
+
+        setModContainer(luacraftModContainer);
+    }
+
+    private void setCurrentMod(LuacraftMod mod)
+    {
+        currentMod = mod;
+
+        setModContainer(mod);
+    }
+
+    private void setModContainer(ModContainer modContainer)
+    {
+        try
+        {
+            LoadController modController = (LoadController) FieldUtils.readField(Loader.instance(), "modController", true);
+            FieldUtils.writeField(modController, "activeContainer", modContainer, true);
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public LuaState getLuaState()
+    {
+        return luaState;
+    }
+
+    public LuacraftMod getCurrentMod()
+    {
+        return currentMod;
     }
 }

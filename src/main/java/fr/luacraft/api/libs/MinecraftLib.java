@@ -15,6 +15,7 @@ public class MinecraftLib
     /**
      * Create a new lua object
      */
+    @Deprecated
     public static JavaFunction NewLuaObject = new JavaFunction()
     {
         @Override
@@ -23,7 +24,8 @@ public class MinecraftLib
             String name = l.checkString(1);
             String id = l.checkString(2);
             Luacraft.getLogger().info("Creating " + id + " from class " + name);
-            LuaObject object = LuaObjectManager.createFromClass(name, id);
+            LuaObject object = LuaObjectManager.createFromClass(
+                    Luacraft.getInstance().getProxy().getCurrentMod().getModId() + "_" + name, id);
             l.pushJavaObject(object);
             return 1;
         }
