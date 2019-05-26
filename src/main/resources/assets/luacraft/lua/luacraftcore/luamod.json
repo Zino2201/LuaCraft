@@ -1,0 +1,9 @@
+[
+  {
+    "modid": "luacraftcore",
+    "name": "Luacraft Core",
+    "version": "0.01",
+    "luacraftversion": "0.01a",
+    "description": "Luacraft Core Lua API"
+  }
+]

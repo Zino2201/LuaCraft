@@ -1,0 +1,16 @@
+[
+{
+  "modid": "luacraft",
+  "name": "LuaCraft",
+  "description": "LuaCraft enables scripting of lua inside Minecraft using jnlua library and expose Minecraft types and functions to lua.\nMore information at nogitsu.eu.",
+  "version": "0.1a",
+  "mcversion": "1.7.10",
+  "url": "nogitsu.eu",
+  "updateUrl": "",
+  "authorList": ["Zino", "Nogitsu"],
+  "credits": "TODO: CREDITS",
+  "logoFile": "assets/luacraft/textures/logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,4 @@
+# Luacraft Git ignore
+# Exclude everything but src
+/*
+!/src
