@@ -1,11 +1,7 @@
-package fr.luacraft.core;
+package fr.luacraft.modloader;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
-import net.minecraft.client.Minecraft;
-import org.apache.commons.lang3.reflect.FieldUtils;
+import fr.luacraft.core.Luacraft;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;

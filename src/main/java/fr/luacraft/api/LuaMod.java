@@ -1,15 +1,7 @@
 package fr.luacraft.api;
 
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
-import fr.luacraft.classes.LuacraftBlock;
-import fr.luacraft.core.LuaObjectManager;
-import fr.luacraft.core.LuacraftMod;
-import org.apache.commons.lang3.reflect.FieldUtils;
-
-import java.lang.reflect.Method;
+import fr.luacraft.modloader.LuaGameRegistry;
+import fr.luacraft.modloader.LuacraftMod;
 
 public class LuaMod extends LuaObject
 {
@@ -29,7 +21,16 @@ public class LuaMod extends LuaObject
 
     public LuaBlock AddBlock(String id)
     {
-        return LuaObjectManager.createFromClass("Block", id);
+        LuaBlock block = new LuaBlock(id);
+        LuaGameRegistry.register(id, block.getContainedObject());
+        return block;
+    }
+
+    public LuaItem AddItem(String id)
+    {
+        LuaItem item = new LuaItem(id);
+        LuaGameRegistry.register(id, item.getContainedObject());
+        return item;
     }
 
     @Override

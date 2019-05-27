@@ -1,4 +1,4 @@
-package fr.luacraft.proxy;
+package fr.luacraft.core.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

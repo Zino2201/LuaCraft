@@ -1,7 +1,7 @@
-package fr.luacraft.command;
+package fr.luacraft.core.command;
 
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.gui.GuiLuaConsole;
+import fr.luacraft.core.gui.GuiLuaConsole;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;

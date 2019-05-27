@@ -9,7 +9,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import fr.luacraft.proxy.SharedProxy;
+import fr.luacraft.core.proxy.SharedProxy;
+import fr.luacraft.modloader.LuaModLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +35,7 @@ public class Luacraft
     private static Logger logger;
 
     /** Mod proxy */
-    @SidedProxy(clientSide="fr.luacraft.proxy.ClientProxy", serverSide="fr.luacraft.proxy.ServerProxy")
+    @SidedProxy(clientSide="fr.luacraft.core.proxy.ClientProxy", serverSide="fr.luacraft.core.proxy.ServerProxy")
     public static SharedProxy proxy;
 
     /** Mod instance */

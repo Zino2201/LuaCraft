@@ -1,4 +1,4 @@
-package fr.luacraft.proxy;
+package fr.luacraft.core.proxy;
 
 public class ServerProxy extends SharedProxy
 {

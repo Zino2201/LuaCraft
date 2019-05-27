@@ -1,4 +1,4 @@
-package fr.luacraft.gui;
+package fr.luacraft.core.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

@@ -2,8 +2,8 @@ package fr.luacraft.api.libs;
 
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
-import fr.luacraft.api.LuaObject;
 import fr.luacraft.core.LuaHookManager;
+import fr.luacraft.modloader.ILuaContainer;
 
 /**
  * Hook library
@@ -18,7 +18,7 @@ public class HookLib
         @Override
         public int invoke(LuaState l)
         {
-            LuaObject object = l.checkJavaObject(1, LuaObject.class);
+            ILuaContainer object = l.checkJavaObject(1, ILuaContainer.class);
             String name = l.checkString(2);
             int func = l.ref(LuaState.REGISTRYINDEX);
             LuaHookManager.add(object.getContainedObject(), name, func);
@@ -35,7 +35,7 @@ public class HookLib
         @Override
         public int invoke(LuaState l)
         {
-            LuaObject object = l.checkJavaObject(1, LuaObject.class);
+            ILuaContainer object = l.checkJavaObject(1, ILuaContainer.class);
             String name = l.checkString(2);
 
             LuaHookManager.call(object, name);

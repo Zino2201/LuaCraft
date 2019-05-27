@@ -1,9 +1,7 @@
-package fr.luacraft.core;
+package fr.luacraft.modloader;
 
 import cpw.mods.fml.client.FMLFolderResourcePack;
 import cpw.mods.fml.common.ModContainer;
-
-import java.util.Set;
 
 /**
  * != .jar/.zip

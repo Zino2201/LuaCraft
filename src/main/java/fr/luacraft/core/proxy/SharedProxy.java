@@ -1,4 +1,4 @@
-package fr.luacraft.proxy;
+package fr.luacraft.core.proxy;
 
 import com.naef.jnlua.LuaState;
 import com.naef.jnlua.NativeSupport;
@@ -12,15 +12,13 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import fr.luacraft.api.LuaBlock;
 import fr.luacraft.api.LuaItem;
-import fr.luacraft.api.LuaMod;
 import fr.luacraft.api.libs.HookLib;
 import fr.luacraft.api.libs.LuacraftLib;
 import fr.luacraft.api.libs.MinecraftLib;
-import fr.luacraft.command.CommandLuacraft;
-import fr.luacraft.core.LuacraftMod;
 import fr.luacraft.core.LuaNativeLoader;
-import fr.luacraft.core.LuaObjectManager;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.command.CommandLuacraft;
+import fr.luacraft.modloader.LuacraftMod;
 import net.minecraft.client.gui.GuiScreen;
 import org.apache.commons.lang3.reflect.FieldUtils;
 

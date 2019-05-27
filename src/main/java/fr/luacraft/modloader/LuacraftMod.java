@@ -1,4 +1,4 @@
-package fr.luacraft.core;
+package fr.luacraft.modloader;
 
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
@@ -68,7 +68,7 @@ public class LuacraftMod extends DummyModContainer
     {
         try
         {
-            return Class.forName("fr.luacraft.core.LuacraftFolderResourcePack", true, getClass().getClassLoader());
+            return Class.forName("fr.luacraft.modloader.LuacraftFolderResourcePack", true, getClass().getClassLoader());
         }
         catch (ClassNotFoundException e)
         {

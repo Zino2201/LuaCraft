@@ -1,26 +1,44 @@
 package fr.luacraft.api;
 
-import net.minecraft.item.Item;
+import fr.luacraft.api.classes.LuacraftItem;
+import fr.luacraft.modloader.ILuaContainer;
+import fr.luacraft.modloader.ILuaContainerObject;
+import net.minecraft.creativetab.CreativeTabs;
 
-public class LuaItem extends LuaObject
+public class LuaItem implements ILuaContainer
 {
-    private Item item;
+    private LuacraftItem item;
 
     public LuaItem(String id)
     {
-        super(id);
-
-        this.item = new Item().setUnlocalizedName(id);
+        this.item = new LuacraftItem(id);
     }
 
-    public Item getItem()
+    public void SetCreativeTab(String label)
+    {
+        for(CreativeTabs tab : CreativeTabs.creativeTabArray)
+        {
+            if (tab.getTabLabel().equals(label))
+            {
+                item.setCreativeTab(tab);
+            }
+        }
+    }
+
+    public LuacraftItem getItem()
     {
         return item;
     }
 
     @Override
-    public String getTypeName()
+    public String getType()
     {
         return "Item";
+    }
+
+    @Override
+    public ILuaContainerObject getContainedObject()
+    {
+        return getItem();
     }
 }
