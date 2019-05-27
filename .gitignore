@@ -2,3 +2,6 @@
 # Exclude everything but src
 /*
 !/src
+!build.gradle
+!gradlew
+!gradlew.bat

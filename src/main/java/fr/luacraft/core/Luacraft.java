@@ -26,7 +26,7 @@ public class Luacraft
     public static final String MODID = "luacraft";
 
     /** Mod version */
-    public static final String VERSION = "0.01a";
+    public static final String VERSION = "{@version:luacraft}";
 
     /** Mod loader */
     public static LuaModLoader modLoader;
