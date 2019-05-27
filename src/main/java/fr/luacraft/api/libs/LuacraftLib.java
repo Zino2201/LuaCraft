@@ -12,20 +12,6 @@ import fr.luacraft.core.Luacraft;
 public class LuacraftLib
 {
     /**
-     * Create a Vector3
-     */
-    public static JavaFunction Vector3 = new JavaFunction()
-    {
-        @Override
-        public int invoke(LuaState l)
-        {
-            LuaVector3 vec = new LuaVector3(l.checkInteger(1, 0), l.checkInteger(2, 0), l.checkInteger(3, 0));
-            l.pushJavaObject(vec);
-            return 1;
-        }
-    };
-
-    /**
      * Get mod
      */
     public static JavaFunction GetMod = new JavaFunction()
@@ -45,10 +31,6 @@ public class LuacraftLib
      */
     public static void Initialize(LuaState l)
     {
-        /** Global scope */
-        l.pushJavaFunction(Vector3);
-        l.setGlobal("Vector3");
-
         /** Luacraft table */
         l.newTable();
 

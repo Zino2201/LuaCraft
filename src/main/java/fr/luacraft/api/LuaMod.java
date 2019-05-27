@@ -1,21 +1,15 @@
 package fr.luacraft.api;
 
+import fr.luacraft.modloader.ILuaObject;
 import fr.luacraft.modloader.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
 
-public class LuaMod extends LuaObject
+public class LuaMod implements ILuaObject
 {
     private LuacraftMod mod;
 
-    public LuaMod(String id)
-    {
-        super(id);
-    }
-
     public LuaMod(LuacraftMod mod)
     {
-        super(mod.getModId());
-
         this.mod = mod;
     }
 
@@ -34,7 +28,7 @@ public class LuaMod extends LuaObject
     }
 
     @Override
-    public String getTypeName()
+    public String getType()
     {
         return "LuaMod";
     }

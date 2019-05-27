@@ -10,8 +10,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import fr.luacraft.api.LuaBlock;
-import fr.luacraft.api.LuaItem;
 import fr.luacraft.api.libs.HookLib;
 import fr.luacraft.api.libs.LuacraftLib;
 import fr.luacraft.api.libs.MinecraftLib;
@@ -56,10 +54,6 @@ public class SharedProxy
      */
     public void preInit(FMLPreInitializationEvent event)
     {
-        /** Setup lua classes */
-        LuaObjectManager.registerClass("Block", LuaBlock.class);
-        LuaObjectManager.registerClass("Item", LuaItem.class);
-
         synchronized (luaState)
         {
             /** Load lua libraries */
@@ -95,7 +89,7 @@ public class SharedProxy
      */
     public void init(FMLInitializationEvent event)
     {
-        LuaObjectManager.registerAll();
+
     }
 
     /**

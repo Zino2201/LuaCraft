@@ -3,5 +3,6 @@ package fr.luacraft.modloader;
 public enum ContainerObjectType
 {
     BLOCK,
-    ITEM
+    ITEM,
+    JAVA_OBJECT
 }
