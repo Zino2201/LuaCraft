@@ -3,6 +3,7 @@ package fr.luacraft.modloader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fr.luacraft.api.classes.LuacraftBlock;
 import fr.luacraft.api.classes.LuacraftItem;
+import fr.luacraft.core.Luacraft;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
@@ -14,10 +15,14 @@ public class LuaGameRegistry
         switch(object.getType())
         {
             case BLOCK:
-                GameRegistry.registerBlock((LuacraftBlock) object, id);
+                LuacraftBlock block = (LuacraftBlock) object;
+                GameRegistry.registerBlock(block, id);
+                Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addBlock(block);
                 break;
             case ITEM:
-                GameRegistry.registerItem((LuacraftItem) object, id);
+                LuacraftItem item = (LuacraftItem) object;
+                GameRegistry.registerItem(item, id);
+                Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addItem(item);
                 break;
         }
     }

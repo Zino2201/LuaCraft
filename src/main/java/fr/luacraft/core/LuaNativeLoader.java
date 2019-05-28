@@ -1,109 +1,83 @@
 package fr.luacraft.core;
 
 import com.naef.jnlua.NativeSupport;
+import fr.luacraft.util.JarUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 public class LuaNativeLoader implements NativeSupport.Loader
 {
     private String nativeDir = "natives/";
+    private String jnlua = "jnlua52";
+    private String lua = "lua52";
+    private String ext = ".dll";
+    private File tmpDir;
 
     @Override
     public void load()
     {
         // TODO: Implement OSX and Linux
 
-        boolean intelij = false;
-        if(isInDevEnvironnement()) {
+        if(isInDevEnvironnement())
             nativeDir = "D:\\Projects\\LuaCraft\\src\\main\\resources\\natives\\";
-            intelij = true;
-        }
 
         if(SystemUtils.IS_OS_WINDOWS)
         {
-            File tmpDir = new File(System.getProperty("java.io.tmpdir") + "/Luacraft/");
-            if(!tmpDir.exists())
-                tmpDir.mkdirs();
-
-            if(!intelij)
-            {
-                extractFile(nativeDir + "lua52.dll", System.getProperty("java.io.tmpdir") + "Luacraft/" + "lua52.dll");
-                extractFile(nativeDir + "jnlua52.dll", System.getProperty("java.io.tmpdir") + "Luacraft/" + "jnlua52.dll");
-
-
-                System.load(System.getProperty("java.io.tmpdir") + "/Luacraft/" + "lua52.dll");
-                System.load(System.getProperty("java.io.tmpdir") + "/Luacraft/" + "jnlua52.dll");
-            }else
-            {
-                System.load(nativeDir + "lua52.dll");
-                System.load(nativeDir + "jnlua52.dll");
-            }
-            // TODO: Delete temps
+            ext = ".dll";
         }
         else
         {
             Luacraft.getLogger().fatal("Windows is the only supported os at the moment");
         }
-    }
 
-    public static File extractFile(String strFrom, String strTo)
-    {
-        File extractedFile = new File(strTo);
-        int lastSlash = extractedFile.toString().lastIndexOf(File.separator);
-        String filePath = extractedFile.toString().substring(0, lastSlash);
-
-        File fileDirectory = new File(filePath);
-        if (!fileDirectory.exists())
-            fileDirectory.mkdirs();
-
-        int readBytes;
-        byte[] buffer = new byte[1024];
-
-        InputStream fileInStream = null;
-        OutputStream fileOutStream = null;
-
-        try
+        if(isInDevEnvironnement())
         {
-            fileInStream = getPackedFileInputStream(strFrom);
-            fileOutStream = new FileOutputStream(extractedFile);
-
-            while ((readBytes = fileInStream.read(buffer)) != -1)
-                fileOutStream.write(buffer, 0, readBytes);
+            System.load(nativeDir + "lua52.dll");
+            System.load(nativeDir + "jnlua52.dll");
         }
-        catch (Exception e)
+        else
         {
-            throw new Error(e.getMessage());
-        }
-        finally
-        {
+            tmpDir = new File(System.getProperty("java.io.tmpdir") + "/Luacraft/");
+            if(!tmpDir.exists())
+                tmpDir.mkdirs();
+
             try
             {
-                fileOutStream.close();
-                fileInStream.close();
+                JarUtil.extractResourceFile(new File(tmpDir, lua + ext), nativeDir + lua + ext);
+                JarUtil.extractResourceFile(new File(tmpDir, jnlua + ext), nativeDir + jnlua + ext);
             }
-            catch (Exception e)
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
 
+            System.load(new File(tmpDir, lua + ext).getPath());
+            System.load(new File(tmpDir, jnlua + ext).getPath());
         }
-
-        return extractedFile;
     }
 
-    public static InputStream getPackedFileInputStream(String file) throws FileNotFoundException
+    @Override
+    public void exit()
     {
-        InputStream in = null;
-        in = Luacraft.class.getResourceAsStream('/' + file);
+        if(isInDevEnvironnement())
+            return;
 
-        return in;
+        try
+        {
+            FileUtils.forceDeleteOnExit(tmpDir);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static boolean isInDevEnvironnement()
     {
-        // TODO: Detect eclipse?
-
+        // TODO: Detect eclipse because this code only detect InteliJ
         String classPath = System.getProperty("java.class.path");
         return classPath.contains("idea_rt.jar");
     }

@@ -68,6 +68,7 @@ public final class NativeSupport {
 	 */
 	public interface Loader {
 		public void load();
+		public void exit();
 	}
 
 	private class DefaultLoader implements Loader {
@@ -75,5 +76,8 @@ public final class NativeSupport {
 		public void load() {
 			System.loadLibrary("jnlua52");
 		}
+
+		@Override
+		public void exit() { }
 	}
 }

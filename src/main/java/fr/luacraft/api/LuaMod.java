@@ -1,10 +1,11 @@
 package fr.luacraft.api;
 
-import fr.luacraft.modloader.ILuaObject;
+import fr.luacraft.modloader.ILuaContainer;
+import fr.luacraft.modloader.ILuaContainerObject;
 import fr.luacraft.modloader.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
 
-public class LuaMod implements ILuaObject
+public class LuaMod implements ILuaContainer
 {
     private LuacraftMod mod;
 
@@ -27,9 +28,20 @@ public class LuaMod implements ILuaObject
         return item;
     }
 
+    public void RegisterOre(String id, int dimensionID, int minY, int maxY, int veinSize, int chances)
+    {
+        mod.getRegistryData().addOre(id, dimensionID, minY, maxY, veinSize, chances);
+    }
+
     @Override
     public String getType()
     {
         return "LuaMod";
+    }
+
+    @Override
+    public ILuaContainerObject getContainedObject()
+    {
+        return mod;
     }
 }

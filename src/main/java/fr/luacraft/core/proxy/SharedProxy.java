@@ -10,9 +10,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import fr.luacraft.api.libs.HookLib;
 import fr.luacraft.api.libs.LuacraftLib;
 import fr.luacraft.api.libs.MinecraftLib;
+import fr.luacraft.api.world.LuacraftWorldGen;
 import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.command.CommandLuacraft;
@@ -127,6 +129,8 @@ public class SharedProxy
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
             setCurrentMod(mod);
+
+            GameRegistry.registerWorldGenerator(new LuacraftWorldGen(mod), 2);
 
             for(File script : mod.getScripts())
             {

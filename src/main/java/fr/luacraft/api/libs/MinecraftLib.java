@@ -37,6 +37,17 @@ public class MinecraftLib
         }
     };
 
+    public static JavaFunction RegisterOre = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+
+
+            return 0;
+        }
+    };
+
     /**
      * Initialize the library
      * @param l
@@ -49,6 +60,8 @@ public class MinecraftLib
         l.newTable();
         l.pushJavaObject(AddRecipe);
         l.setField(-2, "addRecipe");
+        l.pushJavaObject(RegisterOre);
+        l.setField(-2, "registerOre");
         l.setGlobal("mc");
     }
 }

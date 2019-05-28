@@ -2,6 +2,7 @@ package fr.luacraft.core.command;
 
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.gui.GuiLuaConsole;
+import fr.luacraft.modloader.LuacraftMod;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -33,6 +34,29 @@ public class CommandLuacraft extends CommandBase
             else if(args[0].matches("help"))
             {
                 sender.addChatMessage(new ChatComponentText("help"));
+            }
+            else if(args[0].matches("mods"))
+            {
+                StringBuilder str = new StringBuilder();
+                str.append("Active mods (" + Luacraft.getInstance().getModLoader().getMods().size() + "): ");
+
+                boolean first = false;
+
+                for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
+                {
+                    if(first)
+                    {
+                        str.append(", ");
+                    }
+                    else
+                    {
+                        first = true;
+                    }
+
+                    str.append(mod.getMetadata().name);
+                }
+
+                sender.addChatMessage(new ChatComponentText(str.toString()));
             }
             else
             {

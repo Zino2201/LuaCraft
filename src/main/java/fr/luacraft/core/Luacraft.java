@@ -45,6 +45,7 @@ public class Luacraft
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        /** Create logger */
         ModContainer modContainer = FMLCommonHandler.instance().findContainerFor(this);
         logger = LogManager.getLogger(modContainer.getName());
 

@@ -11,12 +11,13 @@ import java.util.List;
 /**
  * Represents a Lua mod
  */
-public class LuacraftMod extends DummyModContainer
+public class LuacraftMod extends DummyModContainer implements ILuaContainerObject
 {
     public static final String MOD_INFO_FILENAME = "luamod.json";
 
     private File modDir;
     private List<File> scripts;
+    private LuacraftModRegistryData registryData;
 
     public LuacraftMod(File modDir, File infoFile)
     {
@@ -28,6 +29,7 @@ public class LuacraftMod extends DummyModContainer
 
         this.scripts = new ArrayList<File>();
         this.modDir = modDir;
+        this.registryData = new LuacraftModRegistryData();
 
         // TODO: Read JSON
         lookForScripts(modDir);
@@ -99,6 +101,11 @@ public class LuacraftMod extends DummyModContainer
         return modDir;
     }
 
+    public LuacraftModRegistryData getRegistryData()
+    {
+        return registryData;
+    }
+
     /**
      * Get all mod scripts
      * @return
@@ -106,5 +113,11 @@ public class LuacraftMod extends DummyModContainer
     public List<File> getScripts()
     {
         return scripts;
+    }
+
+    @Override
+    public ContainerObjectType getType()
+    {
+        return ContainerObjectType.JAVA_OBJECT;
     }
 }
