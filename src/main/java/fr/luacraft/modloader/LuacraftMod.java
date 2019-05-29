@@ -3,6 +3,8 @@ package fr.luacraft.modloader;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.List;
  */
 public class LuacraftMod extends DummyModContainer implements ILuaContainerObject
 {
+    private Logger logger;
+
     public static final String MOD_INFO_FILENAME = "luamod.json";
 
     private File modDir;
@@ -30,6 +34,7 @@ public class LuacraftMod extends DummyModContainer implements ILuaContainerObjec
         this.scripts = new ArrayList<File>();
         this.modDir = modDir;
         this.registryData = new LuacraftModRegistryData();
+        this.logger = LogManager.getLogger(getName());
 
         // TODO: Read JSON
         lookForScripts(modDir);
@@ -104,6 +109,11 @@ public class LuacraftMod extends DummyModContainer implements ILuaContainerObjec
     public LuacraftModRegistryData getRegistryData()
     {
         return registryData;
+    }
+
+    public Logger getLogger()
+    {
+        return logger;
     }
 
     /**

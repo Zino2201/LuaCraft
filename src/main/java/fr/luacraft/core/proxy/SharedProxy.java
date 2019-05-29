@@ -19,13 +19,11 @@ import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.command.CommandLuacraft;
 import fr.luacraft.modloader.LuacraftMod;
+import fr.luacraft.util.LuaUtil;
 import net.minecraft.client.gui.GuiScreen;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Shared proxy
@@ -136,21 +134,7 @@ public class SharedProxy
             {
                 if(script.getName().contains(scriptPrefix) || script.getName().contains(SHARED_SCRIPT_PREFIX))
                 {
-                    try
-                    {
-                        FileInputStream in = new FileInputStream(script);
-                        luaState.load(in, script.getPath(), "t");
-                        luaState.call(0, 0);
-                        in.close();
-                    }
-                    catch (FileNotFoundException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    LuaUtil.runFromFile(luaState, script);
                 }
             }
         }

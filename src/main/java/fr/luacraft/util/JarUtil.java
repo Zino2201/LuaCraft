@@ -11,8 +11,6 @@ public class JarUtil
     public static void extractResourceFile(File dest, String src) throws IOException
     {
         InputStream inputStream = JarUtil.class.getResourceAsStream("/" + src);
-        if(inputStream == null)
-            System.err.println("is was null");
         FileUtils.copyInputStreamToFile(inputStream, dest);
     }
 }

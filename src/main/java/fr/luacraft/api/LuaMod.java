@@ -33,6 +33,11 @@ public class LuaMod implements ILuaContainer
         mod.getRegistryData().addOre(id, dimensionID, minY, maxY, veinSize, chances);
     }
 
+    public void LogInfo(String message)
+    {
+        mod.getLogger().info(message);
+    }
+
     @Override
     public String getType()
     {
