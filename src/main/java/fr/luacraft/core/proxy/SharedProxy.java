@@ -18,6 +18,7 @@ import fr.luacraft.api.world.LuacraftWorldGen;
 import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.command.CommandLuacraft;
+import fr.luacraft.modloader.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -89,7 +90,7 @@ public class SharedProxy
      */
     public void init(FMLInitializationEvent event)
     {
-
+        LuaGameRegistry.registerCraftAndSmelts();
     }
 
     /**

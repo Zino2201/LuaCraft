@@ -37,13 +37,15 @@ public class MinecraftLib
         }
     };
 
-    public static JavaFunction RegisterOre = new JavaFunction()
+    public static JavaFunction AddSmelting = new JavaFunction()
     {
         @Override
         public int invoke(LuaState l)
         {
-
-
+            String input = l.checkString(1);
+            String output = l.checkString(2);
+            float xp = (float) l.checkNumber(3);
+            LuaGameRegistry.addSmelting(input, output, xp);
             return 0;
         }
     };
@@ -60,8 +62,8 @@ public class MinecraftLib
         l.newTable();
         l.pushJavaObject(AddRecipe);
         l.setField(-2, "addRecipe");
-        l.pushJavaObject(RegisterOre);
-        l.setField(-2, "registerOre");
+        l.pushJavaObject(AddSmelting);
+        l.setField(-2, "addSmelting");
         l.setGlobal("mc");
     }
 }

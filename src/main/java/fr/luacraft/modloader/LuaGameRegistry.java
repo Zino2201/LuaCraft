@@ -10,6 +10,9 @@ import java.util.*;
 
 public class LuaGameRegistry
 {
+    private static List<RegistryRecipe> recipes = new ArrayList<RegistryRecipe>();
+    private static List<RegistrySmelt> smelts = new ArrayList<RegistrySmelt>();
+
     public static void register(String id, ILuaContainerObject object)
     {
         switch(object.getType())
@@ -37,16 +40,7 @@ public class LuaGameRegistry
 
     public static void addShapelessRecipe(String output, String[] slots)
     {
-        ItemStack outputStack = recipeIDToItemStack(output);
-
-        ArrayList<Object> params = new ArrayList<Object>();
-        for (String slot : slots)
-        {
-            if(slot != null)
-                params.add(recipeIDToItemStack(slot));
-        }
-
-        GameRegistry.addShapelessRecipe(outputStack, params.toArray());
+        recipes.add(new RegistryRecipe(true, output, slots, null));
     }
 
     public static void addShapedRecipe(String output, String[] slots)
@@ -110,16 +104,50 @@ public class LuaGameRegistry
         {
             params.add(str.toString());
         }
-        // Add to the params array the stacks associed to their characters
-        for (Map.Entry<String, Character> entry : idChar.entrySet())
+
+        recipes.add(new RegistryRecipe(false, output, params.toArray(), idChar));
+    }
+
+    public static void addSmelting(String input, String output, float xp)
+    {
+        smelts.add(new RegistrySmelt(input, output, xp));
+    }
+
+    public static void registerCraftAndSmelts()
+    {
+        for(RegistryRecipe craft : recipes)
         {
-            params.add(entry.getValue());
-            params.add(recipeIDToItemStack(entry.getKey()));
+            if(craft.isShapeless())
+            {
+                ArrayList<Object> params = new ArrayList<Object>();
+                for (String slot : (String[]) craft.getParams())
+                {
+                    if(slot != null)
+                        params.add(recipeIDToItemStack(slot));
+                }
+
+                GameRegistry.addShapelessRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray());
+            }
+            else
+            {
+                ArrayList<Object> params = new ArrayList<Object>(Arrays.asList(craft.getParams()));
+
+                // Add to the params array the stacks associed to their characters
+                for (Map.Entry<String, Character> entry : craft.getIdCharMap().entrySet())
+                {
+                    params.add(entry.getValue());
+                    params.add(recipeIDToItemStack(entry.getKey()));
+                }
+
+                GameRegistry.addShapedRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray());
+            }
         }
 
-        ItemStack outputStack = recipeIDToItemStack(output);
-
-        GameRegistry.addShapedRecipe(outputStack, params.toArray());
+        for(RegistrySmelt smelt : smelts)
+        {
+            GameRegistry.addSmelting(recipeIDToItemStack(smelt.getInput()), recipeIDToItemStack(smelt.getOutput()),
+                    smelt.getExperienceGain());
+        }
     }
 
     private static ItemStack recipeIDToItemStack(String recipeID)
