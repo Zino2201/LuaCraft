@@ -19,10 +19,4 @@ public class LuacraftItem extends Item implements IItemContainerObject
     {
         return ContainerObjectType.ITEM;
     }
-
-    @Override
-    public Item getItem()
-    {
-        return this;
-    }
 }

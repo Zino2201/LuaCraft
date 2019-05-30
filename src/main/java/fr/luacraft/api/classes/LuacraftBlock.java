@@ -53,10 +53,4 @@ public class LuacraftBlock extends Block implements IBlockContainerObject
     {
         return ContainerObjectType.BLOCK;
     }
-
-    @Override
-    public Block getBlock()
-    {
-        return this;
-    }
 }

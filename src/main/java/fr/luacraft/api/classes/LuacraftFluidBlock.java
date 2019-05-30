@@ -4,7 +4,6 @@ import fr.luacraft.api.IBlockContainerObject;
 import fr.luacraft.api.LuaBlock;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.modloader.ContainerObjectType;
-import net.minecraft.block.Block;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -48,11 +47,5 @@ public class LuacraftFluidBlock extends BlockFluidClassic implements IBlockConta
     public ContainerObjectType getType()
     {
         return ContainerObjectType.BLOCK;
-    }
-
-    @Override
-    public Block getBlock()
-    {
-        return this;
     }
 }

@@ -7,5 +7,4 @@ import net.minecraft.item.Item;
 public interface IItemContainerObject extends ILuaContainerObject
 {
     Item setCreativeTab(CreativeTabs tab);
-    Item getItem();
 }

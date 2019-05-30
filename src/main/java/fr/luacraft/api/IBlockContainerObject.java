@@ -8,5 +8,4 @@ public interface IBlockContainerObject extends ILuaContainerObject
 {
     Block setCreativeTab(CreativeTabs label);
     Block setHardness(float hardness);
-    Block getBlock();
 }
