@@ -25,6 +25,9 @@ import net.minecraft.client.gui.GuiScreen;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Shared proxy
@@ -41,12 +44,15 @@ public class SharedProxy
      */
     private LuacraftMod currentMod;
 
+    private List<File> internals;
+
     public SharedProxy()
     {
         NativeSupport.getInstance().setLoader(new LuaNativeLoader());
 
         this.scriptPrefix = SHARED_SCRIPT_PREFIX;
         this.luaState = new LuaState();
+        this.internals = new ArrayList<File>();
     }
 
     /**
@@ -55,6 +61,21 @@ public class SharedProxy
      */
     public void preInit(FMLPreInitializationEvent event)
     {
+        try
+        {
+            for(File file : new File(getClass().getResource("/assets/luacraft/lua").toURI()).listFiles())
+            {
+                if(file.getAbsolutePath().endsWith(".lua"))
+                {
+                    internals.add(file);
+                }
+            }
+        }
+        catch (URISyntaxException e)
+        {
+            e.printStackTrace();
+        }
+
         synchronized (luaState)
         {
             /** Load lua libraries */
@@ -125,6 +146,8 @@ public class SharedProxy
     {
         ModContainer luacraftModContainer = FMLCommonHandler.instance().findContainerFor(Luacraft.getInstance());
 
+        includeInternals();
+
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
             setCurrentMod(mod);
@@ -141,6 +164,12 @@ public class SharedProxy
         }
 
         setModContainer(luacraftModContainer);
+    }
+
+    private void includeInternals()
+    {
+        for(File internal : internals)
+            LuaUtil.runFromFile(luaState, internal);
     }
 
     private void setCurrentMod(LuacraftMod mod)

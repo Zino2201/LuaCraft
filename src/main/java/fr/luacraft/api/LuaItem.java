@@ -1,17 +1,16 @@
 package fr.luacraft.api;
 
-import fr.luacraft.api.classes.LuacraftItem;
 import fr.luacraft.modloader.ILuaContainer;
 import fr.luacraft.modloader.ILuaContainerObject;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class LuaItem implements ILuaContainer
 {
-    private LuacraftItem item;
+    private IItemContainerObject item;
 
-    public LuaItem(String id)
+    public LuaItem(IItemContainerObject item)
     {
-        this.item = new LuacraftItem(id);
+        this.item = item;
     }
 
     public void SetCreativeTab(String label)
@@ -25,7 +24,7 @@ public class LuaItem implements ILuaContainer
         }
     }
 
-    public LuacraftItem getItem()
+    public IItemContainerObject getItem()
     {
         return item;
     }

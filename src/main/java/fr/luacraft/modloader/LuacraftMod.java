@@ -1,6 +1,5 @@
 package fr.luacraft.modloader;
 
-import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Represents a Lua mod
  */
-public class LuacraftMod extends DummyModContainer implements ILuaContainerObject
+public class LuacraftMod extends LuacraftModContainer implements ILuaContainerObject
 {
     private Logger logger;
 

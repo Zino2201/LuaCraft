@@ -1,7 +1,7 @@
 package fr.luacraft.modloader;
 
-import fr.luacraft.api.classes.LuacraftBlock;
-import fr.luacraft.api.classes.LuacraftItem;
+import fr.luacraft.api.IBlockContainerObject;
+import fr.luacraft.api.IItemContainerObject;
 import fr.luacraft.api.world.LuacraftOre;
 
 import java.util.ArrayList;
@@ -10,14 +10,14 @@ import java.util.List;
 public class LuacraftModRegistryData
 {
     private List<LuacraftOre> ores;
-    private List<LuacraftBlock> blocks;
-    private List<LuacraftItem> items;
+    private List<IBlockContainerObject> blocks;
+    private List<IItemContainerObject> items;
 
     public LuacraftModRegistryData()
     {
         this.ores = new ArrayList<LuacraftOre>();
-        this.blocks = new ArrayList<LuacraftBlock>();
-        this.items = new ArrayList<LuacraftItem>();
+        this.blocks = new ArrayList<IBlockContainerObject>();
+        this.items = new ArrayList<IItemContainerObject>();
     }
 
     public void addOre(String id, int dimensionID,int minY, int maxY, int veinSize, int chances)
@@ -25,12 +25,12 @@ public class LuacraftModRegistryData
         ores.add(new LuacraftOre(id, dimensionID, minY, maxY, veinSize, chances));
     }
 
-    public void addBlock(LuacraftBlock block)
+    public void addBlock(IBlockContainerObject block)
     {
         blocks.add(block);
     }
 
-    public void addItem(LuacraftItem item)
+    public void addItem(IItemContainerObject item)
     {
         items.add(item);
     }
