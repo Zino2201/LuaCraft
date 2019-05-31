@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Represents a Lua mod
  */
-public class LuacraftMod extends LuacraftModContainer implements ILuaContainerObject
+public class LuacraftMod extends LuacraftModContainer
 {
     private Logger logger;
 
@@ -122,11 +122,5 @@ public class LuacraftMod extends LuacraftModContainer implements ILuaContainerOb
     public List<File> getScripts()
     {
         return scripts;
-    }
-
-    @Override
-    public ContainerObjectType getType()
-    {
-        return ContainerObjectType.JAVA_OBJECT;
     }
 }

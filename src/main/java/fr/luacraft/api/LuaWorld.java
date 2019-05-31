@@ -1,26 +1,25 @@
 package fr.luacraft.api;
 
-import fr.luacraft.api.classes.LuacraftWorld;
-import fr.luacraft.modloader.ILuaContainer;
-import fr.luacraft.modloader.ILuaContainerObject;
+import fr.luacraft.modloader.ILuaObject;
+import net.minecraft.world.World;
 
-public class LuaWorld implements ILuaContainer
+public class LuaWorld implements ILuaObject
 {
-    private LuacraftWorld world;
+    private World world;
 
-    public LuaWorld(LuacraftWorld world)
+    public LuaWorld(World world)
     {
         this.world = world;
     }
 
     @Override
-    public ILuaContainerObject getContainedObject()
+    public Object getObject()
     {
         return world;
     }
 
     @Override
-    public String getType()
+    public String GetType()
     {
         return "World";
     }

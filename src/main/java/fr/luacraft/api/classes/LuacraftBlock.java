@@ -1,24 +1,29 @@
 package fr.luacraft.api.classes;
 
-import fr.luacraft.api.IBlockContainerObject;
 import fr.luacraft.api.LuaBlock;
+import fr.luacraft.api.LuaTileEntity;
 import fr.luacraft.core.LuaHookManager;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.modloader.ContainerObjectType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * A Luacraft block compatible with Luacraft functions
+ * A Luacraft block compatible with Luacraft hooks
  */
-public class LuacraftBlock extends Block implements IBlockContainerObject
+public class LuacraftBlock extends Block
 {
-    public LuacraftBlock(String name, int material)
+    private TileEntity tileEntity;
+
+    public LuacraftBlock(String name, int material, LuaTileEntity tileEntity)
     {
         super(LuaBlock.getMaterialFromID(material));
+
+        if(tileEntity != null)
+            this.tileEntity = (TileEntity) tileEntity.getObject();
 
         this.setBlockName(name);
         this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);
@@ -36,21 +41,25 @@ public class LuacraftBlock extends Block implements IBlockContainerObject
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        if(!world.isRemote)
+        if (!world.isRemote)
         {
             LuaHookManager.call(this, "OnBlockActivated", world, x, y, z, player);
 
             return true;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     @Override
-    public ContainerObjectType getType()
+    public boolean hasTileEntity(int metadata)
     {
-        return ContainerObjectType.BLOCK;
+        return tileEntity != null;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int metadata)
+    {
+        return tileEntity;
     }
 }

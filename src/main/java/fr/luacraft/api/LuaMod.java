@@ -1,13 +1,9 @@
 package fr.luacraft.api;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import fr.luacraft.api.classes.LuacraftBlock;
-import fr.luacraft.api.classes.LuacraftFluidBlock;
-import fr.luacraft.api.classes.LuacraftItem;
-import fr.luacraft.api.classes.LuacraftItemBucket;
+import fr.luacraft.api.classes.*;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.modloader.ILuaContainer;
-import fr.luacraft.modloader.ILuaContainerObject;
+import fr.luacraft.modloader.ILuaObject;
 import fr.luacraft.modloader.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
 import net.minecraft.item.ItemStack;
@@ -15,7 +11,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class LuaMod implements ILuaContainer
+public class LuaMod implements ILuaObject
 {
     private LuacraftMod mod;
 
@@ -26,15 +22,22 @@ public class LuaMod implements ILuaContainer
 
     public LuaBlock RegisterBlock(String id, int material)
     {
-        LuaBlock block = new LuaBlock(new LuacraftBlock(id, material));
-        LuaGameRegistry.register(id, block.getContainedObject());
+        LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, null));
+        LuaGameRegistry.registerBlock(id, block.getBlock());
+        return block;
+    }
+
+    public LuaBlock RegisterBlock(String id, int material, LuaTileEntity tileEntity)
+    {
+        LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, tileEntity));
+        LuaGameRegistry.registerBlock(id, block.getBlock());
         return block;
     }
 
     public LuaItem RegisterItem(String id)
     {
         LuaItem item = new LuaItem(new LuacraftItem(id));
-        LuaGameRegistry.register(id, item.getContainedObject());
+        LuaGameRegistry.registerItem(id, item.getItem());
         return item;
     }
 
@@ -55,7 +58,7 @@ public class LuaMod implements ILuaContainer
     public LuaBlock RegisterFluidBlock(String id, String fluid, int material)
     {
         LuaBlock block = new LuaBlock(new LuacraftFluidBlock(id, fluid, material));
-        LuaGameRegistry.register(id, block.getBlock());
+        LuaGameRegistry.registerBlock(id, block.getBlock());
         return block;
     }
 
@@ -63,11 +66,17 @@ public class LuaMod implements ILuaContainer
     {
         LuaItem item = new LuaItem(new LuacraftItemBucket(id, GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(),
                 fluidBlock)));
-        LuaGameRegistry.register(id, item.getContainedObject());
+        LuaGameRegistry.registerItem(id, item.getItem());
         FluidContainerRegistry.registerFluidContainer(
                 FluidRegistry.getFluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME),
-                new ItemStack((LuacraftItemBucket) item.getItem()), FluidContainerRegistry.EMPTY_BUCKET);
+                new ItemStack(item.getItem()), FluidContainerRegistry.EMPTY_BUCKET);
         return item;
+    }
+
+    public LuaTileEntity CreateTileEntity()
+    {
+        LuaTileEntity tileEntity = new LuaTileEntity(new LuacraftTileEntity());
+        return tileEntity;
     }
 
     public void LogInfo(String message)
@@ -76,13 +85,13 @@ public class LuaMod implements ILuaContainer
     }
 
     @Override
-    public String getType()
+    public String GetType()
     {
         return "LuaMod";
     }
 
     @Override
-    public ILuaContainerObject getContainedObject()
+    public Object getObject()
     {
         return mod;
     }

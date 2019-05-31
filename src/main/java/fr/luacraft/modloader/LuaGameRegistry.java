@@ -1,8 +1,6 @@
 package fr.luacraft.modloader;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import fr.luacraft.api.IBlockContainerObject;
-import fr.luacraft.api.IItemContainerObject;
 import fr.luacraft.core.Luacraft;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -15,21 +13,16 @@ public class LuaGameRegistry
     private static List<RegistryRecipe> recipes = new ArrayList<RegistryRecipe>();
     private static List<RegistrySmelt> smelts = new ArrayList<RegistrySmelt>();
 
-    public static void register(String id, ILuaContainerObject object)
+    public static void registerBlock(String id, Block block)
     {
-        switch(object.getType())
-        {
-            case BLOCK:
-                IBlockContainerObject block = (IBlockContainerObject) object;
-                GameRegistry.registerBlock((Block) block, id);
-                Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addBlock(block);
-                break;
-            case ITEM:
-                IItemContainerObject item = (IItemContainerObject) object;
-                GameRegistry.registerItem((Item) item, id);
-                Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addItem(item);
-                break;
-        }
+        GameRegistry.registerBlock(block, id);
+        Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addBlock(block);
+    }
+
+    public static void registerItem(String id, Item item)
+    {
+        GameRegistry.registerItem(item, id);
+        Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addItem(item);
     }
 
     public static void addRecipe(String output, boolean shapeless, String[] slots)

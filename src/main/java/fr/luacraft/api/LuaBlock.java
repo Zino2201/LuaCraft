@@ -1,18 +1,18 @@
 package fr.luacraft.api;
 
-import fr.luacraft.modloader.ILuaContainer;
-import fr.luacraft.modloader.ILuaContainerObject;
+import fr.luacraft.modloader.ILuaObject;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
 /**
  * Represent a Block in lua
  */
-public class LuaBlock implements ILuaContainer
+public class LuaBlock implements ILuaObject
 {
-    private IBlockContainerObject block;
+    private Block block;
 
-    public LuaBlock(IBlockContainerObject block)
+    public LuaBlock(Block block)
     {
         this.block = block;
     }
@@ -33,21 +33,21 @@ public class LuaBlock implements ILuaContainer
         block.setHardness(hardness);
     }
 
-    public IBlockContainerObject getBlock()
+    public Block getBlock()
     {
         return block;
     }
 
     @Override
-    public String getType()
+    public String GetType()
     {
         return "Block";
     }
 
     @Override
-    public ILuaContainerObject getContainedObject()
+    public Object getObject()
     {
-        return getBlock();
+        return block;
     }
 
     public static Material getMaterialFromID(int id)

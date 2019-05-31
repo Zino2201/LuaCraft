@@ -1,14 +1,14 @@
 package fr.luacraft.api;
 
-import fr.luacraft.modloader.ILuaContainer;
-import fr.luacraft.modloader.ILuaContainerObject;
+import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 
-public class LuaItem implements ILuaContainer
+public class LuaItem implements ILuaObject
 {
-    private IItemContainerObject item;
+    private Item item;
 
-    public LuaItem(IItemContainerObject item)
+    public LuaItem(Item item)
     {
         this.item = item;
     }
@@ -24,20 +24,20 @@ public class LuaItem implements ILuaContainer
         }
     }
 
-    public IItemContainerObject getItem()
+    public Item getItem()
     {
         return item;
     }
 
     @Override
-    public String getType()
+    public Object getObject()
     {
-        return "Item";
+        return item;
     }
 
     @Override
-    public ILuaContainerObject getContainedObject()
+    public String GetType()
     {
-        return getItem();
+        return "Item";
     }
 }

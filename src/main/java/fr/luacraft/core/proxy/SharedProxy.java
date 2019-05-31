@@ -11,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import fr.luacraft.api.classes.LuacraftTileEntity;
 import fr.luacraft.api.libs.HookLib;
 import fr.luacraft.api.libs.LuacraftLib;
 import fr.luacraft.api.libs.MinecraftLib;
@@ -61,6 +62,7 @@ public class SharedProxy
      */
     public void preInit(FMLPreInitializationEvent event)
     {
+        GameRegistry.registerTileEntity(LuacraftTileEntity.class, "luacraft_tile_entity");
         try
         {
             for(File file : new File(getClass().getResource("/assets/luacraft/lua").toURI()).listFiles())

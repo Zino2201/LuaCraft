@@ -13,8 +13,14 @@ public class LuaFluid implements ILuaObject
     }
 
     @Override
-    public String getType()
+    public String GetType()
     {
         return "Fluid";
+    }
+
+    @Override
+    public Object getObject()
+    {
+        return fluid;
     }
 }

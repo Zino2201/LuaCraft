@@ -1,15 +1,13 @@
 package fr.luacraft.api.classes;
 
-import fr.luacraft.api.IBlockContainerObject;
 import fr.luacraft.api.LuaBlock;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.modloader.ContainerObjectType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class LuacraftFluidBlock extends BlockFluidClassic implements IBlockContainerObject
+public class LuacraftFluidBlock extends BlockFluidClassic
 {
     public LuacraftFluidBlock(String name, String fluid, int material)
     {
@@ -41,11 +39,5 @@ public class LuacraftFluidBlock extends BlockFluidClassic implements IBlockConta
         }
 
         return super.displaceIfPossible(world, x, y, z);
-    }
-
-    @Override
-    public ContainerObjectType getType()
-    {
-        return ContainerObjectType.BLOCK;
     }
 }
