@@ -1,10 +1,7 @@
 package fr.luacraft.core;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -64,7 +61,12 @@ public class Luacraft
             modLoader.addSearchDirectory("D:\\Projects\\LuaCraft\\luamods");
         }
 
+        // Exeecuting
+
+        ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", 1);
+        bar.step("Searching mods");
         modLoader.loadMods();
+        ProgressManager.pop(bar);
 
         proxy.preInit(event);
     }
@@ -72,7 +74,10 @@ public class Luacraft
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", 1);
+        bar.step("Registering crafts and smelts");
         proxy.init(event);
+        ProgressManager.pop(bar);
     }
 
     @EventHandler

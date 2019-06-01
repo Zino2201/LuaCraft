@@ -2,10 +2,7 @@ package fr.luacraft.core.proxy;
 
 import com.naef.jnlua.LuaState;
 import com.naef.jnlua.NativeSupport;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -26,7 +23,7 @@ import net.minecraft.client.gui.GuiScreen;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.File;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,20 +60,6 @@ public class SharedProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         GameRegistry.registerTileEntity(LuacraftTileEntity.class, "luacraft_tile_entity");
-        try
-        {
-            for(File file : new File(getClass().getResource("/assets/luacraft/lua").toURI()).listFiles())
-            {
-                if(file.getAbsolutePath().endsWith(".lua"))
-                {
-                    internals.add(file);
-                }
-            }
-        }
-        catch (URISyntaxException e)
-        {
-            e.printStackTrace();
-        }
 
         synchronized (luaState)
         {
@@ -101,6 +84,9 @@ public class SharedProxy
             LuacraftLib.Initialize(luaState);
             MinecraftLib.Initialize(luaState);
             HookLib.Initialize(luaState);
+
+            /** Include internals */
+            includeInternals();
 
             /** Execute scripts */
             executeScripts();
@@ -146,12 +132,14 @@ public class SharedProxy
 
     public void executeScripts()
     {
-        ModContainer luacraftModContainer = FMLCommonHandler.instance().findContainerFor(Luacraft.getInstance());
+        ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
 
-        includeInternals();
+        ModContainer luacraftModContainer = FMLCommonHandler.instance().findContainerFor(Luacraft.getInstance());
 
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
+            bar.step("Executing " + mod.getMetadata().name);
+
             setCurrentMod(mod);
 
             GameRegistry.registerWorldGenerator(new LuacraftWorldGen(mod), 2);
@@ -166,12 +154,15 @@ public class SharedProxy
         }
 
         setModContainer(luacraftModContainer);
+        ProgressManager.pop(bar);
     }
 
     private void includeInternals()
     {
-        for(File internal : internals)
-            LuaUtil.runFromFile(luaState, internal);
+        // TODO: Read 'internal_paths.lua'
+        InputStream in = getClass().getClassLoader()
+                .getResourceAsStream("assets/luacraft/lua/internal.lua");
+        LuaUtil.runFromFile(luaState, new File("lua/internal.lua"),  in);
     }
 
     private void setCurrentMod(LuacraftMod mod)

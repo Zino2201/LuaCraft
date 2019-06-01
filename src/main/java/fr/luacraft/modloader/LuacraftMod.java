@@ -1,11 +1,15 @@
 package fr.luacraft.modloader;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import cpw.mods.fml.common.ModMetadata;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +30,28 @@ public class LuacraftMod extends LuacraftModContainer
     {
         super(new ModMetadata());
 
-        ModMetadata meta = getMetadata();
-        meta.modId = modDir.getName();
-        meta.name = meta.modId;
+        try
+        {
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new FileReader(infoFile));
+
+            ModMetadata meta = getMetadata();
+            LuacraftModInfo modInfo = gson.fromJson(reader, LuacraftModInfo.class);
+            meta.modId = modInfo.getModId() == null || modInfo.getModId().isEmpty() == true ? modDir.getName() : modInfo.getModId();
+            meta.name = modInfo.getName() == null || modInfo.getName().isEmpty() == true ? meta.modId : modInfo.getName();
+            meta.version = modInfo.getVersion();
+            meta.description = modInfo.getDescription();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
 
         this.scripts = new ArrayList<File>();
         this.modDir = modDir;
         this.registryData = new LuacraftModRegistryData();
         this.logger = LogManager.getLogger(getName());
 
-        // TODO: Read JSON
         lookForScripts(modDir);
     }
 

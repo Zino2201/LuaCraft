@@ -120,8 +120,8 @@ public class LuaBlock implements ILuaObject
                 return Material.cake;
             case 32:
                 return Material.web;
+            default:
+                return Material.rock;
         }
-
-        return null;
     }
 }

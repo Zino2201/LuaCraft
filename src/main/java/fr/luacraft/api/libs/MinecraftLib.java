@@ -2,7 +2,14 @@ package fr.luacraft.api.libs;
 
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
+import cpw.mods.fml.common.registry.GameRegistry;
+import fr.luacraft.api.LuaBlock;
+import fr.luacraft.api.LuaItem;
+import fr.luacraft.api.LuaNBTTagCompound;
+import fr.luacraft.modloader.ILuaObject;
 import fr.luacraft.modloader.LuaGameRegistry;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * Base minecraft library
@@ -50,6 +57,58 @@ public class MinecraftLib
         }
     };
 
+    public static JavaFunction NBTTagCompound = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            LuaNBTTagCompound nbtTagCompound = new LuaNBTTagCompound(new NBTTagCompound());
+            l.pushJavaObject(nbtTagCompound);
+            return 1;
+        }
+    };
+
+    public static JavaFunction AddToOreDictionary = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            String name = l.checkString(1);
+            ILuaObject object = l.checkJavaObject(2, ILuaObject.class);
+            if(object instanceof LuaBlock)
+                OreDictionary.registerOre(name, ((LuaBlock) (object)).getBlock());
+            else if(object instanceof LuaItem)
+                OreDictionary.registerOre(name, ((LuaItem) (object)).getItem());
+
+            return 0;
+        }
+    };
+
+    public static JavaFunction GetBlockByID = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            String id = l.checkString(1);
+            LuaBlock output = null;
+
+            if(id.contains(""))
+            {
+                String[] formattedID = id.split(":");
+
+                output = new LuaBlock(GameRegistry.findBlock(formattedID[0], formattedID[1]));
+            }
+            else
+            {
+                output = new LuaBlock(GameRegistry.findBlock("minecraft", id));
+            }
+
+            l.pushJavaObject(output);
+
+            return 1;
+        }
+    };
+
     /**
      * Initialize the library
      * @param l
@@ -57,6 +116,8 @@ public class MinecraftLib
     public static void Initialize(LuaState l)
     {
         /** Global scope */
+        l.pushJavaObject(NBTTagCompound);
+        l.setGlobal("NBTTagCompound");
 
         /** Minecraft table */
         l.newTable();
@@ -64,6 +125,10 @@ public class MinecraftLib
         l.setField(-2, "addRecipe");
         l.pushJavaObject(AddSmelting);
         l.setField(-2, "addSmelting");
+        l.pushJavaObject(AddToOreDictionary);
+        l.setField(-2, "addToOreDictionary");
+        l.pushJavaObject(GetBlockByID);
+        l.setField(-2, "getBlockByID");
         l.setGlobal("mc");
     }
 }

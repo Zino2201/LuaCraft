@@ -1,6 +1,8 @@
 package fr.luacraft.modloader;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import fr.luacraft.api.world.LuacraftOre;
+import fr.luacraft.core.Luacraft;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -33,6 +35,11 @@ public class LuacraftModRegistryData
     public void addItem(Item item)
     {
         items.add(item);
+    }
+
+    public Block getBlockByID(String id)
+    {
+        return GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(), id);
     }
 
     public List<LuacraftOre> getOres()

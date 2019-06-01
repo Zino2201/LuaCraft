@@ -5,6 +5,8 @@ import fr.luacraft.core.Luacraft;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
 
@@ -118,10 +120,15 @@ public class LuaGameRegistry
                 for (String slot : (String[]) craft.getParams())
                 {
                     if(slot != null)
-                        params.add(recipeIDToItemStack(slot));
+                    {
+                        if(slot.contains(":"))
+                            params.add(recipeIDToItemStack(slot));
+                        else
+                            params.add(slot);
+                    }
                 }
 
-                GameRegistry.addShapelessRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray());
+                GameRegistry.addRecipe(new ShapelessOreRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray()));
             }
             else
             {
@@ -131,10 +138,13 @@ public class LuaGameRegistry
                 for (Map.Entry<String, Character> entry : craft.getIdCharMap().entrySet())
                 {
                     params.add(entry.getValue());
-                    params.add(recipeIDToItemStack(entry.getKey()));
+                    if(entry.getKey().contains(":"))
+                        params.add(recipeIDToItemStack(entry.getKey()));
+                    else
+                        params.add(entry.getKey());
                 }
 
-                GameRegistry.addShapedRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray());
+                GameRegistry.addRecipe(new ShapedOreRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray()));
             }
         }
 
