@@ -3,6 +3,7 @@ package fr.luacraft.api.libs;
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import fr.luacraft.api.LuaBlock;
 import fr.luacraft.api.LuaItem;
 import fr.luacraft.api.LuaNBTTagCompound;
@@ -155,6 +156,24 @@ public class MinecraftLib
     };
 
     /**
+     * Add a language key to LanguageRegistry
+     */
+    public static JavaFunction AddLangKey = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            String lang = l.checkString(1);
+            String key = l.checkString(2);
+            String value = l.checkString(3);
+
+            LanguageRegistry.instance().addStringLocalization(key, lang, value);
+
+            return 0;
+        }
+    };
+
+    /**
      * Initialize the library
      * @param l
      */
@@ -176,6 +195,8 @@ public class MinecraftLib
         l.setField(-2, "getBlockByID");
         l.pushJavaObject(GetItemFromBlock);
         l.setField(-2, "getItemFromBlock");
+        l.pushJavaObject(AddLangKey);
+        l.setField(-2, "addLangKey");
         l.setGlobal("mc");
     }
 }

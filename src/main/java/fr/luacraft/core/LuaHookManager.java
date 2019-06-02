@@ -67,4 +67,24 @@ public class LuaHookManager
             }
         }
     }
+
+    /**
+     * Return if a object hook has got binds
+     * @param object
+     * @param name
+     * @return
+     */
+    public static boolean hasHooks(Object object, String name)
+    {
+        if(hooks.get(object) != null)
+        {
+            if(hooks.get(object).get(name) != null)
+            {
+                if(hooks.get(object).get(name).size() > 0)
+                    return true;
+            }
+        }
+
+        return false;
+    }
 }

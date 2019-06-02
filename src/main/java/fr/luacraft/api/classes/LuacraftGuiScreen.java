@@ -15,9 +15,14 @@ public class LuacraftGuiScreen extends GuiScreen
      */
     private boolean guiPauseGame;
 
-    public LuacraftGuiScreen()
-    {
+    /**
+     * Gui internal name
+     */
+    private String name;
 
+    public LuacraftGuiScreen(String name)
+    {
+        this.name = name;
     }
 
     public void setGuiPauseGame(boolean guiPauseGame)
@@ -75,5 +80,10 @@ public class LuacraftGuiScreen extends GuiScreen
     public boolean doesGuiPauseGame()
     {
         return guiPauseGame;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 }

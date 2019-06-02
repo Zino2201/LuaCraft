@@ -1,6 +1,7 @@
 package fr.luacraft.modloader;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import fr.luacraft.api.classes.LuacraftGuiScreen;
 import fr.luacraft.api.world.LuacraftOre;
 import fr.luacraft.core.Luacraft;
 import net.minecraft.block.Block;
@@ -19,6 +20,7 @@ public class LuacraftModRegistryData
     private List<Block> blocks;
     private List<Item> items;
     private List<CreativeTabs> creativeTabs;
+    private List<LuacraftGuiScreen> guiScreens;
 
     public LuacraftModRegistryData()
     {
@@ -26,6 +28,16 @@ public class LuacraftModRegistryData
         this.blocks = new ArrayList<Block>();
         this.items = new ArrayList<Item>();
         this.creativeTabs = new ArrayList<CreativeTabs>();
+        this.guiScreens = new ArrayList<LuacraftGuiScreen>();
+    }
+
+    /**
+     * Add a gui
+     * @param screen
+     */
+    public void addGui(LuacraftGuiScreen screen)
+    {
+        guiScreens.add(screen);
     }
 
     /**
@@ -77,6 +89,15 @@ public class LuacraftModRegistryData
     public Block getBlockByID(String id)
     {
         return GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(), id);
+    }
+
+    public LuacraftGuiScreen getGuiScreenFromName(String name)
+    {
+        for(LuacraftGuiScreen screen : guiScreens)
+            if(screen.getName().equals(name))
+                return screen;
+
+        return null;
     }
 
     /**

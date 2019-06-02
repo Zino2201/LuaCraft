@@ -15,12 +15,14 @@ public class GuiLib
     /**
      * Create a LuacraftGuiScreen object
      */
-    public static JavaFunction GuiScreen = new JavaFunction()
+    public static JavaFunction CreateScreen = new JavaFunction()
     {
         @Override
         public int invoke(LuaState l)
         {
-            LuaGuiScreen guiScreen = new LuaGuiScreen(new LuacraftGuiScreen());
+            String name = l.checkString(1);
+            LuaGuiScreen guiScreen = new LuaGuiScreen(new LuacraftGuiScreen(name));
+            Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addGui((LuacraftGuiScreen) guiScreen.getGuiScreen());
             l.pushJavaObject(guiScreen);
             return 1;
         }
@@ -28,7 +30,6 @@ public class GuiLib
 
     /**
      * Open a GuiScreen
-     * Client-side only
      */
     public static JavaFunction OpenGui = new JavaFunction()
     {
@@ -42,19 +43,44 @@ public class GuiLib
     };
 
     /**
+     * Get a gui screen
+     */
+    public static JavaFunction GetGuiFromName = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            String name = l.checkString(1);
+            if(name.contains(":"))
+            {
+                String[] formattedName = name.split(":");
+                LuaGuiScreen guiScreen = new LuaGuiScreen(Luacraft.getInstance().getModLoader().getModByID(formattedName[0])
+                        .getRegistryData().getGuiScreenFromName(formattedName[1]));
+                l.pushJavaObject(guiScreen);
+                return 1;
+            }
+
+            l.pushNil();
+            return 1;
+        }
+    };
+
+    /**
      * Initialize the library
      * @param l
      */
     public static void Initialize(LuaState l)
     {
         /** Global scope */
-        l.pushJavaObject(GuiScreen);
-        l.setGlobal("GuiScreen");
 
         /** Minecraft table */
         l.newTable();
+        l.pushJavaObject(CreateScreen);
+        l.setField(-2, "createScreen");
         l.pushJavaObject(OpenGui);
         l.setField(-2, "openGui");
+        l.pushJavaObject(GetGuiFromName);
+        l.setField(-2, "getGuiFromName");
         l.setGlobal("gui");
     }
 }

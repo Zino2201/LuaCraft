@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 public class LuacraftBlock extends Block
 {
     private TileEntity tileEntity;
+    private boolean canBeActivated;
 
     public LuacraftBlock(String name, int material, LuaTileEntity tileEntity)
     {
@@ -42,13 +43,15 @@ public class LuacraftBlock extends Block
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        if (!world.isRemote)
+        if(LuaHookManager.hasHooks(this, "OnBlockActivated"))
         {
-            LuaHookManager.call(this, "OnBlockActivated", world, x, y, z, player);
-
-            return true;
+            if (!world.isRemote)
+            {
+                LuaHookManager.call(this, "OnBlockActivated", world, x, y, z, player);
+                return true;
+            }
         }
-
+        
         return false;
     }
 

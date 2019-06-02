@@ -82,7 +82,7 @@ public class LuaModLoader
     public LuacraftMod getModByID(String modid)
     {
         for(LuacraftMod mod : mods)
-            if(modid == mod.getModId())
+            if(modid.contains(mod.getModId()))
                 return mod;
         Luacraft.getLogger().log(Level.ERROR, "No mods are using modid " + modid);
         return null;
