@@ -11,6 +11,7 @@ import java.io.File;
 /**
  * Base luacraft library
  * luacraft.* and global types
+ * @author Zino
  */
 public class LuacraftLib
 {

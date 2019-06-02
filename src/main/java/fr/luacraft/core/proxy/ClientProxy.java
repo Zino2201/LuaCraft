@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 /**
  * Client proxy
+ * @author Zino
  */
 public class ClientProxy extends SharedProxy
 {

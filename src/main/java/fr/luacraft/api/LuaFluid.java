@@ -3,6 +3,10 @@ package fr.luacraft.api;
 import fr.luacraft.modloader.ILuaObject;
 import net.minecraftforge.fluids.Fluid;
 
+/**
+ * Represents a fluid in Lua
+ * @author Zino
+ */
 public class LuaFluid implements ILuaObject
 {
     private Fluid fluid;

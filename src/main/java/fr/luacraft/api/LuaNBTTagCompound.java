@@ -3,6 +3,10 @@ package fr.luacraft.api;
 import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * Represents a NBTTagCompound in Lua
+ * @author Zino
+ */
 public class LuaNBTTagCompound implements ILuaObject
 {
     private NBTTagCompound nbtTagCompound;

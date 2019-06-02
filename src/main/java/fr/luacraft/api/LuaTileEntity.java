@@ -3,6 +3,10 @@ package fr.luacraft.api;
 import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.tileentity.TileEntity;
 
+/**
+ * Represents a TileEntity in Lua
+ * @author Zino
+ */
 public class LuaTileEntity implements ILuaObject
 {
     private TileEntity tileEntity;

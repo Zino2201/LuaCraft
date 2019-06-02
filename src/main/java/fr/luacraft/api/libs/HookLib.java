@@ -7,6 +7,7 @@ import fr.luacraft.modloader.ILuaObject;
 
 /**
  * Hook library
+ * @author Zino
  */
 public class HookLib
 {

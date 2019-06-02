@@ -1,5 +1,9 @@
 package fr.luacraft.modloader;
 
+/**
+ * Java representation of luamod.json file
+ * @author Zino
+ */
 public class LuacraftModInfo
 {
     private String modId;

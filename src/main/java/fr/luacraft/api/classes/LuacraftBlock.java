@@ -1,9 +1,9 @@
 package fr.luacraft.api.classes;
 
-import fr.luacraft.api.LuaBlock;
 import fr.luacraft.api.LuaTileEntity;
 import fr.luacraft.core.LuaHookManager;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 /**
  * A Luacraft block compatible with Luacraft hooks
+ * @author Zino
  */
 public class LuacraftBlock extends Block
 {
@@ -20,7 +21,7 @@ public class LuacraftBlock extends Block
 
     public LuacraftBlock(String name, int material, LuaTileEntity tileEntity)
     {
-        super(LuaBlock.getMaterialFromID(material));
+        super(LuaUtil.getMaterialByID(material));
 
         if(tileEntity != null)
             this.tileEntity = (TileEntity) tileEntity.getObject();

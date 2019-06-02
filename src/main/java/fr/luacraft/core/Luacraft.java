@@ -15,6 +15,7 @@ import java.io.File;
 
 /**
  * Base class for Luacraft
+ * @author Zino
  */
 @Mod(modid = Luacraft.MODID, version = Luacraft.VERSION, useMetadata = true)
 public class Luacraft

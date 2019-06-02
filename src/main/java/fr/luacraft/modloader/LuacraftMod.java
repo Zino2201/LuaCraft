@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Represents a Lua mod
+ * @author Zino
  */
 public class LuacraftMod extends LuacraftModContainer
 {

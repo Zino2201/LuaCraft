@@ -3,6 +3,10 @@ package fr.luacraft.api.world;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 
+/**
+ * A luacraft ore
+ * @author Zino
+ */
 public class LuacraftOre
 {
     private Block block;

@@ -4,6 +4,10 @@ import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
+/**
+ * Represetns a item in lua
+ * @author Zino
+ */
 public class LuaItem implements ILuaObject
 {
     private Item item;
@@ -13,6 +17,10 @@ public class LuaItem implements ILuaObject
         this.item = item;
     }
 
+    /**
+     * Set item creative tab
+     * @param label
+     */
     public void SetCreativeTab(String label)
     {
         for(CreativeTabs tab : CreativeTabs.creativeTabArray)

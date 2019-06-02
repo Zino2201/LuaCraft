@@ -15,9 +15,13 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * Base minecraft library
  * mc.*
+ * @author Zino
  */
 public class MinecraftLib
 {
+    /**
+     * Register a recipe
+     */
     public static JavaFunction AddRecipe = new JavaFunction()
     {
         @Override
@@ -45,6 +49,9 @@ public class MinecraftLib
         }
     };
 
+    /**
+     * Register a new smelting
+     */
     public static JavaFunction AddSmelting = new JavaFunction()
     {
         @Override
@@ -58,6 +65,9 @@ public class MinecraftLib
         }
     };
 
+    /**
+     * Create a NBTTagCompound object
+     */
     public static JavaFunction NBTTagCompound = new JavaFunction()
     {
         @Override
@@ -69,6 +79,9 @@ public class MinecraftLib
         }
     };
 
+    /**
+     * Add a ore to the ore dictionary
+     */
     public static JavaFunction AddToOreDictionary = new JavaFunction()
     {
         @Override
@@ -85,6 +98,9 @@ public class MinecraftLib
         }
     };
 
+    /**
+     * Get a block from its ID
+     */
     public static JavaFunction GetBlockByID = new JavaFunction()
     {
         @Override
@@ -110,6 +126,9 @@ public class MinecraftLib
         }
     };
 
+    /**
+     * Get a item from a block
+     */
     public static JavaFunction GetItemFromBlock = new JavaFunction()
     {
         @Override

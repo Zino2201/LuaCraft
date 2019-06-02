@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * A tile entity compatible with Luacraft hooks
+ * @author Zino
  */
 public class LuacraftTileEntity extends TileEntity
 {

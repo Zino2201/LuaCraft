@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fr.luacraft.api.classes.LuacraftTileEntity;
+import fr.luacraft.api.libs.GuiLib;
 import fr.luacraft.api.libs.HookLib;
 import fr.luacraft.api.libs.LuacraftLib;
 import fr.luacraft.api.libs.MinecraftLib;
@@ -29,6 +30,7 @@ import java.util.List;
 
 /**
  * Shared proxy
+ * @author Zino
  */
 public class SharedProxy
 {
@@ -84,6 +86,7 @@ public class SharedProxy
             LuacraftLib.Initialize(luaState);
             MinecraftLib.Initialize(luaState);
             HookLib.Initialize(luaState);
+            GuiLib.Initialize(luaState);
 
             /** Include internals */
             includeInternals();
@@ -130,6 +133,9 @@ public class SharedProxy
         
     }
 
+    /**
+     * Execute all scripts from all mods
+     */
     public void executeScripts()
     {
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
@@ -157,6 +163,9 @@ public class SharedProxy
         ProgressManager.pop(bar);
     }
 
+    /**
+     * Include internals
+     */
     private void includeInternals()
     {
         // TODO: Read 'internal_paths.lua'
@@ -165,6 +174,10 @@ public class SharedProxy
         LuaUtil.runFromFile(luaState, new File("lua/internal.lua"),  in);
     }
 
+    /**
+     * Set the current mod
+     * @param mod
+     */
     private void setCurrentMod(LuacraftMod mod)
     {
         currentMod = mod;
@@ -172,6 +185,10 @@ public class SharedProxy
         setModContainer(mod);
     }
 
+    /**
+     * Set the current mod container
+     * @param modContainer
+     */
     private void setModContainer(ModContainer modContainer)
     {
         try

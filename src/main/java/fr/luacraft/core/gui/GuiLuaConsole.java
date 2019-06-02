@@ -7,6 +7,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
 
+/**
+ * Lua console
+ * @author Zino
+ */
 public class GuiLuaConsole extends GuiScreen
 {
     private GuiButton buttonSend;
@@ -42,11 +46,11 @@ public class GuiLuaConsole extends GuiScreen
     }
 
     @Override
-    protected void keyTyped(char p_73869_1_, int p_73869_2_)
+    protected void keyTyped(char typedChar, int keyCode)
     {
-        super.keyTyped(p_73869_1_, p_73869_2_);
+        super.keyTyped(typedChar, keyCode);
 
-        textFieldCommand.textboxKeyTyped(p_73869_1_, p_73869_2_);
+        textFieldCommand.textboxKeyTyped(typedChar, keyCode);
     }
 
     @Override

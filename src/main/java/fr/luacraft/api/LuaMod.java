@@ -15,8 +15,15 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
+/**
+ * Represents a LuacraftMod in Lua
+ * @author Zino
+ */
 public class LuaMod implements ILuaObject
 {
+    /**
+     * Contained mod
+     */
     private LuacraftMod mod;
 
     public LuaMod(LuacraftMod mod)
@@ -24,6 +31,12 @@ public class LuaMod implements ILuaObject
         this.mod = mod;
     }
 
+    /**
+     * Register a block
+     * @param id
+     * @param material
+     * @return
+     */
     public LuaBlock RegisterBlock(String id, int material)
     {
         LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, null));
@@ -31,6 +44,13 @@ public class LuaMod implements ILuaObject
         return block;
     }
 
+    /**
+     * Register a block with TileEntity
+     * @param id
+     * @param material
+     * @param tileEntity
+     * @return
+     */
     public LuaBlock RegisterBlock(String id, int material, LuaTileEntity tileEntity)
     {
         LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, tileEntity));
@@ -38,6 +58,11 @@ public class LuaMod implements ILuaObject
         return block;
     }
 
+    /**
+     * Register a item
+     * @param id
+     * @return
+     */
     public LuaItem RegisterItem(String id)
     {
         LuaItem item = new LuaItem(new LuacraftItem(id));
@@ -45,11 +70,29 @@ public class LuaMod implements ILuaObject
         return item;
     }
 
+    /**
+     * Register a ore
+     * @param id
+     * @param dimensionID
+     * @param minY
+     * @param maxY
+     * @param veinSize
+     * @param chances
+     */
     public void RegisterOre(String id, int dimensionID, int minY, int maxY, int veinSize, int chances)
     {
         mod.getRegistryData().addOre(id, dimensionID, minY, maxY, veinSize, chances);
     }
 
+    /**
+     * Register a fluid
+     * @param id
+     * @param density
+     * @param viscosity
+     * @param temperature
+     * @param luminosity
+     * @return
+     */
     public LuaFluid RegisterFluid(String id, int density, int viscosity, int temperature, int luminosity)
     {
         Fluid fluid = new Fluid(id).setDensity(density).setViscosity(viscosity).setTemperature(temperature)
@@ -59,6 +102,13 @@ public class LuaMod implements ILuaObject
         return new LuaFluid(fluid);
     }
 
+    /**
+     * Register a fluid block
+     * @param id
+     * @param fluid
+     * @param material
+     * @return
+     */
     public LuaBlock RegisterFluidBlock(String id, String fluid, int material)
     {
         LuaBlock block = new LuaBlock(new LuacraftFluidBlock(id, fluid, material));
@@ -66,6 +116,13 @@ public class LuaMod implements ILuaObject
         return block;
     }
 
+    /**
+     * Register a fluid bucket
+     * @param id
+     * @param fluidBlock
+     * @param fluid
+     * @return
+     */
     public LuaItem RegisterFluidBucket(String id, String fluidBlock, String fluid)
     {
         LuaItem item = new LuaItem(new LuacraftItemBucket(id, GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(),
@@ -77,6 +134,11 @@ public class LuaMod implements ILuaObject
         return item;
     }
 
+    /**
+     * Add a creative tab
+     * @param label
+     * @param item
+     */
     public void AddCreativeTab(String label, final LuaItem item)
     {
         CreativeTabs creativeTab = new CreativeTabs(label)
@@ -97,12 +159,20 @@ public class LuaMod implements ILuaObject
         mod.getRegistryData().addCreativeTab(creativeTab);
     }
 
+    /**
+     * Create a LuacraftTileEntity
+     * @return
+     */
     public LuaTileEntity CreateTileEntity()
     {
         LuaTileEntity tileEntity = new LuaTileEntity(new LuacraftTileEntity());
         return tileEntity;
     }
 
+    /**
+     * Log to the console
+     * @param message
+     */
     public void LogInfo(String message)
     {
         mod.getLogger().info(message);

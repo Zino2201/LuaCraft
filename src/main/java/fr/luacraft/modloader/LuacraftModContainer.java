@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Luacraft mod container
+ * @author Zino
+ */
 public class LuacraftModContainer implements ModContainer
 {
     private ModMetadata md;

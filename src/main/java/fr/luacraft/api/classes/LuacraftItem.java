@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 
 /**
  * A item compatible with Luacraft hooks
+ * @author Zino
  */
 public class LuacraftItem extends Item
 {

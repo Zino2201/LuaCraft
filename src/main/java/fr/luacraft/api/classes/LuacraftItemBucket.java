@@ -4,6 +4,10 @@ import fr.luacraft.core.Luacraft;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBucket;
 
+/**
+ * A item bucket compatible with Luacraft hooks
+ * @author Zino
+ */
 public class LuacraftItemBucket extends ItemBucket
 {
     public LuacraftItemBucket(String id, Block block)

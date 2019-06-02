@@ -2,6 +2,10 @@ package fr.luacraft.modloader;
 
 import java.util.HashMap;
 
+/**
+ * A recipe
+ * @author Zino
+ */
 public class RegistryRecipe
 {
     private boolean shapeless;

@@ -9,6 +9,10 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 
 import java.util.Random;
 
+/**
+ * Luacraft custom world generator implementation compatible with Lua ores
+ * @author Zino
+ */
 public class LuacraftWorldGen implements IWorldGenerator
 {
     private LuacraftMod mod;
@@ -36,6 +40,15 @@ public class LuacraftWorldGen implements IWorldGenerator
         }
     }
 
+    /**
+     * Generate overworld ores
+     * @param random
+     * @param chunkX
+     * @param chunkZ
+     * @param world
+     * @param chunkGenerator
+     * @param chunkProvider
+     */
     private void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
         for(LuacraftOre ore : mod.getRegistryData().getOres())
@@ -46,6 +59,18 @@ public class LuacraftWorldGen implements IWorldGenerator
         }
     }
 
+    /**
+     * Generate a ore
+     * @param ore
+     * @param world
+     * @param random
+     * @param x
+     * @param z
+     * @param minY
+     * @param maxY
+     * @param size
+     * @param chances
+     */
     private void generateOre(Block ore, World world, Random random, int x, int z, int minY, int maxY, int size, int chances)
     {
         int deltaY = maxY - minY;

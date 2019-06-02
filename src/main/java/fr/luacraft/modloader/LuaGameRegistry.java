@@ -2,31 +2,51 @@ package fr.luacraft.modloader;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
 
+/**
+ * Contains functions for register lua objects
+ * @author Zino
+ */
 public class LuaGameRegistry
 {
     private static List<RegistryRecipe> recipes = new ArrayList<RegistryRecipe>();
     private static List<RegistrySmelt> smelts = new ArrayList<RegistrySmelt>();
 
+    /**
+     * Register a block
+     * @param id
+     * @param block
+     */
     public static void registerBlock(String id, Block block)
     {
         GameRegistry.registerBlock(block, id);
         Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addBlock(block);
     }
 
+    /**
+     * Register a item
+     * @param id
+     * @param item
+     */
     public static void registerItem(String id, Item item)
     {
         GameRegistry.registerItem(item, id);
         Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addItem(item);
     }
 
+    /**
+     * Add a recipe
+     * @param output
+     * @param shapeless
+     * @param slots
+     */
     public static void addRecipe(String output, boolean shapeless, String[] slots)
     {
         if(shapeless)
@@ -35,11 +55,21 @@ public class LuaGameRegistry
             addShapedRecipe(output, slots);
     }
 
+    /**
+     * Add a shapeless recipe
+     * @param output
+     * @param slots
+     */
     public static void addShapelessRecipe(String output, String[] slots)
     {
         recipes.add(new RegistryRecipe(true, output, slots, null));
     }
 
+    /**
+     * Add a shaped recipe
+     * @param output
+     * @param slots
+     */
     public static void addShapedRecipe(String output, String[] slots)
     {
         char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUWXYZ".toCharArray();
@@ -105,11 +135,20 @@ public class LuaGameRegistry
         recipes.add(new RegistryRecipe(false, output, params.toArray(), idChar));
     }
 
+    /**
+     * Add a smelt
+     * @param input
+     * @param output
+     * @param xp
+     */
     public static void addSmelting(String input, String output, float xp)
     {
         smelts.add(new RegistrySmelt(input, output, xp));
     }
 
+    /**
+     * Register all craft and smelts
+     */
     public static void registerCraftAndSmelts()
     {
         for(RegistryRecipe craft : recipes)
@@ -122,13 +161,13 @@ public class LuaGameRegistry
                     if(slot != null)
                     {
                         if(slot.contains(":"))
-                            params.add(recipeIDToItemStack(slot));
+                            params.add(LuaUtil.getItemStackFromID(slot));
                         else
                             params.add(slot);
                     }
                 }
 
-                GameRegistry.addRecipe(new ShapelessOreRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray()));
+                GameRegistry.addRecipe(new ShapelessOreRecipe(LuaUtil.getItemStackFromID(craft.getOutput()), params.toArray()));
             }
             else
             {
@@ -139,31 +178,19 @@ public class LuaGameRegistry
                 {
                     params.add(entry.getValue());
                     if(entry.getKey().contains(":"))
-                        params.add(recipeIDToItemStack(entry.getKey()));
+                        params.add(LuaUtil.getItemStackFromID(entry.getKey()));
                     else
                         params.add(entry.getKey());
                 }
 
-                GameRegistry.addRecipe(new ShapedOreRecipe(recipeIDToItemStack(craft.getOutput()), params.toArray()));
+                GameRegistry.addRecipe(new ShapedOreRecipe(LuaUtil.getItemStackFromID(craft.getOutput()), params.toArray()));
             }
         }
 
         for(RegistrySmelt smelt : smelts)
         {
-            GameRegistry.addSmelting(recipeIDToItemStack(smelt.getInput()), recipeIDToItemStack(smelt.getOutput()),
+            GameRegistry.addSmelting(LuaUtil.getItemStackFromID(smelt.getInput()), LuaUtil.getItemStackFromID(smelt.getOutput()),
                     smelt.getExperienceGain());
         }
-    }
-
-    private static ItemStack recipeIDToItemStack(String recipeID)
-    {
-        String[] formattedID = recipeID.split(":");
-        String modid = formattedID[0];
-        String id = formattedID[1];
-        String stackSize = "1";
-        if(formattedID.length > 2 && formattedID[2] != null)
-            stackSize = formattedID[2];
-        ItemStack stack = GameRegistry.findItemStack(modid, id, Integer.parseInt(stackSize));
-        return stack;
     }
 }

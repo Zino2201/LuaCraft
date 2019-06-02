@@ -8,6 +8,10 @@ import org.apache.commons.lang3.SystemUtils;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Manage the loading of jnlua
+ * @author Zino
+ */
 public class LuaNativeLoader implements NativeSupport.Loader
 {
     private String nativeDir = "natives/";
@@ -75,6 +79,11 @@ public class LuaNativeLoader implements NativeSupport.Loader
         }
     }
 
+    /**
+     * Detect if we are in a development environment
+     * Only works with InteliJ
+     * @return
+     */
     public static boolean isInDevEnvironnement()
     {
         // TODO: Detect eclipse because this code only detect InteliJ

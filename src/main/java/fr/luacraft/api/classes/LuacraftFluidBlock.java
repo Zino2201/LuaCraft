@@ -1,17 +1,21 @@
 package fr.luacraft.api.classes;
 
-import fr.luacraft.api.LuaBlock;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.util.LuaUtil;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.FluidRegistry;
 
+/**
+ * A fluid block compatible with Luacraft hooks
+ * @author Zino
+ */
 public class LuacraftFluidBlock extends BlockFluidClassic
 {
     public LuacraftFluidBlock(String name, String fluid, int material)
     {
-        super(FluidRegistry.getFluid(fluid), LuaBlock.getMaterialFromID(material));
+        super(FluidRegistry.getFluid(fluid), LuaUtil.getMaterialByID(material));
 
         this.setBlockName(name);
         this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);

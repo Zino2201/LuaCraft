@@ -3,6 +3,10 @@ package fr.luacraft.api;
 import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.nbt.NBTBase;
 
+/**
+ * Represents a NBTBase in Lua
+ * @author Zino
+ */
 public class LuaNBTBase implements ILuaObject
 {
     private NBTBase nbtBase;

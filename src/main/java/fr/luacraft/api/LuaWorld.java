@@ -3,6 +3,10 @@ package fr.luacraft.api;
 import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.world.World;
 
+/**
+ * Represents a World in Lua
+ * @author Zino
+ */
 public class LuaWorld implements ILuaObject
 {
     private World world;

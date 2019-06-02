@@ -4,7 +4,9 @@ import cpw.mods.fml.client.FMLFolderResourcePack;
 import cpw.mods.fml.common.ModContainer;
 
 /**
- * != .jar/.zip
+ * Luacraft folder resource pack
+ * Used for mod that loaded from a directory
+ * @author Zino
  */
 public class LuacraftFolderResourcePack extends FMLFolderResourcePack
 {

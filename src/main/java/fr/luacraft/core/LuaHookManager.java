@@ -1,15 +1,24 @@
 package fr.luacraft.core;
 
-import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Manage lua hooks
+ * @author Zino
+ */
 public class LuaHookManager
 {
     public static HashMap<Object, HashMap<String, ArrayList<Integer>>> hooks = new HashMap<Object, HashMap<String, ArrayList<Integer>>>();
 
+    /**
+     * Add a hook to the specified object
+     * @param object
+     * @param name
+     * @param func
+     */
     public static void add(Object object, String name, int func)
     {
         if(hooks.get(object) != null)
@@ -31,6 +40,12 @@ public class LuaHookManager
         }
     }
 
+    /**
+     * Call a hook using the specified object
+     * @param object
+     * @param name
+     * @param args
+     */
     public static void call(Object object, String name, Object... args)
     {
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();

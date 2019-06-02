@@ -10,7 +10,8 @@ import java.util.List;
 
 /**
  * Luacraft mod loader
- * Load all mods in searchPaths
+ * Find and load mods
+ * @author Zino
  */
 public class LuaModLoader
 {

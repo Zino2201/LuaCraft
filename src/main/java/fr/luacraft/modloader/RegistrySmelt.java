@@ -1,5 +1,9 @@
 package fr.luacraft.modloader;
 
+/**
+ * Represents a smelt
+ * @author Zino
+ */
 public class RegistrySmelt
 {
     private String input;
