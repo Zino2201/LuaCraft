@@ -8,6 +8,7 @@ import fr.luacraft.api.LuaItem;
 import fr.luacraft.api.LuaNBTTagCompound;
 import fr.luacraft.modloader.ILuaObject;
 import fr.luacraft.modloader.LuaGameRegistry;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -109,6 +110,31 @@ public class MinecraftLib
         }
     };
 
+    public static JavaFunction GetItemFromBlock = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            String id = l.checkString(1);
+            LuaItem output = null;
+
+            if(id.contains(""))
+            {
+                String[] formattedID = id.split(":");
+
+                output = new LuaItem(Item.getItemFromBlock(GameRegistry.findBlock(formattedID[0], formattedID[1])));
+            }
+            else
+            {
+                output = new LuaItem(Item.getItemFromBlock(GameRegistry.findBlock("minecraft", id)));
+            }
+
+            l.pushJavaObject(output);
+
+            return 1;
+        }
+    };
+
     /**
      * Initialize the library
      * @param l
@@ -129,6 +155,8 @@ public class MinecraftLib
         l.setField(-2, "addToOreDictionary");
         l.pushJavaObject(GetBlockByID);
         l.setField(-2, "getBlockByID");
+        l.pushJavaObject(GetItemFromBlock);
+        l.setField(-2, "getItemFromBlock");
         l.setGlobal("mc");
     }
 }

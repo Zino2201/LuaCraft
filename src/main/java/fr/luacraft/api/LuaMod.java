@@ -1,11 +1,15 @@
 package fr.luacraft.api;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import fr.luacraft.api.classes.*;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.modloader.ILuaObject;
 import fr.luacraft.modloader.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -71,6 +75,26 @@ public class LuaMod implements ILuaObject
                 FluidRegistry.getFluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME),
                 new ItemStack(item.getItem()), FluidContainerRegistry.EMPTY_BUCKET);
         return item;
+    }
+
+    public void AddCreativeTab(String label, final LuaItem item)
+    {
+        CreativeTabs creativeTab = new CreativeTabs(label)
+        {
+            @Override
+            public Item getTabIconItem()
+            {
+                return item.getItem();
+            }
+
+            @SideOnly(Side.CLIENT)
+            public int func_151243_f()
+            {
+                return 0;
+            }
+        };
+
+        mod.getRegistryData().addCreativeTab(creativeTab);
     }
 
     public LuaTileEntity CreateTileEntity()
