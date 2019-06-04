@@ -1,5 +1,7 @@
 package fr.luacraft.api;
 
+import cpw.mods.fml.relauncher.Side;
+import fr.luacraft.core.Luacraft;
 import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -23,11 +25,14 @@ public class LuaItem implements ILuaObject
      */
     public void SetCreativeTab(String label)
     {
-        for(CreativeTabs tab : CreativeTabs.creativeTabArray)
+        if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
         {
-            if (tab.getTabLabel().equals(label))
+            for (CreativeTabs tab : CreativeTabs.creativeTabArray)
             {
-                item.setCreativeTab(tab);
+                if (tab.getTabLabel().equals(label))
+                {
+                    item.setCreativeTab(tab);
+                }
             }
         }
     }

@@ -8,15 +8,17 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import fr.luacraft.api.classes.LuacraftTileEntity;
-import fr.luacraft.api.libs.GuiLib;
 import fr.luacraft.api.libs.HookLib;
 import fr.luacraft.api.libs.LuacraftLib;
 import fr.luacraft.api.libs.MinecraftLib;
+import fr.luacraft.api.libs.NetLib;
 import fr.luacraft.api.world.LuacraftWorldGen;
 import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.command.CommandLuacraft;
+import fr.luacraft.core.network.LuacraftPacketHandler;
 import fr.luacraft.modloader.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
 import fr.luacraft.util.LuaUtil;
@@ -86,7 +88,7 @@ public class SharedProxy
             LuacraftLib.Initialize(luaState);
             MinecraftLib.Initialize(luaState);
             HookLib.Initialize(luaState);
-            GuiLib.Initialize(luaState);
+            NetLib.Initialize(luaState);
 
             /** Include internals */
             includeInternals();
@@ -102,6 +104,8 @@ public class SharedProxy
      */
     public void init(FMLInitializationEvent event)
     {
+        LuacraftPacketHandler.registerMessages();
+
         LuaGameRegistry.registerCraftAndSmelts();
     }
 
@@ -210,5 +214,10 @@ public class SharedProxy
     public LuacraftMod getCurrentMod()
     {
         return currentMod;
+    }
+
+    public Side getSide()
+    {
+        return FMLCommonHandler.instance().getEffectiveSide();
     }
 }

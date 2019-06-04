@@ -1,7 +1,6 @@
 package fr.luacraft.core.command;
 
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.gui.GuiLuaConsole;
 import fr.luacraft.modloader.LuacraftMod;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -31,11 +30,13 @@ public class CommandLuacraft extends CommandBase
     {
         if(args.length > 0)
         {
+            /*
+            // TODO: Need a client command for that
             if(args[0].matches("console"))
             {
                 Luacraft.getInstance().getProxy().openGUI(new GuiLuaConsole());
-            }
-            else if(args[0].matches("help"))
+            }*/
+            if(args[0].matches("help"))
             {
                 sender.addChatMessage(new ChatComponentText("help"));
             }

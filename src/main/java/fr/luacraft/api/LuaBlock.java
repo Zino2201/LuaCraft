@@ -1,5 +1,7 @@
 package fr.luacraft.api;
 
+import cpw.mods.fml.relauncher.Side;
+import fr.luacraft.core.Luacraft;
 import fr.luacraft.modloader.ILuaObject;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,11 +21,14 @@ public class LuaBlock implements ILuaObject
 
     public void SetCreativeTab(String label)
     {
-        for(CreativeTabs tab : CreativeTabs.creativeTabArray)
+        if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
         {
-            if (tab.getTabLabel().equals(label))
+            for (CreativeTabs tab : CreativeTabs.creativeTabArray)
             {
-                block.setCreativeTab(tab);
+                if (tab.getTabLabel().equals(label))
+                {
+                    block.setCreativeTab(tab);
+                }
             }
         }
     }

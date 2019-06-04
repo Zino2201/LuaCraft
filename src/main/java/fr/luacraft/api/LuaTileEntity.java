@@ -27,4 +27,9 @@ public class LuaTileEntity implements ILuaObject
     {
         return tileEntity;
     }
+
+    public TileEntity getTileEntity()
+    {
+        return tileEntity;
+    }
 }

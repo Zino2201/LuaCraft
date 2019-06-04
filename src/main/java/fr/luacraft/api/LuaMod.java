@@ -141,22 +141,23 @@ public class LuaMod implements ILuaObject
      */
     public void AddCreativeTab(String label, final LuaItem item)
     {
-        CreativeTabs creativeTab = new CreativeTabs(label)
+        if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
         {
-            @Override
-            public Item getTabIconItem()
-            {
-                return item.getItem();
-            }
+            CreativeTabs creativeTab = new CreativeTabs(label) {
+                @Override
+                public Item getTabIconItem() {
+                    return item.getItem();
+                }
 
-            @SideOnly(Side.CLIENT)
-            public int func_151243_f()
-            {
-                return 0;
-            }
-        };
+                @SideOnly(Side.CLIENT)
+                public int func_151243_f()
+                {
+                    return 0;
+                }
+            };
 
-        mod.getRegistryData().addCreativeTab(creativeTab);
+            mod.getRegistryData().addCreativeTab(creativeTab);
+        }
     }
 
     /**

@@ -50,8 +50,10 @@ public class LuaNativeLoader implements NativeSupport.Loader
 
             try
             {
-                JarUtil.extractResourceFile(new File(tmpDir, lua + ext), nativeDir + lua + ext);
-                JarUtil.extractResourceFile(new File(tmpDir, jnlua + ext), nativeDir + jnlua + ext);
+                if(!new File(tmpDir, lua + ext).exists())
+                    JarUtil.extractResourceFile(new File(tmpDir, lua + ext), nativeDir + lua + ext);
+                if(!new File(tmpDir, jnlua + ext).exists())
+                    JarUtil.extractResourceFile(new File(tmpDir, jnlua + ext), nativeDir + jnlua + ext);
             }
             catch (IOException e)
             {

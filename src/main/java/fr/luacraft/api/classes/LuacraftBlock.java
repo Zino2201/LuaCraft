@@ -1,5 +1,6 @@
 package fr.luacraft.api.classes;
 
+import fr.luacraft.api.LuaEntityPlayer;
 import fr.luacraft.api.LuaTileEntity;
 import fr.luacraft.core.LuaHookManager;
 import fr.luacraft.core.Luacraft;
@@ -25,7 +26,7 @@ public class LuacraftBlock extends Block
         super(LuaUtil.getMaterialByID(material));
 
         if(tileEntity != null)
-            this.tileEntity = (TileEntity) tileEntity.getObject();
+            this.tileEntity = tileEntity.getTileEntity();
 
         this.setBlockName(name);
         this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);
@@ -47,7 +48,7 @@ public class LuacraftBlock extends Block
         {
             if (!world.isRemote)
             {
-                LuaHookManager.call(this, "OnBlockActivated", world, x, y, z, player);
+                LuaHookManager.call(this, "OnBlockActivated", world, x, y, z, new LuaEntityPlayer(player));
                 return true;
             }
         }
