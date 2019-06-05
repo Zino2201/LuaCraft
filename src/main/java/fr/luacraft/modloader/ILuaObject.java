@@ -1,10 +1,12 @@
 package fr.luacraft.modloader;
 
+import java.io.Serializable;
+
 /**
  * Base for all lua objects
  * @author Zino
  */
-public interface ILuaObject
+public interface ILuaObject extends Serializable
 {
     /**
      * Get the lua object type

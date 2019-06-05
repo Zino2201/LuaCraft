@@ -14,7 +14,7 @@ public class LuacraftMessageHandler implements IMessageHandler<LuacraftMessage, 
     @Override
     public IMessage onMessage(LuacraftMessage message, MessageContext ctx)
     {
-        LuaNetHookManager.call(message.getName());
+        LuaNetHookManager.call(message.getName(), message.getArgs().toArray());
         return null;
     }
 }

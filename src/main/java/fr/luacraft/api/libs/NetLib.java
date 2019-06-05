@@ -8,6 +8,9 @@ import fr.luacraft.core.network.LuacraftMessage;
 import fr.luacraft.core.network.LuacraftPacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Network library
  * @author Zino
@@ -15,8 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 public class NetLib
 {
     private static String currentMessageName = "";
-
-    // TODO: Write int, etc
+    private static ArrayList<Object> currentMessageData = new ArrayList<Object>();
 
     /**
      * Start a message
@@ -27,6 +29,7 @@ public class NetLib
         public int invoke(LuaState l)
         {
             currentMessageName = l.checkString(1);
+            currentMessageData.clear();
 
             return 0;
         }
@@ -40,7 +43,7 @@ public class NetLib
         @Override
         public int invoke(LuaState l)
         {
-            LuacraftPacketHandler.INSTANCE.sendToServer(new LuacraftMessage(currentMessageName));
+            LuacraftPacketHandler.INSTANCE.sendToServer(new LuacraftMessage(currentMessageName, currentMessageData));
 
             return 0;
         }
@@ -55,7 +58,36 @@ public class NetLib
         public int invoke(LuaState l)
         {
             LuaEntityPlayer player = l.checkJavaObject(1, LuaEntityPlayer.class);
-            LuacraftPacketHandler.INSTANCE.sendTo(new LuacraftMessage(currentMessageName), (EntityPlayerMP) player.getEntityPlayer());
+            LuacraftPacketHandler.INSTANCE.sendTo(new LuacraftMessage(currentMessageName, currentMessageData), (EntityPlayerMP) player.getEntityPlayer());
+
+            return 0;
+        }
+    };
+
+    /**
+     * Send a message to all players
+     */
+    public static JavaFunction SendToAll = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            LuacraftPacketHandler.INSTANCE.sendToAll(new LuacraftMessage(currentMessageName, currentMessageData));
+
+            return 0;
+        }
+    };
+
+    /**
+     * Send a message to all players
+     */
+    public static JavaFunction SendToAllInDimension = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            int dimID = l.checkInteger(1);
+            LuacraftPacketHandler.INSTANCE.sendToDimension(new LuacraftMessage(currentMessageName, currentMessageData), dimID);
 
             return 0;
         }
@@ -79,6 +111,27 @@ public class NetLib
     };
 
     /**
+     * Write
+     */
+    public static JavaFunction Write = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            if(l.isNumber(1))
+                currentMessageData.add(l.checkNumber(1));
+            else if(l.isString(1))
+                currentMessageData.add(l.checkString(1));
+            else if(l.isBoolean(1))
+                currentMessageData.add(l.toBoolean(1));
+            else if(l.isJavaObject(1, Serializable.class))
+                currentMessageData.add(l.toJavaObject(1, Serializable.class));
+
+            return 0;
+        }
+    };
+
+    /**
      * Initialize the library
      * @param l
      */
@@ -92,8 +145,14 @@ public class NetLib
         l.setField(-2, "SendToServer");
         l.pushJavaObject(SendToPlayer);
         l.setField(-2, "SendToPlayer");
+        l.pushJavaObject(SendToAll);
+        l.setField(-2, "SendToAll");
+        l.pushJavaObject(SendToAllInDimension);
+        l.setField(-2, "SendToAllInDimension");
         l.pushJavaObject(OnReceive);
         l.setField(-2, "OnReceive");
+        l.pushJavaObject(Write);
+        l.setField(-2, "Write");
         l.setGlobal("net");
     }
 }
