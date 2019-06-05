@@ -55,3 +55,10 @@ mc.materials = {
     CAKE = 31,
     WEB = 32
 }
+
+mc.armorParts = {
+    HELMET = 0,
+    CHESTPLATE = 1,
+    LEGGINGS = 2,
+    BOOTS = 3
+}

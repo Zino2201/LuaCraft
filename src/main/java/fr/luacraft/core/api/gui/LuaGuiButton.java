@@ -22,6 +22,12 @@ public class LuaGuiButton implements ILuaObject
     }
 
     @Override
+    public boolean isContainer()
+    {
+        return true;
+    }
+
+    @Override
     public Object getObject()
     {
         return guiButton;

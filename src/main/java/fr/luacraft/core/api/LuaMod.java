@@ -8,19 +8,16 @@ import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.blocks.LuacraftBlock;
 import fr.luacraft.core.api.command.LuaCommand;
 import fr.luacraft.core.api.command.LuacraftCommand;
-import fr.luacraft.core.api.entity.LuaTileEntity;
-import fr.luacraft.core.api.entity.LuacraftTileEntity;
 import fr.luacraft.core.api.fluids.LuaFluid;
 import fr.luacraft.core.api.fluids.LuacraftFluidBlock;
-import fr.luacraft.core.api.items.LuaItem;
-import fr.luacraft.core.api.items.LuacraftItem;
-import fr.luacraft.core.api.items.LuacraftItemBucket;
+import fr.luacraft.core.api.items.*;
 import fr.luacraft.core.api.registry.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -58,12 +55,12 @@ public class LuaMod implements ILuaObject
      * Register a block with TileEntity
      * @param id
      * @param material
-     * @param tileEntity
+     * @param tileEntityClass
      * @return
-     */
-    public LuaBlock RegisterBlock(String id, int material, LuaTileEntity tileEntity)
+    */
+    public LuaBlock RegisterBlock(String id, int material, LuaClass tileEntityClass)
     {
-        LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, tileEntity));
+        LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, tileEntityClass));
         LuaGameRegistry.registerBlock(id, block.getBlock());
         return block;
     }
@@ -76,6 +73,84 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItem(String id)
     {
         LuaItem item = new LuaItem(new LuacraftItem(id));
+        LuaGameRegistry.registerItem(id, item.getItem());
+        return item;
+    }
+
+    /**
+     * Register a sword
+     * @param id
+     * @param material
+     * @return
+     */
+    public LuaItem RegisterItemSword(String id, String material)
+    {
+        LuaItem item = new LuaItem(new LuacraftItemSword(id, material));
+        LuaGameRegistry.registerItem(id, item.getItem());
+        return item;
+    }
+
+    /**
+     * Register a pickaxe
+     * @param id
+     * @param material
+     * @return
+     */
+    public LuaItem RegisterItemPickaxe(String id, String material)
+    {
+        LuaItem item = new LuaItem(new LuacraftItemPickaxe(id, material));
+        LuaGameRegistry.registerItem(id, item.getItem());
+        return item;
+    }
+
+    /**
+     * Register a axe
+     * @param id
+     * @param material
+     * @return
+     */
+    public LuaItem RegisterItemAxe(String id, String material)
+    {
+        LuaItem item = new LuaItem(new LuacraftItemAxe(id, material));
+        LuaGameRegistry.registerItem(id, item.getItem());
+        return item;
+    }
+
+    /**
+     * Register a shovel
+     * @param id
+     * @param material
+     * @return
+     */
+    public LuaItem RegisterItemShovel(String id, String material)
+    {
+        LuaItem item = new LuaItem(new LuacraftItemShovel(id, material));
+        LuaGameRegistry.registerItem(id, item.getItem());
+        return item;
+    }
+
+    /**
+     * Register a hoe
+     * @param id
+     * @param material
+     * @return
+     */
+    public LuaItem RegisterItemHoe(String id, String material)
+    {
+        LuaItem item = new LuaItem(new LuacraftItemHoe(id, material));
+        LuaGameRegistry.registerItem(id, item.getItem());
+        return item;
+    }
+
+    /**
+     * Register a item armor
+     * @param id
+     * @param material
+     * @return
+     */
+    public LuaItem RegisterItemArmor(String id, String material, int part)
+    {
+        LuaItem item = new LuaItem(new LuacraftItemArmor(id, material, part));
         LuaGameRegistry.registerItem(id, item.getItem());
         return item;
     }
@@ -171,16 +246,6 @@ public class LuaMod implements ILuaObject
     }
 
     /**
-     * Create a LuacraftTileEntity
-     * @return
-     */
-    public LuaTileEntity CreateTileEntity()
-    {
-        LuaTileEntity tileEntity = new LuaTileEntity(new LuacraftTileEntity());
-        return tileEntity;
-    }
-
-    /**
      * Register a client-only command
      * @param name
      * @param usage
@@ -204,6 +269,32 @@ public class LuaMod implements ILuaObject
         LuacraftCommand command = new LuacraftCommand(name, usage);
         mod.getRegistryData().addServerCommand(command);
         return new LuaCommand(command);
+    }
+
+    /**
+     * Register a tool material
+     * @param name
+     * @param harvestLevel
+     * @param maxUses
+     * @param efficiency
+     * @param damage
+     * @param enchantability
+     */
+    public void RegisterToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability)
+    {
+        EnumHelperClient.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
+    }
+
+    /**
+     * Register a armor material
+     * @param name
+     * @param durability
+     * @param reductionAmounts
+     * @param enchantability
+     */
+    public void RegisterArmorMaterial(String name, int durability, int[] reductionAmounts, int enchantability)
+    {
+        EnumHelperClient.addArmorMaterial(name, durability, reductionAmounts, enchantability);
     }
 
     /**
@@ -240,6 +331,12 @@ public class LuaMod implements ILuaObject
     public String GetType()
     {
         return "LuaMod";
+    }
+
+    @Override
+    public boolean isContainer()
+    {
+        return true;
     }
 
     @Override

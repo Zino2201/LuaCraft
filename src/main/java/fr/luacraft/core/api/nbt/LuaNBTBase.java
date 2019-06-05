@@ -28,6 +28,12 @@ public class LuaNBTBase implements ILuaObject
         return nbtBase;
     }
 
+    @Override
+    public boolean isContainer()
+    {
+        return true;
+    }
+
     public NBTBase getNBTBase()
     {
         return nbtBase;

@@ -3,6 +3,7 @@ package fr.luacraft.core.api.libs;
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.LuaClass;
 import fr.luacraft.core.api.LuaMod;
 import fr.luacraft.util.LuaUtil;
 
@@ -42,6 +43,34 @@ public class LuacraftLib
     };
 
     /**
+     * Create class
+     */
+    public static JavaFunction CreateClass = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            LuaClass clazz = new LuaClass();
+            l.pushJavaObject(clazz);
+            return 1;
+        }
+    };
+
+    /**
+     * Get function ref
+     */
+    public static JavaFunction GetFunctionRef = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            l.pushNumber(l.ref(LuaState.REGISTRYINDEX));
+            return 1;
+        }
+    };
+
+
+    /**
      * initialize the library
      * @param l
      */
@@ -56,6 +85,10 @@ public class LuacraftLib
 
         l.pushJavaFunction(GetMod);
         l.setField(-2, "GetMod");
+        l.pushJavaFunction(CreateClass);
+        l.setField(-2, "CreateClass");
+        l.pushJavaFunction(GetFunctionRef);
+        l.setField(-2, "GetFunctionRef");
 
         l.setGlobal("luacraft");
     }

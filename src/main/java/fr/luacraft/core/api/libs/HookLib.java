@@ -22,7 +22,10 @@ public class HookLib
             ILuaObject object = l.checkJavaObject(1, ILuaObject.class);
             String name = l.checkString(2);
             int func = l.ref(LuaState.REGISTRYINDEX);
-            LuaHookManager.add(object.getObject(), name, func);
+            if(object.isContainer())
+                LuaHookManager.add(object.getObject(), name, func);
+            else
+                LuaHookManager.add(object, name, func);
 
             return 0;
         }

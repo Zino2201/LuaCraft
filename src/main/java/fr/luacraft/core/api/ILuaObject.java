@@ -15,6 +15,12 @@ public interface ILuaObject extends Serializable
     String GetType();
 
     /**
+     * Does the object contain a java object ?
+     * @return
+     */
+    boolean isContainer();
+
+    /**
      * Get the contained java object, if any
      * @return
      */

@@ -62,8 +62,6 @@ public class Luacraft
             modLoader.addSearchDirectory("D:\\Projects\\LuaCraft\\luamods");
         }
 
-        // Exeecuting
-
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", 1);
         bar.step("Searching mods");
         modLoader.loadMods();
@@ -93,16 +91,28 @@ public class Luacraft
         proxy.serverStarting(event);
     }
 
+    /**
+     * Get lua mod loader
+     * @return
+     */
     public LuaModLoader getModLoader()
     {
         return modLoader;
     }
 
+    /**
+     * Get mod instance
+     * @return
+     */
     public static Luacraft getInstance()
     {
         return instance;
     }
 
+    /**
+     * Get logger
+     * @return
+     */
     public static Logger getLogger()
     {
         return logger;

@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import fr.luacraft.core.LuaNativeLoader;
@@ -20,6 +21,7 @@ import fr.luacraft.core.api.libs.NetLib;
 import fr.luacraft.core.api.network.LuacraftPacketHandler;
 import fr.luacraft.core.api.registry.LuaGameRegistry;
 import fr.luacraft.core.api.world.LuacraftWorldGen;
+import fr.luacraft.core.gui.LuacraftGuiHandler;
 import fr.luacraft.modloader.LuacraftMod;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -64,6 +66,7 @@ public class SharedProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         GameRegistry.registerTileEntity(LuacraftTileEntity.class, "luacraft_tile_entity");
+        NetworkRegistry.INSTANCE.registerGuiHandler(Luacraft.getInstance(), new LuacraftGuiHandler());
 
         synchronized (luaState)
         {

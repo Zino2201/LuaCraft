@@ -1,6 +1,6 @@
 package fr.luacraft.core.api.entity;
 
-import fr.luacraft.core.api.hooks.LuaHookManager;
+import fr.luacraft.core.api.LuaClass;
 import fr.luacraft.core.api.nbt.LuaNBTTagCompound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -11,12 +11,19 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class LuacraftTileEntity extends TileEntity
 {
+    private LuaClass tileEntityClass;
+
+    public LuacraftTileEntity(LuaClass tileEntityClass)
+    {
+        this.tileEntityClass = tileEntityClass;
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
 
-        LuaHookManager.call(this, "ReadFromNBT", new LuaNBTTagCompound(nbt));
+        tileEntityClass.CallFunction("ReadFromNBT", new LuaNBTTagCompound(nbt));
     }
 
     @Override
@@ -24,6 +31,6 @@ public class LuacraftTileEntity extends TileEntity
     {
         super.writeToNBT(nbt);
 
-        LuaHookManager.call(this, "WriteToNBT", new LuaNBTTagCompound(nbt));
+        tileEntityClass.CallFunction("WriteToNBT", new LuaNBTTagCompound(nbt));
     }
 }

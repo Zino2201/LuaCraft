@@ -1,8 +1,9 @@
 package fr.luacraft.core.api.blocks;
 
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.LuaClass;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
-import fr.luacraft.core.api.entity.LuaTileEntity;
+import fr.luacraft.core.api.entity.LuacraftTileEntity;
 import fr.luacraft.core.api.hooks.LuaHookManager;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
@@ -18,15 +19,13 @@ import net.minecraft.world.World;
  */
 public class LuacraftBlock extends Block
 {
-    private TileEntity tileEntity;
-    private boolean canBeActivated;
+    private LuaClass tileEntityClass;
 
-    public LuacraftBlock(String name, int material, LuaTileEntity tileEntity)
+    public LuacraftBlock(String name, int material, LuaClass tileEntityClass)
     {
         super(LuaUtil.getMaterialByID(material));
 
-        if(tileEntity != null)
-            this.tileEntity = tileEntity.getTileEntity();
+        this.tileEntityClass = tileEntityClass;
 
         this.setBlockName(name);
         this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);
@@ -59,12 +58,12 @@ public class LuacraftBlock extends Block
     @Override
     public boolean hasTileEntity(int metadata)
     {
-        return tileEntity != null;
+        return tileEntityClass != null;
     }
 
     @Override
     public TileEntity createTileEntity(World world, int metadata)
     {
-        return tileEntity;
+        return new LuacraftTileEntity(tileEntityClass);
     }
 }

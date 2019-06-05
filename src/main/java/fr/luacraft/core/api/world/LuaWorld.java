@@ -23,6 +23,12 @@ public class LuaWorld implements ILuaObject
     }
 
     @Override
+    public boolean isContainer()
+    {
+        return true;
+    }
+
+    @Override
     public String GetType()
     {
         return "World";
