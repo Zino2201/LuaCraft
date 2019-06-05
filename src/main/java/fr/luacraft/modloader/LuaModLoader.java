@@ -60,15 +60,14 @@ public class LuaModLoader
                 }
             }
         }
-        Luacraft.getLogger().log(Level.INFO, "Active mods: " + mods.size());
-        //Minecraft.getMinecraft().refreshResources();
+        Luacraft.getLogger().info("Active mods: " + mods.size());
     }
 
     /**
      * Register a mod
      * @param mod
      */
-    public void register(LuacraftMod mod)
+    private void register(LuacraftMod mod)
     {
         mods.add(mod);
         FMLCommonHandler.instance().addModToResourcePack(mod);

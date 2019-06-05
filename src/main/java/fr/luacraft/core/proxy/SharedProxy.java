@@ -9,17 +9,17 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import fr.luacraft.api.classes.LuacraftTileEntity;
-import fr.luacraft.api.libs.HookLib;
-import fr.luacraft.api.libs.LuacraftLib;
-import fr.luacraft.api.libs.MinecraftLib;
-import fr.luacraft.api.libs.NetLib;
-import fr.luacraft.api.world.LuacraftWorldGen;
 import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.command.CommandLuacraft;
-import fr.luacraft.core.network.LuacraftPacketHandler;
-import fr.luacraft.modloader.LuaGameRegistry;
+import fr.luacraft.core.api.command.LuacraftCommand;
+import fr.luacraft.core.api.entity.LuacraftTileEntity;
+import fr.luacraft.core.api.libs.HookLib;
+import fr.luacraft.core.api.libs.LuacraftLib;
+import fr.luacraft.core.api.libs.MinecraftLib;
+import fr.luacraft.core.api.libs.NetLib;
+import fr.luacraft.core.api.network.LuacraftPacketHandler;
+import fr.luacraft.core.api.registry.LuaGameRegistry;
+import fr.luacraft.core.api.world.LuacraftWorldGen;
 import fr.luacraft.modloader.LuacraftMod;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -85,10 +85,10 @@ public class SharedProxy
             luaState.setGlobal("_R");
 
             /** Load shared libraries */
-            LuacraftLib.Initialize(luaState);
-            MinecraftLib.Initialize(luaState);
-            HookLib.Initialize(luaState);
-            NetLib.Initialize(luaState);
+            LuacraftLib.initialize(luaState);
+            MinecraftLib.initialize(luaState);
+            HookLib.initialize(luaState);
+            NetLib.initialize(luaState);
 
             /** Include internals */
             includeInternals();
@@ -124,7 +124,8 @@ public class SharedProxy
      */
     public void serverStarting(FMLServerStartingEvent event)
     {
-        event.registerServerCommand(new CommandLuacraft());
+        for(LuacraftCommand command : currentMod.getRegistryData().getServerCommands())
+            event.registerServerCommand(command);
     }
 
     /**

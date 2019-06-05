@@ -2,7 +2,8 @@ package fr.luacraft.core.proxy;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import fr.luacraft.api.libs.GuiLib;
+import fr.luacraft.core.api.libs.GuiLib;
+import fr.luacraft.core.api.libs.I18NLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -20,7 +21,8 @@ public class ClientProxy extends SharedProxy
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        GuiLib.Initialize(luaState);
+        GuiLib.initialize(luaState);
+        I18NLib.initialize(luaState);
 
         super.preInit(event);
     }

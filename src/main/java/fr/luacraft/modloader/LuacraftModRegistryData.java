@@ -1,10 +1,11 @@
 package fr.luacraft.modloader;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import fr.luacraft.api.classes.LuacraftGuiScreen;
-import fr.luacraft.api.world.LuacraftOre;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.command.LuacraftCommand;
+import fr.luacraft.core.api.world.LuacraftOre;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -20,7 +21,8 @@ public class LuacraftModRegistryData
     private List<Block> blocks;
     private List<Item> items;
     private List<CreativeTabs> creativeTabs;
-    private List<LuacraftGuiScreen> guiScreens;
+    private List<GuiScreen> guiScreens;
+    private List<LuacraftCommand> serverCommands;
 
     public LuacraftModRegistryData()
     {
@@ -28,14 +30,15 @@ public class LuacraftModRegistryData
         this.blocks = new ArrayList<Block>();
         this.items = new ArrayList<Item>();
         this.creativeTabs = new ArrayList<CreativeTabs>();
-        this.guiScreens = new ArrayList<LuacraftGuiScreen>();
+        this.guiScreens = new ArrayList<GuiScreen>();
+        this.serverCommands = new ArrayList<LuacraftCommand>();
     }
 
     /**
      * Add a gui
      * @param screen
      */
-    public void addGui(LuacraftGuiScreen screen)
+    public void addGui(GuiScreen screen)
     {
         guiScreens.add(screen);
     }
@@ -82,6 +85,15 @@ public class LuacraftModRegistryData
     }
 
     /**
+     * Add a server command
+     * @param command
+     */
+    public void addServerCommand(LuacraftCommand command)
+    {
+        serverCommands.add(command);
+    }
+
+    /**
      * Get a block by its ID
      * @param id
      * @return
@@ -91,15 +103,6 @@ public class LuacraftModRegistryData
         return GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(), id);
     }
 
-    public LuacraftGuiScreen getGuiScreenFromName(String name)
-    {
-        for(LuacraftGuiScreen screen : guiScreens)
-            if(screen.getName().equals(name))
-                return screen;
-
-        return null;
-    }
-
     /**
      * Get all ores
      * @return
@@ -107,5 +110,14 @@ public class LuacraftModRegistryData
     public List<LuacraftOre> getOres()
     {
         return ores;
+    }
+
+    /**
+     * Get all server commands
+     * @return
+     */
+    public List<LuacraftCommand> getServerCommands()
+    {
+        return serverCommands;
     }
 }
