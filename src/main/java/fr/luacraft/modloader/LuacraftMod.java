@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,9 +24,25 @@ public class LuacraftMod extends LuacraftModContainer
 
     public static final String MOD_INFO_FILENAME = "luamod.json";
 
+    /**
+     * Mod directory
+     */
     private File modDir;
+
+    /**
+     * Mod scripts list
+     */
     private List<File> scripts;
+
+    /**
+     * Mod registry data
+     */
     private LuacraftModRegistryData registryData;
+
+    /**
+     * List of all directories that contains scripts
+     */
+    private List<File> scriptDirectories;
 
     public LuacraftMod(File modDir, File infoFile)
     {
@@ -52,6 +69,7 @@ public class LuacraftMod extends LuacraftModContainer
         this.modDir = modDir;
         this.registryData = new LuacraftModRegistryData();
         this.logger = LogManager.getLogger(getName());
+        this.scriptDirectories = new ArrayList<File>();
 
         lookForScripts(modDir);
     }
@@ -64,8 +82,11 @@ public class LuacraftMod extends LuacraftModContainer
     {
         for(File file : dir.listFiles())
         {
-            if(file.isDirectory())
+            if(file.isDirectory() && !file.getName().equals("assets") && !file.getParentFile().getName().equals("assets"))
+            {
+                scriptDirectories.add(file);
                 lookForScripts(file);
+            }
             else
             {
                 if(file.getAbsolutePath().endsWith(".lua"))
@@ -139,5 +160,10 @@ public class LuacraftMod extends LuacraftModContainer
     public List<File> getScripts()
     {
         return scripts;
+    }
+
+    public Collection<File> getScriptDirectories()
+    {
+        return scriptDirectories;
     }
 }

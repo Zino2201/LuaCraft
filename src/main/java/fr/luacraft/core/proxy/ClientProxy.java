@@ -1,6 +1,5 @@
 package fr.luacraft.core.proxy;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import fr.luacraft.core.api.libs.GuiLib;
 import fr.luacraft.core.api.libs.I18NLib;
@@ -37,11 +36,5 @@ public class ClientProxy extends SharedProxy
         super.openGUI(screen);
 
         Minecraft.getMinecraft().displayGuiScreen(screen);
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event)
-    {
-        super.init(event);
     }
 }

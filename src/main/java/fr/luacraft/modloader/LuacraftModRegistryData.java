@@ -1,7 +1,5 @@
 package fr.luacraft.modloader;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.command.LuacraftCommand;
 import fr.luacraft.core.api.world.LuacraftOre;
 import net.minecraft.block.Block;
@@ -9,29 +7,29 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Contains registry data about a mod
  */
 public class LuacraftModRegistryData
 {
-    private List<LuacraftOre> ores;
-    private List<Block> blocks;
-    private List<Item> items;
-    private List<CreativeTabs> creativeTabs;
-    private List<GuiScreen> guiScreens;
-    private List<LuacraftCommand> serverCommands;
+    private Set<LuacraftOre> ores;
+    private Set<Block> blocks;
+    private Set<Item> items;
+    private Set<CreativeTabs> creativeTabs;
+    private Set<GuiScreen> guiScreens;
+    private Set<LuacraftCommand> serverCommands;
 
     public LuacraftModRegistryData()
     {
-        this.ores = new ArrayList<LuacraftOre>();
-        this.blocks = new ArrayList<Block>();
-        this.items = new ArrayList<Item>();
-        this.creativeTabs = new ArrayList<CreativeTabs>();
-        this.guiScreens = new ArrayList<GuiScreen>();
-        this.serverCommands = new ArrayList<LuacraftCommand>();
+        this.ores = new HashSet<LuacraftOre>();
+        this.blocks = new HashSet<Block>();
+        this.items = new HashSet<Item>();
+        this.creativeTabs = new HashSet<CreativeTabs>();
+        this.guiScreens = new HashSet<GuiScreen>();
+        this.serverCommands = new HashSet<LuacraftCommand>();
     }
 
     /**
@@ -100,14 +98,51 @@ public class LuacraftModRegistryData
      */
     public Block getBlockByID(String id)
     {
-        return GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(), id);
+        for(Block block : blocks)
+        {
+            if (block.getUnlocalizedName().equals(id))
+                return block;
+        }
+
+        return null;
+    }
+
+    public Item getItemByID(String id)
+    {
+        for(Item item : items)
+        {
+            if(item.getUnlocalizedName().equals(id))
+                return item;
+        }
+
+        return null;
+    }
+
+    /**
+     * Return true if mod contains specified block otherwise false
+     * @param block
+     * @return
+     */
+    public boolean hasBlock(Block block)
+    {
+        return blocks.contains(block);
+    }
+
+    /**
+     * Return true if mod contains specified item otherwise false
+     * @param item
+     * @return
+     */
+    public boolean hasItem(Item item)
+    {
+        return items.contains(item);
     }
 
     /**
      * Get all ores
      * @return
      */
-    public List<LuacraftOre> getOres()
+    public Set<LuacraftOre> getOres()
     {
         return ores;
     }
@@ -116,7 +151,7 @@ public class LuacraftModRegistryData
      * Get all server commands
      * @return
      */
-    public List<LuacraftCommand> getServerCommands()
+    public Set<LuacraftCommand> getServerCommands()
     {
         return serverCommands;
     }

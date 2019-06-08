@@ -13,6 +13,7 @@ import fr.luacraft.core.api.fluids.LuacraftFluidBlock;
 import fr.luacraft.core.api.items.*;
 import fr.luacraft.core.api.registry.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,23 +47,18 @@ public class LuaMod implements ILuaObject
      */
     public LuaBlock RegisterBlock(String id, int material)
     {
-        LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, null));
-        LuaGameRegistry.registerBlock(id, block.getBlock());
-        return block;
-    }
+        Block block = mod.getRegistryData().getBlockByID(id);
 
-    /**
-     * Register a block with TileEntity
-     * @param id
-     * @param material
-     * @param tileEntityClass
-     * @return
-    */
-    public LuaBlock RegisterBlock(String id, int material, LuaClass tileEntityClass)
-    {
-        LuaBlock block = new LuaBlock(new LuacraftBlock(id, material, tileEntityClass));
-        LuaGameRegistry.registerBlock(id, block.getBlock());
-        return block;
+        if(block == null)
+        {
+            LuaBlock luaBlock = new LuaBlock(new LuacraftBlock(id, material, null));
+            LuaGameRegistry.registerBlock(id, luaBlock.getBlock());
+            return luaBlock;
+        }
+        else
+        {
+            return new LuaBlock(block);
+        }
     }
 
     /**
@@ -295,6 +291,15 @@ public class LuaMod implements ILuaObject
     public void RegisterArmorMaterial(String name, int durability, int[] reductionAmounts, int enchantability)
     {
         EnumHelperClient.addArmorMaterial(name, durability, reductionAmounts, enchantability);
+    }
+
+    /**
+     * Get modid
+     * @return
+     */
+    public String GetModId()
+    {
+        return mod.getMetadata().modId;
     }
 
     /**

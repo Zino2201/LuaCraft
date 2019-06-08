@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class LuaGameRegistry
 {
-    private static List<RegistryRecipe> recipes = new ArrayList<RegistryRecipe>();
-    private static List<RegistrySmelt> smelts = new ArrayList<RegistrySmelt>();
+    private static Set<RegistryRecipe> recipes = new HashSet<RegistryRecipe>();
+    private static Set<RegistrySmelt> smelts = new HashSet<RegistrySmelt>();
 
     /**
      * Register a block

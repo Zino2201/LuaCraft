@@ -70,6 +70,42 @@ public class LuaHookManager
     }
 
     /**
+     * Call a hook using the specified object and get return value
+     * @param object
+     * @param name
+     * @param args
+     * @return
+     */
+    public static boolean callReturn(Object object, String name, Object... args)
+    {
+        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+
+        if(hooks.get(object) != null)
+        {
+            if(hooks.get(object).get(name) != null)
+            {
+                for(int function : hooks.get(object).get(name))
+                {
+                    l.rawGet(LuaState.REGISTRYINDEX, function);
+                    for(Object obj : args)
+                    {
+                        l.pushJavaObject(obj);
+                    }
+
+                    l.call(args.length, 1);
+
+                    if(l.isBoolean(-1))
+                        return l.toBoolean(-1);
+                    else
+                        return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Return if a object hook has got binds
      * @param object
      * @param name

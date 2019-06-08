@@ -3,10 +3,7 @@ package fr.luacraft.core.proxy;
 import com.naef.jnlua.LuaState;
 import com.naef.jnlua.NativeSupport;
 import cpw.mods.fml.common.*;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -50,6 +47,8 @@ public class SharedProxy
 
     private List<File> internals;
 
+    private ModContainer luacraftModContainer;
+
     public SharedProxy()
     {
         NativeSupport.getInstance().setLoader(new LuaNativeLoader());
@@ -65,6 +64,8 @@ public class SharedProxy
      */
     public void preInit(FMLPreInitializationEvent event)
     {
+        luacraftModContainer = FMLCommonHandler.instance().findContainerFor(Luacraft.getInstance());
+
         GameRegistry.registerTileEntity(LuacraftTileEntity.class, "luacraft_tile_entity");
         NetworkRegistry.INSTANCE.registerGuiHandler(Luacraft.getInstance(), new LuacraftGuiHandler());
 
@@ -127,8 +128,11 @@ public class SharedProxy
      */
     public void serverStarting(FMLServerStartingEvent event)
     {
-        for(LuacraftCommand command : currentMod.getRegistryData().getServerCommands())
-            event.registerServerCommand(command);
+        for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
+        {
+            for (LuacraftCommand command : mod.getRegistryData().getServerCommands())
+                event.registerServerCommand(command);
+        }
     }
 
     /**
@@ -142,13 +146,20 @@ public class SharedProxy
     }
 
     /**
+     * SERVER-SIDE ONLY
+     * Server stopping
+     */
+    public void serverStopping(FMLServerStoppingEvent event)
+    {
+
+    }
+
+    /**
      * Execute all scripts from all mods
      */
     public void executeScripts()
     {
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
-
-        ModContainer luacraftModContainer = FMLCommonHandler.instance().findContainerFor(Luacraft.getInstance());
 
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
@@ -167,7 +178,7 @@ public class SharedProxy
             }
         }
 
-        setModContainer(luacraftModContainer);
+        resetMod();
         ProgressManager.pop(bar);
     }
 
@@ -186,11 +197,20 @@ public class SharedProxy
      * Set the current mod
      * @param mod
      */
-    private void setCurrentMod(LuacraftMod mod)
+    public void setCurrentMod(LuacraftMod mod)
     {
         currentMod = mod;
-
         setModContainer(mod);
+    }
+
+    /**
+     * Reset mod
+     */
+    public void resetMod()
+    {
+        currentMod = null;
+
+        setModContainer(luacraftModContainer);
     }
 
     /**

@@ -25,6 +25,11 @@ public class LuaClass implements ILuaObject
 
     public void CallFunction(String name, Object... args)
     {
+        CallFunction(name, 0, args);
+    }
+
+    public Object[] CallFunction(String name, int returnCount, Object... args)
+    {
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();
 
         l.rawGet(LuaState.REGISTRYINDEX, functions.get(name));
@@ -33,7 +38,19 @@ public class LuaClass implements ILuaObject
             l.pushJavaObject(obj);
         }
 
-        l.call(args.length, 0);
+        l.call(args.length, returnCount);
+        if(returnCount > 0)
+        {
+            Object[] out = new Object[returnCount];
+            for(int i = 0; i < returnCount - 1; i++)
+            {
+                out[i] = l.checkJavaObject(i, Object.class);
+            }
+
+            return out;
+        }
+
+        return null;
     }
 
     @Override
