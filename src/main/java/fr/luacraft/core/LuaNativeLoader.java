@@ -26,7 +26,8 @@ public class LuaNativeLoader implements NativeSupport.Loader
         // TODO: Implement OSX and Linux
 
         if(isInDevEnvironnement())
-            nativeDir = "D:\\Projects\\LuaCraft\\src\\main\\resources\\natives\\";
+            nativeDir = "C:\\Users\\Zino\\IdeaProjects\\LuaCraft\\src\\main\\resources\\natives\\";
+        //nativeDir = "D:\\Projects\\LuaCraft\\src\\main\\resources\\natives\\";
 
         if(SystemUtils.IS_OS_WINDOWS)
         {

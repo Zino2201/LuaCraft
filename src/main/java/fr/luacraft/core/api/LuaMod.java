@@ -152,6 +152,21 @@ public class LuaMod implements ILuaObject
     }
 
     /**
+     * Register a item food
+     * @param id
+     * @param healAmount
+     * @param saturation
+     * @param isWolfFavoriteFood
+     * @return
+     */
+    public LuaItem RegisterItemFood(String id, int healAmount, float saturation, boolean isWolfFavoriteFood)
+    {
+        LuaItem item = new LuaItem(new LuacraftItemFood(id, healAmount, saturation, isWolfFavoriteFood));
+        LuaGameRegistry.registerItem(id, item.getItem());
+        return item;
+    }
+
+    /**
      * Register a ore
      * @param id
      * @param dimensionID

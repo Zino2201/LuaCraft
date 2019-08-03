@@ -50,6 +50,9 @@ public class LuaModLoader
         for(String path : searchPaths)
         {
             File root = new File(path);
+            if(!root.exists())
+                continue;
+
             for(File file : root.listFiles())
             {
                 if(file.isDirectory())

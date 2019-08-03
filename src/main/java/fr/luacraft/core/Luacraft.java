@@ -60,6 +60,7 @@ public class Luacraft
         else
         {
             modLoader.addSearchDirectory("D:\\Projects\\LuaCraft\\luamods");
+            modLoader.addSearchDirectory("C:\\Users\\Zino\\IdeaProjects\\LuaCraft\\luamods");
         }
 
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", 1);

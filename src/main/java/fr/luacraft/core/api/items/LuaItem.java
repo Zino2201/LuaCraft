@@ -37,6 +37,51 @@ public class LuaItem implements ILuaObject
         }
     }
 
+    /**
+     * Disable repair on item
+     */
+    public void SetNoRepair()
+    {
+        item.setNoRepair();
+    }
+
+    /**
+     * Set item max stack size
+     * @param stackSize
+     */
+    public void SetMaxStackSize(int stackSize)
+    {
+        item.setMaxStackSize(stackSize);
+    }
+
+    /**
+     * Set harvest level with specified tool
+     * @param tool
+     * @param level
+     */
+    public void SetHarvestLevel(String tool, int level)
+    {
+        item.setHarvestLevel(tool, level);
+    }
+
+    /**
+     * Set item max damage
+     * @param maxDamage
+     */
+    public void SetMaxDamage(int maxDamage)
+    {
+        item.setMaxDamage(maxDamage);
+    }
+
+    /**
+     * Set item potion effect
+     * @param effect
+     */
+    public void SetPotionEffect(String effect)
+    {
+        item.setPotionEffect(effect);
+    }
+
     public Item getItem()
     {
         return item;
