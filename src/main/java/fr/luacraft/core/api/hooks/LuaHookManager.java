@@ -70,13 +70,31 @@ public class LuaHookManager
     }
 
     /**
-     * Call a hook using the specified object and get return value
+     * Call the specified hook and get the return value as a boolean
      * @param object
      * @param name
      * @param args
      * @return
      */
     public static boolean callReturn(Object object, String name, Object... args)
+    {
+        Boolean ret = callReturn(Boolean.class, object, name, args);
+
+        if(ret == null)
+            return false;
+        else return ret;
+    }
+
+    /**
+     * Call the specified hook and get the return value
+     * @param retType
+     * @param object
+     * @param name
+     * @param args
+     * @param <T>
+     * @return
+     */
+    public static <T> T callReturn(Class<T> retType, Object object, String name, Object... args)
     {
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();
 
@@ -94,15 +112,13 @@ public class LuaHookManager
 
                     l.call(args.length, 1);
 
-                    if(l.isBoolean(-1))
-                        return l.toBoolean(-1);
-                    else
-                        return false;
+                    if(l.isJavaObject(-1, retType))
+                        return l.toJavaObject(-1, retType);
                 }
             }
         }
 
-        return false;
+        return null;
     }
 
     /**

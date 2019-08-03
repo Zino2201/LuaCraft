@@ -82,6 +82,48 @@ public class LuaItem implements ILuaObject
         item.setPotionEffect(effect);
     }
 
+    /**
+     * Set if item is a map
+     * NOTE: Only works with LuacraftItems
+     * @param map
+     */
+    public void SetIsMap(boolean map)
+    {
+        if(item instanceof LuacraftItem)
+            ((LuacraftItem) item).setIsMap(map);
+    }
+
+    /**
+     * Set if item should be damageable
+     * NOTE: Only works with LuacraftItems
+     * @param dmgable
+     */
+    public void SetDamageable(boolean dmgable)
+    {
+        if(item instanceof LuacraftItem)
+            ((LuacraftItem) item).setDamageable(dmgable);
+    }
+
+    /**
+     * Set if item should be repairable
+     * NOTE: Only works with LuacraftItems
+     * @param repable
+     */
+    public void SetRepairable(boolean repable)
+    {
+        if(item instanceof LuacraftItem)
+            ((LuacraftItem) item).setRepairable(repable);
+    }
+
+    /**
+     * Get sprite number
+     * @return
+     */
+    public int GetSpriteNumber()
+    {
+        return item.getSpriteNumber();
+    }
+
     public Item getItem()
     {
         return item;

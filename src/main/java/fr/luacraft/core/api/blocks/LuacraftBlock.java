@@ -2,9 +2,12 @@ package fr.luacraft.core.api.blocks;
 
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.LuaClass;
+import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.entity.LuacraftTileEntity;
 import fr.luacraft.core.api.hooks.LuaHookManager;
+import fr.luacraft.core.api.items.LuaItemStack;
+import fr.luacraft.core.api.world.LuaWorld;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,7 +39,13 @@ public class LuacraftBlock extends Block
     {
         if(!world.isRemote)
         {
-            LuaHookManager.call(this, "OnBlockPlacedBy", world, x, y, z, placer, stack);
+            LuaHookManager.call(this, "OnBlockPlacedBy",
+                    new LuaWorld(world),
+                    x,
+                    y,
+                    z,
+                    new LuaEntityLivingBase(placer),
+                    new LuaItemStack(stack));
         }
     }
 
@@ -45,7 +54,12 @@ public class LuacraftBlock extends Block
     {
         if (!world.isRemote)
         {
-            return LuaHookManager.callReturn(this, "OnBlockActivated", world, x, y, z, new LuaEntityPlayer(player));
+            return LuaHookManager.callReturn(this, "OnBlockActivated",
+                    new LuaWorld(world),
+                    x,
+                    y,
+                    z,
+                    new LuaEntityPlayer(player));
         }
         
         return false;
