@@ -6,6 +6,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.libs.GuiLib;
 import fr.luacraft.core.api.libs.I18NLib;
+import fr.luacraft.core.gui.GuiLuaModMenu;
 import fr.luacraft.core.gui.GuiLuaModMenuButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
@@ -19,6 +20,8 @@ import org.lwjgl.util.Color;
  */
 public class ClientProxy extends SharedProxy
 {
+    public static final int MOD_LIST_BUTTON = 2201;
+
     public ClientProxy()
     {
         this.scriptPrefix = "cl";
@@ -53,7 +56,7 @@ public class ClientProxy extends SharedProxy
         if(event.gui instanceof GuiMainMenu)
         {
             GuiButton luamodsbtn = new GuiLuaModMenuButton(
-                    2201,
+                    MOD_LIST_BUTTON,
                     event.gui.width - 20,
                     event.gui.height / 4 + 48 + 72 + 10);
             event.buttonList.add(luamodsbtn);
@@ -80,6 +83,18 @@ public class ClientProxy extends SharedProxy
                     event.gui.width - Minecraft.getMinecraft().fontRenderer.getStringWidth(label2Str) - 2,
                     event.gui.height - 20,
                     -1);
+        }
+    }
+
+    @SubscribeEvent
+    public void onGuiActionPerformed(GuiScreenEvent.ActionPerformedEvent event)
+    {
+        if(event.gui instanceof GuiMainMenu)
+        {
+            if (event.button.id == MOD_LIST_BUTTON)
+            {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiLuaModMenu(event.gui));
+            }
         }
     }
 }
