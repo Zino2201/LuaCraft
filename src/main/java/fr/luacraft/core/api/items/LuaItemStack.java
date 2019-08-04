@@ -3,6 +3,10 @@ package fr.luacraft.core.api.items;
 import fr.luacraft.core.api.ILuaObject;
 import net.minecraft.item.ItemStack;
 
+/**
+ * A lua item stack
+ * @author Zino
+ */
 public class LuaItemStack implements ILuaObject
 {
     private ItemStack itemStack;
