@@ -1,12 +1,12 @@
 package fr.luacraft.core.api.items;
 
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.entity.LuaEntity;
 import fr.luacraft.core.api.entity.LuaEntityItem;
 import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.hooks.LuaHookManager;
+import fr.luacraft.core.api.hooks.LuacraftItemHooks;
 import fr.luacraft.core.api.world.LuaWorld;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -75,208 +75,117 @@ public class LuacraftItem extends Item
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
                              int hand, float hitX, float hitY, float hitZ)
     {
-        if(!world.isRemote)
-        {
-            return LuaHookManager.callReturn(
-                    this, "OnItemUse",
-                    new LuaItemStack(stack),
-                    new LuaEntityPlayer(player),
-                    new LuaWorld(world),
-                    x,
-                    y,
-                    z,
-                    hand,
-                    hitX,
-                    hitY,
-                    hitZ);
-        }
+        super.onItemUse(stack, player, world, x, y, z, hand, hitX, hitY, hitZ);
 
-        return super.onItemUse(stack, player, world, x, y, z, hand, hitX, hitY, hitZ);
+        return LuacraftItemHooks.onItemUse(this, stack, player, world,
+                x, y, z, hand, hitX, hitY, hitZ);
     }
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
                                   int side, float hitX, float hitY, float hitZ)
     {
-        if(!world.isRemote)
-        {
-            return LuaHookManager.callReturn(
-                    this, "OnItemUseFirst",
-                    new LuaItemStack(stack),
-                    new LuaEntityPlayer(player),
-                    new LuaWorld(world),
-                    x,
-                    y,
-                    z,
-                    side,
-                    hitX,
-                    hitY,
-                    hitZ);
-        }
+        super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
-        return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+        return LuacraftItemHooks.onItemUseFirst(this, stack, player, world, x, y, z, side,
+                hitX, hitY, hitZ);
     }
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block,
                                     int x, int y, int z, EntityLivingBase entity)
     {
-        if(!world.isRemote)
-        {
-            return LuaHookManager.callReturn(
-                    this, "OnBlockDestroyed",
-                    new LuaBlock(block),
-                    x,
-                    y,
-                    z,
-                    new LuaEntityLivingBase(entity));
-        }
+        super.onBlockDestroyed(stack, world, block, x, y, z, entity);
 
-        return super.onBlockDestroyed(stack, world, block, x, y, z, entity);
+        return LuacraftItemHooks.onBlockDestroyed(this, stack, world, block, x, y, z, entity);
     }
 
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack)
     {
-        if(!world.isRemote)
-        {
-            LuaHookManager.call(this, "OnArmorTick",
-                    new LuaWorld(world),
-                    new LuaEntityPlayer(player),
-                    new LuaItemStack(itemStack));
-        }
-
         super.onArmorTick(world, player, itemStack);
+
+        LuacraftItemHooks.onArmorTick(this, world, player, itemStack);
     }
 
     @Override
     public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
     {
-        LuaHookManager.call(this, "OnDroppedByPlayer",
-                new LuaItemStack(item),
-                new LuaEntityPlayer(player));
+        super.onDroppedByPlayer(item, player);
 
-        return super.onDroppedByPlayer(item, player);
-    }
-
-    @Override
-    public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player)
-    {
-        if(!world.isRemote)
-        {
-            return LuaHookManager.callReturn(
-                    LuaItemStack.class,
-                    this , "OnEaten",
-                    new LuaWorld(world),
-                    new LuaEntityPlayer(player)).getItemStack();
-        }
-
-        return super.onEaten(stack, world, player);
+        return LuacraftItemHooks.onDroppedByPlayer(this, item, player);
     }
 
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
-        if(!world.isRemote)
-        {
-            LuaHookManager.call(this, "OnCreated",
-                    new LuaItemStack(stack),
-                    new LuaWorld(world),
-                    new LuaEntityPlayer(player));
-        }
-
         super.onCreated(stack, world, player);
+
+        LuacraftItemHooks.onCreated(this, stack, world, player);
     }
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-        return LuaHookManager.callReturn(this, "OnLeftClickEntity",
-                new LuaItemStack(stack),
-                new LuaEntityPlayer(player),
-                new LuaEntity(entity));
+        super.onLeftClickEntity(stack, player, entity);
+
+        return LuacraftItemHooks.onLeftClickEntity(this, stack, player, entity);
     }
 
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player)
     {
-        return LuaHookManager.callReturn(this, "OnBlockStartBreak",
-                new LuaItemStack(itemstack),
-                X,
-                Y,
-                Z,
-                new LuaEntityPlayer(player));
+        super.onBlockStartBreak(itemstack, X, Y, Z, player);
+
+        return LuacraftItemHooks.onBlockStartBreak(this, itemstack, X, Y, Z, player);
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        if(!world.isRemote)
-        {
-            return LuaHookManager.callReturn(ItemStack.class, this, "OnItemRightClick",
-                    new LuaItemStack(stack),
-                    new LuaWorld(world),
-                    new LuaEntityPlayer(player));
-        }
+        super.onItemRightClick(stack, world, player);
 
-        return super.onItemRightClick(stack, world, player);
+        return LuacraftItemHooks.onItemRightClick(this, stack, world, player);
     }
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int timeLeft)
     {
-        if(!world.isRemote)
-        {
-            LuaHookManager.call(this, "OnPlayerStoppedUsing",
-                    new LuaItemStack(stack),
-                    new LuaWorld(world),
-                    new LuaEntityPlayer(player),
-                    timeLeft);
-        }
-
         super.onPlayerStoppedUsing(stack, world, player, timeLeft);
+
+        LuacraftItemHooks.onPlayerStoppedUsing(this, stack, world, player, timeLeft);
     }
 
     @Override
     public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack)
     {
-        return LuaHookManager.callReturn(this, "OnEntitySwing",
-                new LuaEntityLivingBase(entityLiving),
-                new LuaItemStack(stack));
+        super.onEntitySwing(entityLiving, stack);
+
+        return LuacraftItemHooks.onEntitySwing(this, entityLiving, stack);
     }
 
     @Override
     public boolean onEntityItemUpdate(EntityItem entityItem)
     {
-        return LuaHookManager.callReturn(this, "OnEntityItemUpdate",
-                new LuaEntityItem(entityItem));
+        super.onEntityItemUpdate(entityItem);
+
+        return LuacraftItemHooks.onEntityItemUpdate(this, entityItem);
     }
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot,
                          boolean isSelected)
     {
-        if(!world.isRemote)
-        {
-            LuaHookManager.call(this, "OnUpdate",
-                    new LuaItemStack(stack),
-                    new LuaWorld(world),
-                    new LuaEntity(entity),
-                    itemSlot,
-                    isSelected);
-        }
-
         super.onUpdate(stack, world, entity, itemSlot, isSelected);
+
+        LuacraftItemHooks.onUpdate(this, stack, world, entity, itemSlot, isSelected);
     }
 
     @Override
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
     {
-        LuaHookManager.call(this, "OnUsingTick",
-                new LuaItemStack(stack),
-                new LuaEntityPlayer(player),
-                count);
-
         super.onUsingTick(stack, player, count);
+
+        LuacraftItemHooks.onUsingTick(this, stack, player, count);
     }
 }

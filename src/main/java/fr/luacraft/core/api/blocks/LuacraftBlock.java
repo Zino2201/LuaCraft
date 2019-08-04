@@ -34,36 +34,7 @@ public class LuacraftBlock extends Block
         this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);
     }
 
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack)
-    {
-        if(!world.isRemote)
-        {
-            LuaHookManager.call(this, "OnBlockPlacedBy",
-                    new LuaWorld(world),
-                    x,
-                    y,
-                    z,
-                    new LuaEntityLivingBase(placer),
-                    new LuaItemStack(stack));
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
-    {
-        if (!world.isRemote)
-        {
-            return LuaHookManager.callReturn(this, "OnBlockActivated",
-                    new LuaWorld(world),
-                    x,
-                    y,
-                    z,
-                    new LuaEntityPlayer(player));
-        }
-        
-        return false;
-    }
+    // TODO: (Re-)Implement functions & hooks
 
     @Override
     public boolean hasTileEntity(int metadata)

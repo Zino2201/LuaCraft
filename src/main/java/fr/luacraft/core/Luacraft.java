@@ -23,7 +23,7 @@ public class Luacraft
     /** Mod ID */
     public static final String MODID = "luacraft";
 
-    /** Mod version */
+    /** Mod version (string is builded when jar is built) */
     public static final String VERSION = "{@version:luacraft}";
 
     /** Mod loader */
@@ -41,14 +41,15 @@ public class Luacraft
     private static Luacraft instance;
 
     @EventHandler
+    @SuppressWarnings("deprecation") /** ProgressManager is marked as Deprecated, so for not having warnings, we temporarily disable deprecation warnings*/
     public void preInit(FMLPreInitializationEvent event)
     {
         /** Create logger */
         ModContainer modContainer = FMLCommonHandler.instance().findContainerFor(this);
         logger = LogManager.getLogger(modContainer.getName());
 
-        /** Load all mods */
         modLoader = new LuaModLoader();
+        /** Load all mods */
 
         if(!LuaNativeLoader.isInDevEnvironnement())
         {

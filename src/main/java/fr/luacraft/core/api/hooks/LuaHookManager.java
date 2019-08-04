@@ -2,6 +2,7 @@ package fr.luacraft.core.api.hooks;
 
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.ILuaObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,59 +43,27 @@ public class LuaHookManager
     }
 
     /**
-     * Call a hook using the specified object
-     * @param object
-     * @param name
-     * @param args
-     */
-    public static void call(Object object, String name, Object... args)
-    {
-        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
-
-        if(hooks.get(object) != null)
-        {
-            if(hooks.get(object).get(name) != null)
-            {
-                for(int function : hooks.get(object).get(name))
-                {
-                    l.rawGet(LuaState.REGISTRYINDEX, function);
-                    for(Object obj : args)
-                    {
-                        l.pushJavaObject(obj);
-                    }
-
-                    l.call(args.length, 0);
-                }
-            }
-        }
-    }
-
-    /**
-     * Call the specified hook and get the return value as a boolean
+     * Call the specified hook
      * @param object
      * @param name
      * @param args
      * @return
      */
-    public static boolean callReturn(Object object, String name, Object... args)
+    public static void call(Object object, String name, Object... args)
     {
-        Boolean ret = callReturn(Boolean.class, object, name, args);
-
-        if(ret == null)
-            return false;
-        else return ret;
+        call(null, object, name, args);
     }
 
     /**
-     * Call the specified hook and get the return value
-     * @param retType
+     * Call the specified hook and get its return value
+     * @param clazz
      * @param object
      * @param name
      * @param args
      * @param <T>
      * @return
      */
-    public static <T> T callReturn(Class<T> retType, Object object, String name, Object... args)
+    public static <T> T call(Class<T> clazz, Object object, String name, Object... args)
     {
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();
 
@@ -112,8 +81,9 @@ public class LuaHookManager
 
                     l.call(args.length, 1);
 
-                    if(l.isJavaObject(-1, retType))
-                        return l.toJavaObject(-1, retType);
+                    if(clazz != null)
+                        if(l.isJavaObject(-1, clazz))
+                            return l.toJavaObject(-1, clazz);
                 }
             }
         }

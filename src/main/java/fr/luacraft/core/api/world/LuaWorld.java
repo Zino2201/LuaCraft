@@ -16,6 +16,15 @@ public class LuaWorld implements ILuaObject
         this.world = world;
     }
 
+    /**
+     * Return if world is remote
+     * @return
+     */
+    public boolean IsRemote()
+    {
+        return world.isRemote;
+    }
+
     @Override
     public Object getObject()
     {
