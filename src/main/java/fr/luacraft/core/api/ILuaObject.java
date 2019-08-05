@@ -1,5 +1,7 @@
 package fr.luacraft.core.api;
 
+import com.naef.jnlua.util.LuaFunction;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +14,7 @@ public interface ILuaObject extends Serializable
      * Get the lua object type
      * @return
      */
+    @LuaFunction
     String GetType();
 
     /**

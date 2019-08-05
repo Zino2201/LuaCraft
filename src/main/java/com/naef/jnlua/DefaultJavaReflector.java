@@ -5,6 +5,9 @@
 
 package com.naef.jnlua;
 
+import com.naef.jnlua.util.LuaFunction;
+import com.naef.jnlua.util.LuaFunctionUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -118,6 +121,7 @@ public class DefaultJavaReflector implements JavaReflector {
 		accessorLock.readLock().lock();
 		try {
 			Map<String, Accessor> result = accessors.get(clazz);
+
 			if (result != null) {
 				return result;
 			}
@@ -161,6 +165,9 @@ public class DefaultJavaReflector implements JavaReflector {
 			if (result.containsKey(method.getName())) {
 				continue;
 			}
+
+			if(!LuaFunctionUtils.validLuaFunction(method))
+				continue;
 
 			// Attempt to find the method in a public class if the declaring
 			// class is not public
@@ -277,7 +284,7 @@ public class DefaultJavaReflector implements JavaReflector {
 		Method method = getPublicSuperclassMethod(clazz, methodName,
 				parameterTypes);
 		if (method != null) {
-			return method;
+				return method;
 		}
 		return getInterfaceMethod(clazz, methodName, parameterTypes);
 	}

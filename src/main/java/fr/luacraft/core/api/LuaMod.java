@@ -1,5 +1,6 @@
 package fr.luacraft.core.api;
 
+import com.naef.jnlua.util.LuaFunction;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -45,6 +46,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaBlock RegisterBlock(String id, int material)
     {
         Block block = mod.getRegistryData().getBlockByID(id);
@@ -66,6 +68,7 @@ public class LuaMod implements ILuaObject
      * @param id
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItem(String id)
     {
         LuaItem item = new LuaItem(new LuacraftItem(id));
@@ -79,6 +82,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItemSword(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemSword(id, material));
@@ -92,6 +96,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItemPickaxe(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemPickaxe(id, material));
@@ -105,6 +110,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItemAxe(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemAxe(id, material));
@@ -118,6 +124,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItemShovel(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemShovel(id, material));
@@ -131,6 +138,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItemHoe(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemHoe(id, material));
@@ -144,6 +152,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItemArmor(String id, String material, int part)
     {
         LuaItem item = new LuaItem(new LuacraftItemArmor(id, material, part));
@@ -159,6 +168,7 @@ public class LuaMod implements ILuaObject
      * @param isWolfFavoriteFood
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterItemFood(String id, int healAmount, float saturation, boolean isWolfFavoriteFood)
     {
         LuaItem item = new LuaItem(new LuacraftItemFood(id, healAmount, saturation, isWolfFavoriteFood));
@@ -175,6 +185,7 @@ public class LuaMod implements ILuaObject
      * @param veinSize
      * @param chances
      */
+    @LuaFunction
     public void RegisterOre(String id, int dimensionID, int minY, int maxY, int veinSize, int chances)
     {
         mod.getRegistryData().addOre(id, dimensionID, minY, maxY, veinSize, chances);
@@ -189,6 +200,7 @@ public class LuaMod implements ILuaObject
      * @param luminosity
      * @return
      */
+    @LuaFunction
     public LuaFluid RegisterFluid(String id, int density, int viscosity, int temperature, int luminosity)
     {
         Fluid fluid = new Fluid(id).setDensity(density).setViscosity(viscosity).setTemperature(temperature)
@@ -205,6 +217,7 @@ public class LuaMod implements ILuaObject
      * @param material
      * @return
      */
+    @LuaFunction
     public LuaBlock RegisterFluidBlock(String id, String fluid, int material)
     {
         LuaBlock block = new LuaBlock(new LuacraftFluidBlock(id, fluid, material));
@@ -219,6 +232,7 @@ public class LuaMod implements ILuaObject
      * @param fluid
      * @return
      */
+    @LuaFunction
     public LuaItem RegisterFluidBucket(String id, String fluidBlock, String fluid)
     {
         LuaItem item = new LuaItem(new LuacraftItemBucket(id, GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(),
@@ -235,6 +249,7 @@ public class LuaMod implements ILuaObject
      * @param label
      * @param item
      */
+    @LuaFunction
     public void AddCreativeTab(String label, final LuaItem item)
     {
         if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
@@ -262,6 +277,7 @@ public class LuaMod implements ILuaObject
      * @param usage
      * @return
      */
+    @LuaFunction
     public LuaCommand RegisterClientCommand(String name, String usage)
     {
         LuacraftCommand command = new LuacraftCommand(name, usage);
@@ -275,6 +291,7 @@ public class LuaMod implements ILuaObject
      * @param usage
      * @return
      */
+    @LuaFunction
     public LuaCommand RegisterServerCommand(String name, String usage)
     {
         LuacraftCommand command = new LuacraftCommand(name, usage);
@@ -291,6 +308,7 @@ public class LuaMod implements ILuaObject
      * @param damage
      * @param enchantability
      */
+    @LuaFunction
     public void RegisterToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability)
     {
         EnumHelperClient.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
@@ -303,6 +321,7 @@ public class LuaMod implements ILuaObject
      * @param reductionAmounts
      * @param enchantability
      */
+    @LuaFunction
     public void RegisterArmorMaterial(String name, int durability, int[] reductionAmounts, int enchantability)
     {
         EnumHelperClient.addArmorMaterial(name, durability, reductionAmounts, enchantability);
@@ -312,6 +331,7 @@ public class LuaMod implements ILuaObject
      * Get modid
      * @return
      */
+    @LuaFunction
     public String GetModId()
     {
         return mod.getMetadata().modId;
@@ -321,30 +341,35 @@ public class LuaMod implements ILuaObject
      * Log debug
      * @param message
      */
+    @LuaFunction
     public void LogDebug(String message) { mod.getLogger().debug(message); }
 
     /**
      * Log info
      * @param message
      */
+    @LuaFunction
     public void LogInfo(String message) { mod.getLogger().info(message); }
 
     /**
      * Log warn
      * @param message
      */
+    @LuaFunction
     public void LogWarn(String message) { mod.getLogger().warn(message); }
 
     /**
      * Log error
      * @param message
      */
+    @LuaFunction
     public void LogError(String message) { mod.getLogger().error(message); }
 
     /**
      * Log fatal
      * @param message
      */
+    @LuaFunction
     public void LogFatal(String message) { mod.getLogger().fatal(message); }
 
     @Override

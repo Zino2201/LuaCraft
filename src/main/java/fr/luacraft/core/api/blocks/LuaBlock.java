@@ -1,5 +1,6 @@
 package fr.luacraft.core.api.blocks;
 
+import com.naef.jnlua.util.LuaFunction;
 import cpw.mods.fml.relauncher.Side;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaObject;
@@ -19,6 +20,7 @@ public class LuaBlock implements ILuaObject
         this.block = block;
     }
 
+    @LuaFunction
     public void SetCreativeTab(String label)
     {
         if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
@@ -33,26 +35,31 @@ public class LuaBlock implements ILuaObject
         }
     }
 
+    @LuaFunction
     public void SetHardness(float hardness)
     {
         block.setHardness(hardness);
     }
 
+    @LuaFunction
     public void SetLightLevel(float lightLevel)
     {
         block.setLightLevel(lightLevel);
     }
 
+    @LuaFunction
     public void SetResistance(float resistance)
     {
         block.setResistance(resistance);
     }
 
+    @LuaFunction
     public void SetLightOpacity(int opacity)
     {
         block.setLightOpacity(opacity);
     }
 
+    @LuaFunction
     public void SetUnbreakable()
     {
         block.setBlockUnbreakable();

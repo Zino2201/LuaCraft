@@ -1,5 +1,6 @@
 package fr.luacraft.core.api.command;
 
+import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -17,6 +18,7 @@ public class LuaCommandSender implements ILuaObject
         this.commandSender = commandSender;
     }
 
+    @LuaFunction
     public void SendMessage(String message)
     {
         commandSender.addChatMessage(new ChatComponentText(message));

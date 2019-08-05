@@ -1,5 +1,6 @@
 package fr.luacraft.core.api.items;
 
+import com.naef.jnlua.util.LuaFunction;
 import cpw.mods.fml.relauncher.Side;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaObject;
@@ -23,6 +24,7 @@ public class LuaItem implements ILuaObject
      * Set item creative tab
      * @param label
      */
+    @LuaFunction
     public void SetCreativeTab(String label)
     {
         if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
@@ -40,6 +42,7 @@ public class LuaItem implements ILuaObject
     /**
      * Disable repair on item
      */
+    @LuaFunction
     public void SetNoRepair()
     {
         item.setNoRepair();
@@ -49,6 +52,7 @@ public class LuaItem implements ILuaObject
      * Set item max stack size
      * @param stackSize
      */
+    @LuaFunction
     public void SetMaxStackSize(int stackSize)
     {
         item.setMaxStackSize(stackSize);
@@ -59,6 +63,7 @@ public class LuaItem implements ILuaObject
      * @param tool
      * @param level
      */
+    @LuaFunction
     public void SetHarvestLevel(String tool, int level)
     {
         item.setHarvestLevel(tool, level);
@@ -68,6 +73,7 @@ public class LuaItem implements ILuaObject
      * Set item max damage
      * @param maxDamage
      */
+    @LuaFunction
     public void SetMaxDamage(int maxDamage)
     {
         item.setMaxDamage(maxDamage);
@@ -77,6 +83,7 @@ public class LuaItem implements ILuaObject
      * Set item potion effect
      * @param effect
      */
+    @LuaFunction
     public void SetPotionEffect(String effect)
     {
         item.setPotionEffect(effect);
@@ -87,6 +94,7 @@ public class LuaItem implements ILuaObject
      * NOTE: Only works with LuacraftItems
      * @param map
      */
+    @LuaFunction
     public void SetIsMap(boolean map)
     {
         if(item instanceof LuacraftItem)
@@ -98,6 +106,7 @@ public class LuaItem implements ILuaObject
      * NOTE: Only works with LuacraftItems
      * @param dmgable
      */
+    @LuaFunction
     public void SetDamageable(boolean dmgable)
     {
         if(item instanceof LuacraftItem)
@@ -109,6 +118,7 @@ public class LuaItem implements ILuaObject
      * NOTE: Only works with LuacraftItems
      * @param repable
      */
+    @LuaFunction
     public void SetRepairable(boolean repable)
     {
         if(item instanceof LuacraftItem)
@@ -119,6 +129,7 @@ public class LuaItem implements ILuaObject
      * Get sprite number
      * @return
      */
+    @LuaFunction
     public int GetSpriteNumber()
     {
         return item.getSpriteNumber();

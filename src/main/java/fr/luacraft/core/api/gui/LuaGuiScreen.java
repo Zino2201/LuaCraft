@@ -1,5 +1,6 @@
 package fr.luacraft.core.api.gui;
 
+import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -22,6 +23,7 @@ public class LuaGuiScreen implements ILuaObject
      * Works only for class LuacraftGuiScreen
      * @param guiPauseGame
      */
+    @LuaFunction
     public void SetGuiPauseGame(boolean guiPauseGame)
     {
         if(guiScreen instanceof LuacraftGuiScreen)
@@ -38,6 +40,7 @@ public class LuaGuiScreen implements ILuaObject
      * @param text
      * @return
      */
+    @LuaFunction
     public LuaGuiButton AddButton(int x, int y, int width, int height, String text)
     {
         if(text.contains(":"))
@@ -57,6 +60,7 @@ public class LuaGuiScreen implements ILuaObject
      * Get gui width
      * @return
      */
+    @LuaFunction
     public int GetWidth()
     {
         return guiScreen.width;
@@ -66,6 +70,7 @@ public class LuaGuiScreen implements ILuaObject
      * Get gui height
      * @return
      */
+    @LuaFunction
     public int GetHeight()
     {
         return guiScreen.height;

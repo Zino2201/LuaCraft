@@ -1,5 +1,6 @@
 package fr.luacraft.core.api.world;
 
+import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
 import net.minecraft.world.World;
 
@@ -20,6 +21,7 @@ public class LuaWorld implements ILuaObject
      * Return if world is remote
      * @return
      */
+    @LuaFunction
     public boolean IsRemote()
     {
         return world.isRemote;
