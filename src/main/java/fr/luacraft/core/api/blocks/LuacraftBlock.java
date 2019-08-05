@@ -11,11 +11,13 @@ import fr.luacraft.core.api.items.LuaItemStack;
 import fr.luacraft.core.api.world.LuaWorld;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -102,6 +104,104 @@ public class LuacraftBlock extends Block
     public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
     {
         super.onBlockDestroyedByExplosion(world, x, y, z, explosion);
+
+        LuacraftBlockHooks.onBlockDestroyedByExplosion(this, world, x, y, z, explosion);
+    }
+
+    @Override
+    public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int metadata)
+    {
+        super.onBlockDestroyedByPlayer(world, x, y, z, metadata);
+
+        LuacraftBlockHooks.onBlockDestroyedByPlayer(this, world, x, y, z, metadata);
+    }
+
+    @Override
+    public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
+    {
+        super.onBlockExploded(world, x, y, z, explosion);
+
+        LuacraftBlockHooks.onBlockExploded(this, world, x, y, z, explosion);
+    }
+
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player)
+    {
+        super.onBlockHarvested(world, x, y, z, metadata, player);
+
+        LuacraftBlockHooks.onBlockHarvested(this, world, x, y, z, metadata, player);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+    {
+        super.onBlockPlacedBy(world, x, y, z, entity, stack);
+
+        LuacraftBlockHooks.onBlockPlacedBy(this, world, x, y, z, entity, stack);
+    }
+
+    @Override
+    public void onBlockPreDestroy(World world, int x, int y, int z, int metadata)
+    {
+        super.onBlockPreDestroy(world, x, y, z, metadata);
+
+        LuacraftBlockHooks.onBlockPreDestroy(this, world, x, y, z, metadata);
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block otherBlock)
+    {
+        super.onNeighborBlockChange(world, x, y, z, otherBlock);
+
+        LuacraftBlockHooks.onNeighborBlockChange(this, world, x, y, z, otherBlock);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+    {
+        super.onEntityCollidedWithBlock(world, x, y, z, entity);
+
+        LuacraftBlockHooks.onEntityCollidedWithBlock(this, world, x, y, z, entity);
+    }
+
+    @Override
+    public void onEntityWalking(World world, int x, int y, int z, Entity entity)
+    {
+        super.onEntityWalking(world, x, y, z, entity);
+
+        LuacraftBlockHooks.onEntityWalking(this, world, x, y, z, entity);
+    }
+
+    @Override
+    public void onFallenUpon(World world, int x, int y, int z, Entity entity, float fallDistance)
+    {
+        super.onFallenUpon(world, x, y, z, entity, fallDistance);
+
+        LuacraftBlockHooks.onFallenUpon(this, world, x, y, z, entity, fallDistance);
+    }
+
+    @Override
+    public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
+    {
+        super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+
+        LuacraftBlockHooks.onNeighborChange(this, world, x, y, z, tileX, tileY, tileZ);
+    }
+
+    @Override
+    public void onPlantGrow(World world, int x, int y, int z, int sourceX, int sourceY, int sourceZ)
+    {
+        super.onPlantGrow(world, x, y, z, sourceX, sourceY, sourceZ);
+
+        LuacraftBlockHooks.onPlantGrow(this, world, x, y, z, sourceX, sourceY, sourceZ);
+    }
+
+    @Override
+    public void onPostBlockPlaced(World world, int x, int y, int z, int metadata)
+    {
+        super.onPostBlockPlaced(world, x, y, z, metadata);
+
+        LuacraftBlockHooks.onPostBlockPlaced(this, world, x, y, z, metadata);
     }
 
     @Override
