@@ -3,7 +3,9 @@ package fr.luacraft.util;
 import com.naef.jnlua.LuaState;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.*;
 
@@ -153,6 +155,42 @@ public class LuaUtil
                 return Material.web;
             default:
                 return Material.rock;
+        }
+    }
+
+    public static int getCreatureTypeId(EnumCreatureType type)
+    {
+        switch(type)
+        {
+            default:
+            case ambient:
+                return 0;
+            case monster:
+                return 1;
+            case creature:
+                return 2;
+            case waterCreature:
+                return 3;
+        }
+    }
+
+    public static int getForgeDirectionAsInt(ForgeDirection dir)
+    {
+        switch(dir)
+        {
+            default:
+            case UP:
+                return 0;
+            case DOWN:
+                return 1;
+            case NORTH:
+                return 2;
+            case SOUTH:
+                return 3;
+            case WEST:
+                return 4,
+            case EAST:
+                return 5;
         }
     }
 

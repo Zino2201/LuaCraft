@@ -65,6 +65,18 @@ public class LuaBlock implements ILuaObject
         block.setBlockUnbreakable();
     }
 
+    @LuaFunction
+    public void SetBlockBounds(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+    {
+        block.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    @LuaFunction
+    public void SetTickRandomly(boolean tickRandomy)
+    {
+        block.setTickRandomly(tickRandomy);
+    }
+
     public Block getBlock()
     {
         return block;

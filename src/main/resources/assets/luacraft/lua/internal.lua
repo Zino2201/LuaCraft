@@ -62,3 +62,19 @@ mc.armorParts = {
     LEGGINGS = 2,
     BOOTS = 3
 }
+
+mc.creatureTypes = {
+    AMBIENT = 0,
+    MONSTER = 1,
+    CREATURE = 2,
+    WATER_CREATURE = 3
+}
+
+mc.directions = {
+    UP = 0,
+    DOWN = 1,
+    NORTH = 2,
+    SOUTH = 3,
+    WEST = 4,
+    EAST = 5
+}

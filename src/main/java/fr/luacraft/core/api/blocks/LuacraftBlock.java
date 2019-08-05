@@ -13,12 +13,15 @@ import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * A Luacraft block compatible with Luacraft hooks
@@ -202,6 +205,146 @@ public class LuacraftBlock extends Block
         super.onPostBlockPlaced(world, x, y, z, metadata);
 
         LuacraftBlockHooks.onPostBlockPlaced(this, world, x, y, z, metadata);
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
+    {
+        Boolean bool = LuacraftBlockHooks.canConnectRedstone(this, world, x, y, z, side);
+
+        return bool == null ? super.canConnectRedstone(world, x, y, z, side) : bool;
+    }
+
+    @Override
+    public boolean canProvidePower()
+    {
+        Boolean bool = LuacraftBlockHooks.canProvidePower(this);
+
+        return bool == null ? super.canProvidePower() : bool;
+    }
+
+    @Override
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+    {
+        Boolean bool = LuacraftBlockHooks.canEntityDestroy(this, world, x, y, z, entity);
+
+        return bool == null ? super.canEntityDestroy(world, x, y, z, entity) : bool;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
+    {
+        Boolean bool = LuacraftBlockHooks.canCreatureSpawn(this, type, world, x, y, z);
+
+        return bool == null ? super.canCreatureSpawn(type, world, x, y, z) : bool;
+    }
+
+    @Override
+    public boolean canBlockStay(World world, int x, int y, int z)
+    {
+        Boolean bool = LuacraftBlockHooks.canBlockStay(this, world, x, y, z);
+
+        return bool == null ? super.canBlockStay(world, x, y, z) : bool;
+    }
+
+    @Override
+    public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
+    {
+        Boolean bool = LuacraftBlockHooks.canPlaceTorchOnTop(this, world, x, y, z);
+
+        return bool == null ? super.canPlaceTorchOnTop(world, x, y, z) : bool;
+    }
+
+    @Override
+    public boolean canDropFromExplosion(Explosion explosion)
+    {
+        Boolean bool = LuacraftBlockHooks.canDropFromExplosion(this, explosion);
+
+        return bool == null ? super.canDropFromExplosion(explosion) : bool;
+    }
+
+    @Override
+    public boolean canHarvestBlock(EntityPlayer player, int meta)
+    {
+        Boolean bool = LuacraftBlockHooks.canHarvestBlock(this, player, meta);
+
+        return bool == null ? super.canHarvestBlock(player, meta) : bool;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    {
+        Boolean bool = LuacraftBlockHooks.canPlaceBlockAt(this, world, x, y, z);
+
+        return bool == null ? super.canPlaceBlockAt(world, x, y, z) : bool;
+    }
+
+    @Override
+    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z)
+    {
+        Boolean bool = LuacraftBlockHooks.canBeReplacedByLeaves(this, world, x, y, z);
+
+        return bool == null ? super.canBeReplacedByLeaves(world, x, y, z) : bool;
+    }
+
+    @Override
+    public boolean canCollideCheck(int meta, boolean boat)
+    {
+        Boolean bool = LuacraftBlockHooks.canCollideCheck(this, meta, boat);
+
+        return bool == null ? super.canCollideCheck(meta, boat) : bool;
+    }
+
+    @Override
+    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+    {
+        Boolean bool = LuacraftBlockHooks.canPlaceBlockOnSide(this, world, x, y, z, side);
+
+        return bool == null ? super.canPlaceBlockOnSide(world, x, y, z, side) : bool;
+    }
+
+    @Override
+    public boolean canRenderInPass(int pass)
+    {
+        Boolean bool = LuacraftBlockHooks.canRenderInPass(this, pass);
+
+        return bool == null ? super.canRenderInPass(pass) : bool;
+    }
+
+    @Override
+    public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z)
+    {
+        Boolean bool = LuacraftBlockHooks.canSustainLeaves(this, world, x, y, z);
+
+        return bool == null ? super.canSustainLeaves(world, x, y, z) : bool;
+    }
+
+    @Override
+    public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction,
+                                   IPlantable plantable)
+    {
+        Boolean bool = LuacraftBlockHooks.canSustainPlant(this, world, x, y, z,
+                direction, plantable);
+
+        return bool == null ? super.canSustainPlant(world, x, y, z, direction, plantable) : bool;
+    }
+
+    @Override
+    public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
+    {
+        Boolean bool = LuacraftBlockHooks.canReplace(this, world, x, y, z,
+                side, stack);
+
+        return bool == null ? super.canReplace(world, x, y, z, side, stack) : bool;
+    }
+
+    @Override
+    public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+    {
+        Boolean bool = LuacraftBlockHooks.canSilkHarvest(this, world, player, x, y, z,
+                metadata);
+
+        return bool == null ? super.canSilkHarvest(world, player, x, y, z, metadata) : bool;
     }
 
     @Override

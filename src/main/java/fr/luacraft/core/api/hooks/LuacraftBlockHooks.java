@@ -1,6 +1,7 @@
 package fr.luacraft.core.api.hooks;
 
 import fr.luacraft.core.api.blocks.LuaBlock;
+import fr.luacraft.core.api.blocks.LuaIPlantable;
 import fr.luacraft.core.api.entity.LuaEntity;
 import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
@@ -8,14 +9,18 @@ import fr.luacraft.core.api.items.LuaItemStack;
 import fr.luacraft.core.api.world.LuaExplosion;
 import fr.luacraft.core.api.world.LuaIBlockAccess;
 import fr.luacraft.core.api.world.LuaWorld;
+import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Shared block hooks
@@ -270,6 +275,210 @@ public class LuacraftBlockHooks
                 block,
                 "OnPostBlockPlaced",
                 new LuaWorld(world),
+                x,
+                y,
+                z,
+                metadata);
+    }
+
+    public static Boolean canConnectRedstone(Block block, IBlockAccess world, int x, int y, int z, int side)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanConnectRedstone",
+                new LuaIBlockAccess(world),
+                x,
+                y,
+                z,
+                side);
+    }
+
+    public static Boolean canProvidePower(Block block)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanProvidePower");
+    }
+
+    public static Boolean canEntityDestroy(Block block, IBlockAccess world, int x, int y, int z, Entity entity)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanEntityDestroy",
+                new LuaIBlockAccess(world),
+                x,
+                y,
+                z,
+                entity);
+    }
+
+    public static Boolean canCreatureSpawn(Block block, EnumCreatureType type, IBlockAccess world,
+                                           int x, int y, int z)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanCreatureSpawn",
+                LuaUtil.getCreatureTypeId(type),
+                new LuaIBlockAccess(world),
+                x,
+                y,
+                z);
+    }
+
+    public static Boolean canBlockStay(Block block, World world, int x, int y, int z)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanBlockStay",
+                new LuaWorld(world),
+                x,
+                y,
+                z);
+    }
+
+    public static Boolean canPlaceTorchOnTop(Block block, World world, int x, int y, int z)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanPlaceTorchOnTop",
+                new LuaWorld(world),
+                x,
+                y,
+                z);
+    }
+
+    public static Boolean canDropFromExplosion(Block block, Explosion explosion)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanDropFromExplosion",
+                new LuaExplosion(explosion));
+    }
+
+    public static Boolean canHarvestBlock(Block block, EntityPlayer player, int meta)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanHarvestBlock",
+                new LuaEntityPlayer(player),
+                meta);
+    }
+
+    public static Boolean canPlaceBlockAt(Block block, World world, int x, int y, int z)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanPlaceBlockAt",
+                new LuaWorld(world),
+                x,
+                y,
+                z);
+    }
+
+    public static Boolean canBeReplacedByLeaves(Block block, IBlockAccess world, int x, int y, int z)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanBeReplacedByLeaves",
+                new LuaIBlockAccess(world),
+                x,
+                y,
+                z);
+    }
+
+    public static Boolean canCollideCheck(Block block, int meta, boolean boat)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanCollideCheck",
+                meta,
+                boat);
+    }
+
+    public static Boolean canPlaceBlockOnSide(Block block, World world, int x, int y, int z, int side)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanPlaceBlockOnSide",
+                new LuaWorld(world),
+                x,
+                y,
+                z,
+                side);
+    }
+
+    public static Boolean canRenderInPass(Block block, int pass)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanRenderInPass",
+                pass);
+    }
+
+    public static Boolean canSustainLeaves(Block block, IBlockAccess world, int x, int y, int z)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanSustainLeaves",
+                new LuaIBlockAccess(world),
+                x,
+                y,
+                z);
+    }
+
+    public static Boolean canSustainPlant(Block block, IBlockAccess world, int x, int y, int z,
+                                          ForgeDirection direction, IPlantable plantable)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanSustainPlant",
+                new LuaIBlockAccess(world),
+                x,
+                y,
+                z,
+                LuaUtil.getForgeDirectionAsInt(direction),
+                new LuaIPlantable(plantable));
+    }
+
+    public static Boolean canReplace(Block block, World world, int x, int y, int z, int side,
+                                     ItemStack stack)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanReplace",
+                new LuaWorld(world),
+                x,
+                y,
+                z,
+                side,
+                new LuaItemStack(stack));
+    }
+
+    public static Boolean canSilkHarvest(Block block, World world, EntityPlayer player, int x, int y, int z,
+                                  int metadata)
+    {
+        return LuaHookManager.call(
+                Boolean.class,
+                block,
+                "CanSilkHarvest",
+                new LuaWorld(world),
+                new LuaEntityPlayer(player),
                 x,
                 y,
                 z,
