@@ -4,11 +4,15 @@ import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.LuaCreativeTab;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.items.LuaItem;
 import fr.luacraft.core.api.nbt.LuaNBTTagCompound;
 import fr.luacraft.core.api.registry.LuaGameRegistry;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
@@ -158,6 +162,35 @@ public class MinecraftLib
     };
 
     /**
+     * Get creative tab from name
+     */
+    public static JavaFunction GetCreativeTabFromName = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            String name = l.checkString(1);
+            LuaCreativeTab output = null;
+
+            if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
+            {
+                for (CreativeTabs tab : CreativeTabs.creativeTabArray)
+                {
+                    if (tab.getTabLabel().equals(name))
+                    {
+                        output = new LuaCreativeTab(tab);
+                        break;
+                    }
+                }
+            }
+
+            l.pushJavaObject(output);
+
+            return 1;
+        }
+    };
+
+    /**
      * Add a language key to LanguageRegistry
      */
     public static JavaFunction AddLangKey = new JavaFunction()
@@ -199,6 +232,8 @@ public class MinecraftLib
         l.setField(-2, "GetItemFromBlock");
         l.pushJavaObject(AddLangKey);
         l.setField(-2, "AddLangKey");
+        l.pushJavaObject(GetCreativeTabFromName);
+        l.setField(-2, "GetCreativeTabFromName");
         l.setGlobal("mc");
     }
 }

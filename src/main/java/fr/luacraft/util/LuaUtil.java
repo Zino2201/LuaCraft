@@ -188,7 +188,7 @@ public class LuaUtil
             case SOUTH:
                 return 3;
             case WEST:
-                return 4,
+                return 4;
             case EAST:
                 return 5;
         }

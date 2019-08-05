@@ -17,6 +17,11 @@ public class LuaWorld implements ILuaObject
         this.world = world;
     }
 
+    public World getWorld()
+    {
+        return world;
+    }
+
     /**
      * Return if world is remote
      * @return

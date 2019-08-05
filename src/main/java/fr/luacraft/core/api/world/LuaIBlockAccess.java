@@ -12,6 +12,11 @@ public class LuaIBlockAccess implements ILuaObject
         this.blockAccess = blockAccess;
     }
 
+    public IBlockAccess getBlockAccess()
+    {
+        return blockAccess;
+    }
+
     @Override
     public String GetType()
     {

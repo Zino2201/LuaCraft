@@ -250,7 +250,7 @@ public class LuaMod implements ILuaObject
      * @param item
      */
     @LuaFunction
-    public void AddCreativeTab(String label, final LuaItem item)
+    public LuaCreativeTab AddCreativeTab(String label, final LuaItem item)
     {
         if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
         {
@@ -268,7 +268,11 @@ public class LuaMod implements ILuaObject
             };
 
             mod.getRegistryData().addCreativeTab(creativeTab);
+
+            return new LuaCreativeTab(creativeTab);
         }
+
+        return null;
     }
 
     /**
