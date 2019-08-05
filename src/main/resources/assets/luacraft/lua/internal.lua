@@ -78,3 +78,10 @@ mc.directions = {
     WEST = 4,
     EAST = 5
 }
+
+mc.rarities = {
+    COMMON = 0,
+    UNCOMMON = 1,
+    RARE = 2,
+    EPIC = 3
+}

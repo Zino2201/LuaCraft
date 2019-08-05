@@ -3,7 +3,7 @@ package fr.luacraft.core.api.libs;
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.LuaClass;
+import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.core.api.LuaMod;
 import fr.luacraft.util.LuaUtil;
 

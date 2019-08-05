@@ -1,6 +1,6 @@
 package fr.luacraft.core.api.container;
 
-import fr.luacraft.core.api.LuaClass;
+import fr.luacraft.core.api.util.LuaClass;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 

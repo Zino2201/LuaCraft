@@ -1,7 +1,8 @@
-package fr.luacraft.core.api;
+package fr.luacraft.core.api.util;
 
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.ILuaObject;
 
 import java.util.HashMap;
 

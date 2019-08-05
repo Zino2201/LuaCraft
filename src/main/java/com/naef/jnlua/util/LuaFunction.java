@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Mark a function as accesible by lua scripts
+ * Mark a function as accessible in Lua
  * @author Zino
  */
 @Retention(RetentionPolicy.RUNTIME)

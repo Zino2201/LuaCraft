@@ -1,6 +1,6 @@
 package fr.luacraft.core.api.entity;
 
-import fr.luacraft.core.api.LuaClass;
+import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.core.api.nbt.LuaNBTTagCompound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

@@ -1,5 +1,6 @@
-package fr.luacraft.core.api;
+package fr.luacraft.core.api.util;
 
+import fr.luacraft.core.api.ILuaObject;
 import net.minecraft.util.ChunkCoordinates;
 
 public class LuaChunkCoordinates implements ILuaObject

@@ -7,7 +7,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaObject;
-import fr.luacraft.core.api.LuaCreativeTab;
+import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.items.LuaItem;
 import fr.luacraft.core.api.nbt.LuaNBTTagCompound;

@@ -1,5 +1,6 @@
-package fr.luacraft.core.api;
+package fr.luacraft.core.api.creativetab;
 
+import fr.luacraft.core.api.ILuaObject;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class LuaCreativeTab implements ILuaObject

@@ -9,6 +9,7 @@ import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.blocks.LuacraftBlock;
 import fr.luacraft.core.api.command.LuaCommand;
 import fr.luacraft.core.api.command.LuacraftCommand;
+import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.fluids.LuaFluid;
 import fr.luacraft.core.api.fluids.LuacraftFluidBlock;
 import fr.luacraft.core.api.items.*;

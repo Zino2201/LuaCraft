@@ -1,5 +1,6 @@
-package fr.luacraft.core.api;
+package fr.luacraft.core.api.blocks;
 
+import fr.luacraft.core.api.ILuaObject;
 import net.minecraft.block.material.Material;
 
 public class LuaMaterial implements ILuaObject

@@ -1,20 +1,17 @@
 package fr.luacraft.core.api.blocks;
 
 import com.naef.jnlua.util.LuaFunction;
-import cpw.mods.fml.relauncher.Side;
-import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.*;
+import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.items.LuaItem;
+import fr.luacraft.core.api.util.LuaChunkCoordinates;
+import fr.luacraft.core.api.util.LuaIIcon;
 import fr.luacraft.core.api.world.LuaIBlockAccess;
 import fr.luacraft.core.api.world.LuaWorld;
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import scala.tools.nsc.ast.TreeBrowsers;
 
 /**
  * Represent a Block in lua

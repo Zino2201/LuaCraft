@@ -4,6 +4,7 @@ import com.naef.jnlua.LuaState;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -13,6 +14,7 @@ import java.io.*;
  * Lua utils functions
  * @author Zino
  */
+// TODO: Move script related things to another class
 public class LuaUtil
 {
     /**
@@ -191,6 +193,21 @@ public class LuaUtil
                 return 4;
             case EAST:
                 return 5;
+        }
+    }
+
+    public static int getRarityId(EnumRarity rarity)
+    {
+        switch (rarity)
+        {
+            case common:
+                return 0;
+            case uncommon:
+                return 1;
+            case rare:
+                return 2;
+            case epic:
+                return 3;
         }
     }
 
