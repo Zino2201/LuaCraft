@@ -85,3 +85,11 @@ mc.rarities = {
     RARE = 2,
     EPIC = 3
 }
+
+mc.actions = {
+    NONE = 0,
+    EAT = 1,
+    DRINK = 2,
+    BLOCK = 3
+    BOW = 4
+}

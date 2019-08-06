@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.FluidRegistry;
  * Represents a LuacraftMod in Lua
  * @author Zino
  */
+@SuppressWarnings("unused")
 public class LuaMod implements ILuaObject
 {
     /**

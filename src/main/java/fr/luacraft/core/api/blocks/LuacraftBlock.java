@@ -4,7 +4,7 @@ import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.core.api.entity.LuacraftTileEntity;
 import fr.luacraft.core.api.hooks.LuacraftBlockHooks;
-import fr.luacraft.util.LuaUtil;
+import fr.luacraft.util.EnumUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,7 +28,7 @@ public class LuacraftBlock extends Block
 
     public LuacraftBlock(String name, int material, LuaClass tileEntityClass)
     {
-        super(LuaUtil.getMaterialByID(material));
+        super(EnumUtil.getMaterialFromInt(material));
 
         this.tileEntityClass = tileEntityClass;
 

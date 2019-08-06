@@ -16,6 +16,11 @@ public class LuaExplosion implements ILuaObject
         this.explosion = explosion;
     }
 
+    public Explosion getExplosion()
+    {
+        return explosion;
+    }
+
     @Override
     public String GetType()
     {

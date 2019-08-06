@@ -5,14 +5,14 @@ import fr.luacraft.core.api.ILuaObject;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.util.LuaIIcon;
-import fr.luacraft.util.LuaUtil;
+import fr.luacraft.util.EnumUtil;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 /**
  * Represetns a item in lua
  * @author Zino
  */
+@SuppressWarnings("unused")
 public class LuaItem implements ILuaObject
 {
     private Item item;
@@ -175,9 +175,9 @@ public class LuaItem implements ILuaObject
      * @return
      */
     @LuaFunction
-    public LuaIIcon GetIcon()
+    public LuaIIcon GetIconFromDamage(int dmg)
     {
-        return new LuaIIcon(item.getIconFromDamage(0));
+        return new LuaIIcon(item.getIconFromDamage(dmg));
     }
 
     /**
@@ -234,7 +234,49 @@ public class LuaItem implements ILuaObject
     @LuaFunction
     public int GetRarity(LuaItemStack stack)
     {
-        return LuaUtil.getRarityId(item.getRarity(stack.getItemStack()));
+        return EnumUtil.getRarityAsInt(item.getRarity(stack.getItemStack()));
+    }
+
+    /**
+     * Get item enchantability
+     * @return
+     */
+    @LuaFunction
+    public int GetItemEnchantability()
+    {
+        return item.getItemEnchantability();
+    }
+
+    /**
+     * Get item use action
+     * @param stack
+     * @return
+     */
+    @LuaFunction
+    public int GetItemUseAction(LuaItemStack stack)
+    {
+        return EnumUtil.getActionAsInt(item.getItemUseAction(stack.getItemStack()));
+    }
+
+    /**
+     * Get unlocalized name from item stack
+     * @param stack
+     * @return
+     */
+    @LuaFunction
+    public String GetUnlocalizedNameForItemStack(LuaItemStack stack)
+    {
+        return item.getUnlocalizedName(stack.getItemStack());
+    }
+
+    /**
+     * Get icon index
+     * @param stack
+     * @return
+     */
+    public LuaIIcon GetIconIndex(LuaItemStack stack)
+    {
+        return new LuaIIcon(item.getIconIndex(stack.getItemStack()));
     }
 
     public Item getItem()

@@ -7,8 +7,10 @@ import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.items.LuaItem;
 import fr.luacraft.core.api.util.LuaChunkCoordinates;
 import fr.luacraft.core.api.util.LuaIIcon;
+import fr.luacraft.core.api.world.LuaExplosion;
 import fr.luacraft.core.api.world.LuaIBlockAccess;
 import fr.luacraft.core.api.world.LuaWorld;
+import fr.luacraft.util.EnumUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -17,6 +19,7 @@ import net.minecraft.init.Blocks;
  * Represent a Block in lua
  * @author Zino
  */
+@SuppressWarnings("unused")
 public class LuaBlock implements ILuaObject
 {
     private Block block;
@@ -415,6 +418,117 @@ public class LuaBlock implements ILuaObject
     public boolean GetBlocksMovements()
     {
         return block.getBlocksMovement(null, 0, 0, 0);
+    }
+
+    //TODO:IS
+
+    /**
+     * Return if blocked can be placed at specified coordinates
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    @LuaFunction
+    public boolean CanPlaceBlockAt(LuaWorld world, int x, int y, int z)
+    {
+        return block.canPlaceBlockAt(world.getWorld(), x, y, z);
+    }
+
+    /**
+     * Return true if block can stay at specified coordinates
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    @LuaFunction
+    public boolean CanBlockStay(LuaWorld world, int x, int y, int z)
+    {
+        return block.canBlockStay(world.getWorld(), x, y, z);
+    }
+
+    /**
+     * Return true if block can connect redstone
+     * @param access
+     * @param x
+     * @param y
+     * @param z
+     * @param side
+     * @return
+     */
+    @LuaFunction
+    public boolean CanConnectRedstone(LuaIBlockAccess access, int x, int y, int z, int side)
+    {
+        return block.canConnectRedstone(access.getBlockAccess(), x, y, z, side);
+    }
+
+    /**
+     * Return true if specified creature type can spawn at specified coordinates
+     * @param creatureType
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    @LuaFunction
+    public boolean CanCreatureSpawn(int creatureType, LuaIBlockAccess world, int x, int y, int z)
+    {
+        return block.canCreatureSpawn(EnumUtil.getCreatureTypeFromInt(creatureType),
+                world.getBlockAccess(), x, y, z);
+    }
+
+    /**
+     * Return true if block can be replaced by leaves
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    @LuaFunction
+    public boolean CanBeReplacedByLeaves(LuaIBlockAccess world, int x, int y, int z)
+    {
+        return block.canBeReplacedByLeaves(world.getBlockAccess(), x, y, z);
+    }
+
+    /**
+     * Return true if block can drop from specified explosion
+     * @param explosion
+     * @return
+     */
+    @LuaFunction
+    public boolean CanDropFromExplosion(LuaExplosion explosion)
+    {
+        return block.canDropFromExplosion(explosion.getExplosion());
+    }
+
+    /**
+     * Return true if block can render in specified render pass
+     * @param renderPass
+     * @return
+     */
+    @LuaFunction
+    public boolean CanRenderInPass(int renderPass)
+    {
+        return block.canRenderInPass(renderPass);
+    }
+
+    /**
+     * Return true if block can sustain leaves
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    @LuaFunction
+    public boolean CanSustainLeaves(LuaIBlockAccess world, int x, int y, int z)
+    {
+        return block.canSustainLeaves(world.getBlockAccess(), x, y, z);
     }
 
     /**
