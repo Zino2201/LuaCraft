@@ -17,13 +17,12 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
-// TODO: Uppercase
-
 /**
  * Base minecraft library
  * mc.*
  * @author Zino
  */
+@LuaLibrary
 public class MinecraftLib
 {
     /**
@@ -193,6 +192,7 @@ public class MinecraftLib
     /**
      * Add a language key to LanguageRegistry
      */
+    @SuppressWarnings("deprecated")
     public static JavaFunction AddLangKey = new JavaFunction()
     {
         @Override

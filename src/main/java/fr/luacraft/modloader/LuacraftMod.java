@@ -3,6 +3,7 @@ package fr.luacraft.modloader;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import cpw.mods.fml.common.ModMetadata;
+import fr.luacraft.core.api.hooks.LuaHookManager;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Represents a Lua mod
+ * A luacraft mod
+ *
+ * This class derive from LuacraftModContainer, so that the modloader wil be able to
+ * temporarly change Forge current mod container to be able to give each mod its own domain
  * @author Zino
  */
 public class LuacraftMod extends LuacraftModContainer
@@ -32,7 +36,7 @@ public class LuacraftMod extends LuacraftModContainer
     /**
      * Mod scripts list
      */
-    private List<File> scripts;
+    private List<LuaScript> scripts;
 
     /**
      * Mod registry data
@@ -44,28 +48,27 @@ public class LuacraftMod extends LuacraftModContainer
      */
     private List<File> scriptDirectories;
 
+    /**
+     * Mark the mod as obsolete
+     */
+    private boolean isObsolete;
+
     public LuacraftMod(File modDir, File infoFile)
     {
-        super(new ModMetadata());
-
         try
         {
             Gson gson = new Gson();
             JsonReader reader = new JsonReader(new FileReader(infoFile));
 
-            ModMetadata meta = getMetadata();
             LuacraftModInfo modInfo = gson.fromJson(reader, LuacraftModInfo.class);
-            meta.modId = modInfo.getModId() == null || modInfo.getModId().isEmpty() == true ? modDir.getName() : modInfo.getModId();
-            meta.name = modInfo.getName() == null || modInfo.getName().isEmpty() == true ? meta.modId : modInfo.getName();
-            meta.version = modInfo.getVersion();
-            meta.description = modInfo.getDescription();
+            setModInfo(modInfo);
         }
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }
 
-        this.scripts = new ArrayList<File>();
+        this.scripts = new ArrayList<LuaScript>();
         this.modDir = modDir;
         this.registryData = new LuacraftModRegistryData();
         this.logger = LogManager.getLogger(getName());
@@ -91,10 +94,28 @@ public class LuacraftMod extends LuacraftModContainer
             {
                 if(file.getAbsolutePath().endsWith(".lua"))
                 {
-                    scripts.add(file);
+                    scripts.add(new LuaScript(file, file.getName()));
                 }
             }
         }
+    }
+
+    /**
+     * On preinit hook
+     */
+    public void preInit()
+    {
+        LuaHookManager.call(this, "OnPreInit");
+    }
+
+    public void init()
+    {
+        LuaHookManager.call(this, "OnInit");
+    }
+
+    public void postInit()
+    {
+        LuaHookManager.call(this, "OnPostInit");
     }
 
     /**
@@ -104,7 +125,7 @@ public class LuacraftMod extends LuacraftModContainer
      */
     public ResourceLocation getResource(String name)
     {
-        return new ResourceLocation(getMetadata().modId, name);
+        return new ResourceLocation(getModId(), name);
     }
 
     @Override
@@ -157,7 +178,7 @@ public class LuacraftMod extends LuacraftModContainer
      * Get all mod scripts
      * @return
      */
-    public List<File> getScripts()
+    public List<LuaScript> getScripts()
     {
         return scripts;
     }
@@ -165,5 +186,15 @@ public class LuacraftMod extends LuacraftModContainer
     public Collection<File> getScriptDirectories()
     {
         return scriptDirectories;
+    }
+
+    public void setObsolete(boolean isObsolete)
+    {
+        this.isObsolete = isObsolete;
+    }
+
+    public boolean isObsolete()
+    {
+        return isObsolete;
     }
 }

@@ -541,7 +541,7 @@ public class LuaBlock implements ILuaObject
     }
 
     @Override
-    public boolean isContainer()
+    public boolean IsContainer()
     {
         return true;
     }
@@ -553,7 +553,7 @@ public class LuaBlock implements ILuaObject
     }
 
     @Override
-    public Object getObject()
+    public Object GetContainedObject()
     {
         return block;
     }

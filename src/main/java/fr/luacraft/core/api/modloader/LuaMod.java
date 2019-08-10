@@ -1,10 +1,11 @@
-package fr.luacraft.core.api;
+package fr.luacraft.core.api.modloader;
 
 import com.naef.jnlua.util.LuaFunction;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.ILuaObject;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.blocks.LuacraftBlock;
 import fr.luacraft.core.api.command.LuaCommand;
@@ -334,16 +335,6 @@ public class LuaMod implements ILuaObject
     }
 
     /**
-     * Get modid
-     * @return
-     */
-    @LuaFunction
-    public String GetModId()
-    {
-        return mod.getMetadata().modId;
-    }
-
-    /**
      * Log debug
      * @param message
      */
@@ -378,6 +369,46 @@ public class LuaMod implements ILuaObject
     @LuaFunction
     public void LogFatal(String message) { mod.getLogger().fatal(message); }
 
+    /**
+     * Get mod id
+     * @return
+     */
+    @LuaFunction
+    public String GetModId()
+    {
+        return mod.getModId();
+    }
+
+    /**
+     * Get mod name
+     * @return
+     */
+    @LuaFunction
+    public String GetName()
+    {
+        return mod.getName();
+    }
+
+    /**
+     * Get mod version
+     * @return
+     */
+    @LuaFunction
+    public String GetVersion()
+    {
+        return mod.getVersion();
+    }
+
+    /**
+     * Get luacraft version
+     * @return
+     */
+    @LuaFunction
+    public String GetLuacraftVersion()
+    {
+        return mod.getLuacraftVersion();
+    }
+
     @Override
     public String GetType()
     {
@@ -385,13 +416,13 @@ public class LuaMod implements ILuaObject
     }
 
     @Override
-    public boolean isContainer()
+    public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object getObject()
+    public Object GetContainedObject()
     {
         return mod;
     }

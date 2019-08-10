@@ -4,7 +4,8 @@ import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.util.LuaClass;
-import fr.luacraft.core.api.LuaMod;
+import fr.luacraft.core.api.modloader.LuaMod;
+import fr.luacraft.modloader.LuaScript;
 import fr.luacraft.util.LuaUtil;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.io.File;
  * luacraft.* and global types
  * @author Zino
  */
+@LuaLibrary
 public class LuacraftLib
 {
     public static JavaFunction Include = new JavaFunction()
@@ -21,9 +23,11 @@ public class LuacraftLib
         @Override
         public int invoke(LuaState l)
         {
+            // FIXME: Will not work with lua mods inside archives
             String file = l.checkString(1);
-            File target = new File(LuaUtil.getRunningScript().getParent(), file);
-            LuaUtil.runFromFile(l, target);
+            File target = new File(Luacraft.getInstance().getProxy().getCurrentScript().getFile().getParent(),
+                    file);
+            Luacraft.getInstance().getProxy().executeScript(new LuaScript(target, target.getName()));
             return 0;
         }
     };
@@ -45,6 +49,7 @@ public class LuacraftLib
     /**
      * Create class
      */
+    @Deprecated
     public static JavaFunction CreateClass = new JavaFunction()
     {
         @Override
@@ -59,12 +64,26 @@ public class LuacraftLib
     /**
      * Get function ref
      */
+    @Deprecated
     public static JavaFunction GetFunctionRef = new JavaFunction()
     {
         @Override
         public int invoke(LuaState l)
         {
             l.pushNumber(l.ref(LuaState.REGISTRYINDEX));
+            return 1;
+        }
+    };
+
+    /**
+     * Get current luacraft version
+     */
+    public static JavaFunction GetVersion = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            l.pushString(Luacraft.VERSION);
             return 1;
         }
     };

@@ -14,79 +14,14 @@ import java.io.*;
  * Lua utils functions
  * @author Zino
  */
-// TODO: Move script related things to another class
 public class LuaUtil
 {
     /**
-     * Currently running script
-     */
-    private static File runningScript;
-
-    /**
-     * Run lua code from a file
-     * @param l
-     * @param file
-     */
-    public static void runFromFile(LuaState l, File file)
-    {
-        try
-        {
-            runningScript = file;
-            FileInputStream in = new FileInputStream(file);
-            l.load(in, file.getPath(), "t");
-            l.call(0, 0);
-            in.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Run lua code from input stream
-     * @param l
-     * @param file
-     * @param inputStream
-     */
-    public static void runFromFile(LuaState l, File file, InputStream inputStream)
-    {
-        try
-        {
-            runningScript = file;
-            l.load(inputStream, file.getPath(), "t");
-            l.call(0, 0);
-            inputStream.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Get running script
-     * @return
-     */
-    public static File getRunningScript()
-    {
-        return runningScript;
-    }
-
-    /**
-     * Get a item stack by its ID (modid:name:meta:count)
+     * Get a item stack from a formatted string (modid:name:meta:count)
      * @param itemstackID
      * @return
      */
-    public static ItemStack getItemStackFromID(String itemstackID)
+    public static ItemStack getItemStackFromStr(String itemstackID)
     {
         // TODO: Switch meta & count
 

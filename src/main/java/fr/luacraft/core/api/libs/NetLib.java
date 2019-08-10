@@ -15,6 +15,7 @@ import java.util.ArrayList;
  * Network library
  * @author Zino
  */
+@LuaLibrary
 public class NetLib
 {
     private static String currentMessageName = "";

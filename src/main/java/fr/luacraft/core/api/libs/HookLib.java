@@ -9,6 +9,7 @@ import fr.luacraft.core.api.hooks.LuaHookManager;
  * Hook library
  * @author Zino
  */
+@LuaLibrary
 public class HookLib
 {
     /**
@@ -22,8 +23,8 @@ public class HookLib
             ILuaObject object = l.checkJavaObject(1, ILuaObject.class);
             String name = l.checkString(2);
             int func = l.ref(LuaState.REGISTRYINDEX);
-            if(object.isContainer())
-                LuaHookManager.add(object.getObject(), name, func);
+            if(object.IsContainer())
+                LuaHookManager.add(object.GetContainedObject(), name, func);
             else
                 LuaHookManager.add(object, name, func);
 

@@ -2,6 +2,7 @@ package fr.luacraft.core.proxy;
 
 import com.naef.jnlua.LuaState;
 import com.naef.jnlua.NativeSupport;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -11,21 +12,22 @@ import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.command.LuacraftCommand;
 import fr.luacraft.core.api.entity.LuacraftTileEntity;
-import fr.luacraft.core.api.libs.HookLib;
-import fr.luacraft.core.api.libs.LuacraftLib;
-import fr.luacraft.core.api.libs.MinecraftLib;
-import fr.luacraft.core.api.libs.NetLib;
+import fr.luacraft.core.api.libs.*;
 import fr.luacraft.core.api.network.LuacraftPacketHandler;
 import fr.luacraft.core.api.registry.LuaGameRegistry;
 import fr.luacraft.core.api.world.LuacraftWorldGen;
 import fr.luacraft.core.gui.LuacraftGuiHandler;
+import fr.luacraft.modloader.LuaScript;
 import fr.luacraft.modloader.LuacraftMod;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.client.MinecraftForgeClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,29 +35,46 @@ import java.util.List;
  * Shared proxy
  * @author Zino
  */
+@SuppressWarnings("deprecated")
 public class SharedProxy
 {
     public static final String SHARED_SCRIPT_PREFIX = "sh";
 
+    /**
+     * Lua stated
+     */
     protected LuaState luaState;
+
+    @Deprecated
+    /**
+     * @deprecated Prefix system was a way to differentiate client, servers an share scripts
+     * but I still find this useless. So I mark this as Deprecated to flag that this system
+     * doesn't work and may be removed or may be added in future versions
+     */
     protected String scriptPrefix;
+
+    /**
+     * Proxy type/side
+     */
+    protected ProxyType type;
 
     /**
      * Current mod
      */
     private LuacraftMod currentMod;
 
-    private List<File> internals;
-
-    private ModContainer luacraftModContainer;
+    /**
+     * Current exectued script
+     */
+    private LuaScript currentScript;
 
     public SharedProxy()
     {
         NativeSupport.getInstance().setLoader(new LuaNativeLoader());
 
+        this.type = ProxyType.SHARED;
         this.scriptPrefix = SHARED_SCRIPT_PREFIX;
         this.luaState = new LuaState();
-        this.internals = new ArrayList<File>();
     }
 
     /**
@@ -64,8 +83,6 @@ public class SharedProxy
      */
     public void preInit(FMLPreInitializationEvent event)
     {
-        luacraftModContainer = FMLCommonHandler.instance().findContainerFor(Luacraft.getInstance());
-
         GameRegistry.registerTileEntity(LuacraftTileEntity.class, "luacraft_tile_entity");
         NetworkRegistry.INSTANCE.registerGuiHandler(Luacraft.getInstance(), new LuacraftGuiHandler());
 
@@ -97,8 +114,13 @@ public class SharedProxy
             /** Include internals */
             includeInternals();
 
-            /** Execute scripts */
-            executeScripts();
+            /** Perform first execution */
+            Luacraft.getInstance().getModLoader().performFirstExecution();
+
+            /**
+             * Call preinit hooks on mods
+             */
+            Luacraft.getInstance().getModLoader().peformPreInit();
         }
     }
 
@@ -110,7 +132,10 @@ public class SharedProxy
     {
         LuacraftPacketHandler.registerMessages();
 
-        LuaGameRegistry.registerCraftAndSmelts();
+        /**
+         * Call init hooks on mods
+         */
+        Luacraft.getInstance().getModLoader().peformInit();
     }
 
     /**
@@ -119,7 +144,10 @@ public class SharedProxy
      */
     public void postInit(FMLPostInitializationEvent event)
     {
-
+        /**
+         * Call postinit hooks on mods
+         */
+        Luacraft.getInstance().getModLoader().peformPostInit();
     }
 
     /**
@@ -155,69 +183,72 @@ public class SharedProxy
     }
 
     /**
-     * Execute all scripts from all mods
-     */
-    public void executeScripts()
-    {
-        ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
-
-        for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
-        {
-            bar.step("Executing " + mod.getMetadata().name);
-
-            setCurrentMod(mod);
-
-            GameRegistry.registerWorldGenerator(new LuacraftWorldGen(mod), 2);
-
-            for(File script : mod.getScripts())
-            {
-                if(script.getName().contains(scriptPrefix) || script.getName().contains(SHARED_SCRIPT_PREFIX))
-                {
-                    LuaUtil.runFromFile(luaState, script);
-                }
-            }
-        }
-
-        resetMod();
-        ProgressManager.pop(bar);
-    }
-
-    /**
      * Include internals
      */
     private void includeInternals()
     {
-        // TODO: Read 'internal_paths.lua'
+        Luacraft.getLogger().info("Loading and executing internals...");
         InputStream in = getClass().getClassLoader()
                 .getResourceAsStream("assets/luacraft/lua/internal.lua");
-        LuaUtil.runFromFile(luaState, new File("lua/internal.lua"),  in);
+        executeScript(new LuaScript(new File("lua/internal.lua"), "internal.lua", true),
+                in);
     }
 
     /**
-     * Set the current mod
-     * @param mod
+     * Execute a lua script
+     * @param script
      */
-    public void setCurrentMod(LuacraftMod mod)
+    public void executeScript(LuaScript script)
     {
-        currentMod = mod;
-        setModContainer(mod);
+        try
+        {
+            FileInputStream in = new FileInputStream(script.getFile());
+            executeScript(script, in);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Reset mod
+     * Execute a lua script
+     * @param script
+     * @param in
      */
-    public void resetMod()
+    public void executeScript(LuaScript script, InputStream in)
+    {
+        try
+        {
+            luaState.load(in, script.getFile().getPath(), "t");
+            currentScript = script;
+            luaState.call(0, 0);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Reset mod container to luacraft
+     */
+    public void resetModContainerToLuacraft()
     {
         currentMod = null;
 
-        setModContainer(luacraftModContainer);
+        setModContainer(Luacraft.getInstance().getModContainer());
     }
 
     /**
      * Set the current mod container
      * @param modContainer
      */
-    private void setModContainer(ModContainer modContainer)
+    public void setModContainer(ModContainer modContainer)
     {
         try
         {
@@ -230,18 +261,70 @@ public class SharedProxy
         }
     }
 
+    /**
+     * Register a lua library
+     * @param clazz
+     */
+    public void registerLuaLibrary(Class clazz)
+    {
+        LuaLibrary luaLibrary = (LuaLibrary) clazz.getAnnotation(LuaLibrary.class);
+        if(luaLibrary != null)
+        {
+            if(type == luaLibrary.side())
+            {
+                try
+                {
+                    MethodUtils.invokeStaticMethod(clazz, "initialize", luaState);
+                }
+                catch (NoSuchMethodException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (IllegalAccessException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (InvocationTargetException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Get lua state
+     * @return
+     */
     public LuaState getLuaState()
     {
         return luaState;
     }
 
+    /**
+     * Get current mod
+     * @return
+     */
     public LuacraftMod getCurrentMod()
     {
         return currentMod;
     }
 
+    /**
+     * Get current side
+     * @return
+     */
     public Side getSide()
     {
         return FMLCommonHandler.instance().getEffectiveSide();
+    }
+
+    /**
+     * Get current lua script
+     * @return
+     */
+    public LuaScript getCurrentScript()
+    {
+        return currentScript;
     }
 }

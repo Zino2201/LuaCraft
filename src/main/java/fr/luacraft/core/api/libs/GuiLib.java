@@ -5,11 +5,13 @@ import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.gui.LuaGuiScreen;
 import fr.luacraft.core.api.gui.LuacraftGuiScreen;
+import fr.luacraft.core.proxy.ProxyType;
 
 /**
  * Gui library, used for manipulating GUIs in Lua
  * @author Zino
  */
+@LuaLibrary(side = ProxyType.CLIENT)
 public class GuiLib
 {
     /**

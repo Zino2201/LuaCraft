@@ -16,9 +16,6 @@ import java.util.*;
  */
 public class LuaGameRegistry
 {
-    private static Set<RegistryRecipe> recipes = new HashSet<RegistryRecipe>();
-    private static Set<RegistrySmelt> smelts = new HashSet<RegistrySmelt>();
-
     /**
      * Register a block
      * @param id
@@ -62,7 +59,21 @@ public class LuaGameRegistry
      */
     public static void addShapelessRecipe(String output, String[] slots)
     {
-        recipes.add(new RegistryRecipe(true, output, slots, null));
+        /** Register recipe */
+        ArrayList<Object> regParams = new ArrayList<Object>();
+        for (String slot : slots)
+        {
+            if(slot != null)
+            {
+                if(slot.contains(":"))
+                    regParams.add(LuaUtil.getItemStackFromStr(slot));
+                else
+                    regParams.add(slot);
+            }
+        }
+
+        GameRegistry.addRecipe(new ShapelessOreRecipe(LuaUtil.getItemStackFromStr(output),
+                regParams.toArray()));
     }
 
     /**
@@ -72,6 +83,8 @@ public class LuaGameRegistry
      */
     public static void addShapedRecipe(String output, String[] slots)
     {
+        // FIXME: I don't think this code is the most beautiful, optimized and easiest way ^^
+
         char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUWXYZ".toCharArray();
 
         // Associate a id with a character
@@ -132,7 +145,21 @@ public class LuaGameRegistry
             params.add(str.toString());
         }
 
-        recipes.add(new RegistryRecipe(false, output, params.toArray(), idChar));
+        /** Register recipe */
+        ArrayList<Object> regParams = new ArrayList<Object>(params);
+
+        // Add to the params array the stacks associed to their characters
+        for (Map.Entry<String, Character> entry : idChar.entrySet())
+        {
+            regParams.add(entry.getValue());
+            if(entry.getKey().contains(":"))
+                regParams.add(LuaUtil.getItemStackFromStr(entry.getKey()));
+            else
+                regParams.add(entry.getKey());
+        }
+
+        GameRegistry.addRecipe(new ShapedOreRecipe(LuaUtil.getItemStackFromStr(output),
+                regParams.toArray()));
     }
 
     /**
@@ -143,54 +170,7 @@ public class LuaGameRegistry
      */
     public static void addSmelting(String input, String output, float xp)
     {
-        smelts.add(new RegistrySmelt(input, output, xp));
-    }
-
-    /**
-     * Register all craft and smelts
-     */
-    public static void registerCraftAndSmelts()
-    {
-        for(RegistryRecipe craft : recipes)
-        {
-            if(craft.isShapeless())
-            {
-                ArrayList<Object> params = new ArrayList<Object>();
-                for (String slot : (String[]) craft.getParams())
-                {
-                    if(slot != null)
-                    {
-                        if(slot.contains(":"))
-                            params.add(LuaUtil.getItemStackFromID(slot));
-                        else
-                            params.add(slot);
-                    }
-                }
-
-                GameRegistry.addRecipe(new ShapelessOreRecipe(LuaUtil.getItemStackFromID(craft.getOutput()), params.toArray()));
-            }
-            else
-            {
-                ArrayList<Object> params = new ArrayList<Object>(Arrays.asList(craft.getParams()));
-
-                // Add to the params array the stacks associed to their characters
-                for (Map.Entry<String, Character> entry : craft.getIdCharMap().entrySet())
-                {
-                    params.add(entry.getValue());
-                    if(entry.getKey().contains(":"))
-                        params.add(LuaUtil.getItemStackFromID(entry.getKey()));
-                    else
-                        params.add(entry.getKey());
-                }
-
-                GameRegistry.addRecipe(new ShapedOreRecipe(LuaUtil.getItemStackFromID(craft.getOutput()), params.toArray()));
-            }
-        }
-
-        for(RegistrySmelt smelt : smelts)
-        {
-            GameRegistry.addSmelting(LuaUtil.getItemStackFromID(smelt.getInput()), LuaUtil.getItemStackFromID(smelt.getOutput()),
-                    smelt.getExperienceGain());
-        }
+        GameRegistry.addSmelting(LuaUtil.getItemStackFromStr(input),
+                LuaUtil.getItemStackFromStr(output), xp);
     }
 }

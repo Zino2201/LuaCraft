@@ -1,6 +1,7 @@
 package fr.luacraft.core.api.fluids;
 
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.util.EnumUtil;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -15,7 +16,7 @@ public class LuacraftFluidBlock extends BlockFluidClassic
 {
     public LuacraftFluidBlock(String name, String fluid, int material)
     {
-        super(FluidRegistry.getFluid(fluid), LuaUtil.getMaterialByID(material));
+        super(FluidRegistry.getFluid(fluid), EnumUtil.getMaterialFromInt(material));
 
         this.setBlockName(name);
         this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);

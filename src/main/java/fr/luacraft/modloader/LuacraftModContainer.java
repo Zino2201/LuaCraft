@@ -20,18 +20,23 @@ import java.util.Set;
  */
 public class LuacraftModContainer implements ModContainer
 {
-    private ModMetadata md;
     private ArtifactVersion processedVersion;
+    private LuacraftModInfo modInfo;
 
-    public LuacraftModContainer(ModMetadata md)
+    protected void setModInfo(LuacraftModInfo mi)
     {
-        this.md = md;
+        modInfo = mi;
     }
 
     @Override
     public void bindMetadata(MetadataCollection mc)
     {
 
+    }
+
+    public LuacraftModInfo getModInfo()
+    {
+        return modInfo;
     }
 
     @Override
@@ -53,9 +58,10 @@ public class LuacraftModContainer implements ModContainer
     }
 
     @Override
+    @Deprecated
     public ModMetadata getMetadata()
     {
-        return md;
+        return null;
     }
 
     @Override
@@ -67,13 +73,13 @@ public class LuacraftModContainer implements ModContainer
     @Override
     public String getModId()
     {
-        return md.modId;
+        return modInfo.getModId();
     }
 
     @Override
     public String getName()
     {
-        return md.name;
+        return modInfo.getName();
     }
 
     @Override
@@ -91,7 +97,7 @@ public class LuacraftModContainer implements ModContainer
     @Override
     public String getVersion()
     {
-        return md.version;
+        return modInfo.getVersion();
     }
 
     @Override
@@ -131,7 +137,7 @@ public class LuacraftModContainer implements ModContainer
     @Override
     public String getDisplayVersion()
     {
-        return md.version;
+        return modInfo.getVersion();
     }
 
     @Override
@@ -149,7 +155,7 @@ public class LuacraftModContainer implements ModContainer
     @Override
     public String toString()
     {
-        return md != null ? getModId() : "Luacraft Mod Container ("+md.modId+") @" + System.identityHashCode(this);
+        return modInfo != null ? getModId() : "Luacraft Mod Container ("+modInfo.getModId()+") @" + System.identityHashCode(this);
     }
 
     @Override
@@ -185,5 +191,10 @@ public class LuacraftModContainer implements ModContainer
     public List<String> getOwnedPackages()
     {
         return ImmutableList.of();
+    }
+
+    public String getLuacraftVersion()
+    {
+        return modInfo.getLuacraftVersion();
     }
 }

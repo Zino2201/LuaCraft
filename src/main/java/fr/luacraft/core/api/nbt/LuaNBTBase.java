@@ -23,13 +23,13 @@ public class LuaNBTBase implements ILuaObject
     }
 
     @Override
-    public Object getObject()
+    public Object GetContainedObject()
     {
         return nbtBase;
     }
 
     @Override
-    public boolean isContainer()
+    public boolean IsContainer()
     {
         return true;
     }

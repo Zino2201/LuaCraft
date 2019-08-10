@@ -9,6 +9,7 @@ import fr.luacraft.core.api.items.LuaItemStack;
 import fr.luacraft.core.api.world.LuaExplosion;
 import fr.luacraft.core.api.world.LuaIBlockAccess;
 import fr.luacraft.core.api.world.LuaWorld;
+import fr.luacraft.util.EnumUtil;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -322,7 +323,7 @@ public class LuacraftBlockHooks
                 Boolean.class,
                 block,
                 "CanCreatureSpawn",
-                LuaUtil.getCreatureTypeId(type),
+                EnumUtil.getCreatureTypeAsInt(type),
                 new LuaIBlockAccess(world),
                 x,
                 y,
@@ -451,7 +452,7 @@ public class LuacraftBlockHooks
                 x,
                 y,
                 z,
-                LuaUtil.getForgeDirectionAsInt(direction),
+                EnumUtil.getForgeDirectionAsInt(direction),
                 new LuaIPlantable(plantable));
     }
 

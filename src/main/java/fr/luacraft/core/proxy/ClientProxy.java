@@ -10,9 +10,14 @@ import fr.luacraft.core.gui.GuiLuaModMenu;
 import fr.luacraft.core.gui.GuiLuaModMenuButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
+
+import javax.annotation.Nonnull;
 
 /**
  * Client proxy
@@ -24,6 +29,7 @@ public class ClientProxy extends SharedProxy
 
     public ClientProxy()
     {
+        this.type = ProxyType.CLIENT;
         this.scriptPrefix = "cl";
     }
 
@@ -55,10 +61,15 @@ public class ClientProxy extends SharedProxy
     {
         if(event.gui instanceof GuiMainMenu)
         {
+            int i = event.gui.height / 4 + 48;
+
             GuiButton luamodsbtn = new GuiLuaModMenuButton(
                     MOD_LIST_BUTTON,
-                    event.gui.width - 20,
-                    event.gui.height / 4 + 48 + 72 + 10);
+                    event.gui.width / 2 - 100,
+                    i + 24 * 2);
+                    //event.gui.width - 20,
+                    //event.gui.height / 4 + 48 + 72 + 10);
+            luamodsbtn.xPosition = (event.gui.width / 2 + 2) + 100;
             event.buttonList.add(luamodsbtn);
         }
     }
@@ -68,21 +79,15 @@ public class ClientProxy extends SharedProxy
     {
         if(event.gui instanceof GuiMainMenu)
         {
-            String labelStr = String.format("Luacraft v%s", Luacraft.VERSION);
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(
-                    labelStr,
-                    event.gui.width - Minecraft.getMinecraft().fontRenderer.getStringWidth(labelStr) - 2,
-                    event.gui.height - 30,
-                    -1);
+            if (Luacraft.getInstance().getModLoader().getObsoleteMods().size() > 0) {
+                int i = event.gui.height / 4 + 48;
 
-            String label2Str = String.format("%d lua mod%s loaded",
-                    Luacraft.getInstance().getModLoader().mods.size(),
-                    Luacraft.getInstance().getModLoader().mods.size() > 1 ? "s" : "");
-            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(
-                    label2Str,
-                    event.gui.width - Minecraft.getMinecraft().fontRenderer.getStringWidth(label2Str) - 2,
-                    event.gui.height - 20,
-                    -1);
+                int x = (event.gui.width / 2 + 2) + 115;
+                int y = (i + 24 * 2) + 12;
+
+                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("!", x,
+                        y, 0xFF0000);
+            }
         }
     }
 

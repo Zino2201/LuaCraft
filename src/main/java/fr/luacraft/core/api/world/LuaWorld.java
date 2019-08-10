@@ -33,13 +33,13 @@ public class LuaWorld implements ILuaObject
     }
 
     @Override
-    public Object getObject()
+    public Object GetContainedObject()
     {
         return world;
     }
 
     @Override
-    public boolean isContainer()
+    public boolean IsContainer()
     {
         return true;
     }

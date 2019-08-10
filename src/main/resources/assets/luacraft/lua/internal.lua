@@ -90,6 +90,6 @@ mc.actions = {
     NONE = 0,
     EAT = 1,
     DRINK = 2,
-    BLOCK = 3
+    BLOCK = 3,
     BOW = 4
 }

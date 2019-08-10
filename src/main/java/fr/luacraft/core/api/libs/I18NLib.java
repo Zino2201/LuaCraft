@@ -2,12 +2,14 @@ package fr.luacraft.core.api.libs;
 
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
+import fr.luacraft.core.proxy.ProxyType;
 import net.minecraft.client.resources.I18n;
 
 /**
  * i18n library
  * @author Zino
  */
+@LuaLibrary(side = ProxyType.CLIENT)
 public class I18NLib
 {
     /**

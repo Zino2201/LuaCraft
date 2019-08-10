@@ -79,7 +79,7 @@ public class LuaHookManager
                         l.pushJavaObject(obj);
                     }
 
-                    l.call(args.length, 1);
+                    l.call(args.length, clazz == null ? 0 : 1);
 
                     if(clazz != null)
                         if(l.isJavaObject(-1, clazz))

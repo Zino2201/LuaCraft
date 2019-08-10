@@ -10,6 +10,7 @@ import java.util.HashMap;
  * Represents a lua class
  * @author Zino
  */
+@Deprecated
 public class LuaClass implements ILuaObject
 {
     private HashMap<String, Integer> functions;
@@ -61,13 +62,13 @@ public class LuaClass implements ILuaObject
     }
 
     @Override
-    public boolean isContainer()
+    public boolean IsContainer()
     {
         return false;
     }
 
     @Override
-    public Object getObject()
+    public Object GetContainedObject()
     {
         return null;
     }
