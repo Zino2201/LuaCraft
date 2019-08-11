@@ -33,7 +33,7 @@ public class LuacraftBlock extends Block
         this.tileEntityClass = tileEntityClass;
 
         this.setBlockName(name);
-        this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);
+        this.setBlockTextureName(Luacraft.getInstance().getModLoader().getCurrentMod().getModId() + ":" + name);
     }
 
     @Override

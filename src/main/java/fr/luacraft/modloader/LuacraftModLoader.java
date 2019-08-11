@@ -227,6 +227,11 @@ public class LuacraftModLoader
         return null;
     }
 
+    public LuacraftMod getCurrentMod()
+    {
+        return currentMod;
+    }
+
     /**
      * Get mods list
      * @return

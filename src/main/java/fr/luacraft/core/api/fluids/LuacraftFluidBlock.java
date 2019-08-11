@@ -19,7 +19,7 @@ public class LuacraftFluidBlock extends BlockFluidClassic
         super(FluidRegistry.getFluid(fluid), EnumUtil.getMaterialFromInt(material));
 
         this.setBlockName(name);
-        this.setBlockTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + name);
+        this.setBlockTextureName(Luacraft.getInstance().getModLoader().getCurrentMod().getModId() + ":" + name);
 
         FluidRegistry.getFluid(fluid).setBlock(this);
     }

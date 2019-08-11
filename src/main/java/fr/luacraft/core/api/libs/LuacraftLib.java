@@ -40,7 +40,7 @@ public class LuacraftLib
         @Override
         public int invoke(LuaState l)
         {
-            LuaMod mod = new LuaMod(Luacraft.getInstance().getProxy().getCurrentMod());
+            LuaMod mod = new LuaMod(Luacraft.getInstance().getModLoader().getCurrentMod());
             l.pushJavaObject(mod);
             return 1;
         }

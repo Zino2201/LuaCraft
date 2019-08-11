@@ -12,7 +12,8 @@ import org.lwjgl.opengl.GL11;
  */
 public class GuiLuaModMenuButton extends GuiButton
 {
-    public static final ResourceLocation BUTTON_ICON = new ResourceLocation("luacraft", "textures/logo.png");
+    public static final ResourceLocation BUTTON_ICON = new ResourceLocation("luacraft",
+            "textures/luacraft_buttons.png");
 
     public GuiLuaModMenuButton(int id, int x, int y)
     {

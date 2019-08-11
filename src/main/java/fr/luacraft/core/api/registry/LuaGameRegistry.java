@@ -24,7 +24,7 @@ public class LuaGameRegistry
     public static void registerBlock(String id, Block block)
     {
         GameRegistry.registerBlock(block, id);
-        Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addBlock(block);
+        Luacraft.getInstance().getModLoader().getCurrentMod().getRegistryData().addBlock(block);
     }
 
     /**
@@ -35,7 +35,7 @@ public class LuaGameRegistry
     public static void registerItem(String id, Item item)
     {
         GameRegistry.registerItem(item, id);
-        Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addItem(item);
+        Luacraft.getInstance().getModLoader().getCurrentMod().getRegistryData().addItem(item);
     }
 
     /**

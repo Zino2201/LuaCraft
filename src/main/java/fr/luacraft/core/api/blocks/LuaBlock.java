@@ -541,18 +541,21 @@ public class LuaBlock implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "Block";
     }
 
     @Override
+    @LuaFunction
     public Object GetContainedObject()
     {
         return block;

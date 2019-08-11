@@ -22,7 +22,7 @@ public class LuacraftItemFood extends ItemFood
         super(healAmount, saturation, isWolfFavoriteFood);
 
         this.setUnlocalizedName(id);
-        this.setTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + id);
+        this.setTextureName(Luacraft.getInstance().getModLoader().getCurrentMod().getModId() + ":" + id);
         this.setFull3D();
     }
 

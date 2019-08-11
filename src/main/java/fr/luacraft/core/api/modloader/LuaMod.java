@@ -238,7 +238,7 @@ public class LuaMod implements ILuaObject
     @LuaFunction
     public LuaItem RegisterFluidBucket(String id, String fluidBlock, String fluid)
     {
-        LuaItem item = new LuaItem(new LuacraftItemBucket(id, GameRegistry.findBlock(Luacraft.getInstance().getProxy().getCurrentMod().getModId(),
+        LuaItem item = new LuaItem(new LuacraftItemBucket(id, GameRegistry.findBlock(Luacraft.getInstance().getModLoader().getCurrentMod().getModId(),
                 fluidBlock)));
         LuaGameRegistry.registerItem(id, item.getItem());
         FluidContainerRegistry.registerFluidContainer(

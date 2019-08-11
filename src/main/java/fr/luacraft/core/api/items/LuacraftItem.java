@@ -30,7 +30,7 @@ public class LuacraftItem extends Item
     public LuacraftItem(String id)
     {
         this.setUnlocalizedName(id);
-        this.setTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + id);
+        this.setTextureName(Luacraft.getInstance().getModLoader().getCurrentMod().getModId() + ":" + id);
         this.setFull3D();
 
         this.isDamageable = true;

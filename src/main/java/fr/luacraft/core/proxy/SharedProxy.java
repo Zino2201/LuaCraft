@@ -110,6 +110,7 @@ public class SharedProxy
             MinecraftLib.initialize(luaState);
             HookLib.initialize(luaState);
             NetLib.initialize(luaState);
+            ReflLib.initialize(luaState);
 
             /** Include internals */
             includeInternals();
@@ -301,14 +302,6 @@ public class SharedProxy
         return luaState;
     }
 
-    /**
-     * Get current mod
-     * @return
-     */
-    public LuacraftMod getCurrentMod()
-    {
-        return currentMod;
-    }
 
     /**
      * Get current side

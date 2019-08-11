@@ -24,7 +24,7 @@ public class GuiLib
         {
             String name = l.checkString(1);
             LuaGuiScreen guiScreen = new LuaGuiScreen(new LuacraftGuiScreen(name));
-            Luacraft.getInstance().getProxy().getCurrentMod().getRegistryData().addGui(guiScreen.getGuiScreen());
+            Luacraft.getInstance().getModLoader().getCurrentMod().getRegistryData().addGui(guiScreen.getGuiScreen());
             l.pushJavaObject(guiScreen);
             return 1;
         }

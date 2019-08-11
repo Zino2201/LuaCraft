@@ -29,7 +29,7 @@ public class LuacraftItemAxe extends ItemAxe
         super(ToolMaterial.valueOf(material));
 
         this.setUnlocalizedName(id);
-        this.setTextureName(Luacraft.getInstance().getProxy().getCurrentMod().getModId() + ":" + id);
+        this.setTextureName(Luacraft.getInstance().getModLoader().getCurrentMod().getModId() + ":" + id);
         this.setFull3D();
     }
 
