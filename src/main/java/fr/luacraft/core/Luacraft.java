@@ -30,6 +30,8 @@ public class Luacraft
     /** Mod version (replaced by gradle when jar is built) */
     public static final String VERSION = "{@version:luacraft}";
 
+    public static final String TARGET_MC_VERSION = "{@version:mcversion}";
+
     /** List of Luacraft versions that doesn't mark mod as obsolete */
     public static final String[] COMPATIBLE_VERSIONS = new String[] { };
 

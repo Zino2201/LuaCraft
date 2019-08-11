@@ -3,28 +3,30 @@ package fr.luacraft.core.api.reflection;
 import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
 
-import java.lang.reflect.Field;
-
-public class LuaField implements ILuaObject
+/**
+ * Container for a JavaObject
+ * @author Zino
+ */
+public class LuaJavaObject implements ILuaObject
 {
-    private Field field;
+    private Object object;
 
-    public LuaField(Field field)
+    public LuaJavaObject(Object object)
     {
-        this.field = field;
+        this.object = object;
     }
 
     @LuaFunction
-    public String GetName()
+    public Object GetJavaObject()
     {
-        return field.getName();
+        return object;
     }
 
     @Override
     @LuaFunction
     public String GetType()
     {
-        return "Field";
+        return "JavaObject";
     }
 
     @Override
@@ -38,6 +40,6 @@ public class LuaField implements ILuaObject
     @LuaFunction
     public LuaJavaObject GetContainedObject()
     {
-        return new LuaJavaObject(field);
+        return this;
     }
 }

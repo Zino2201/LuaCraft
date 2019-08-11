@@ -1,6 +1,7 @@
 package fr.luacraft.core.api.entity;
 
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -29,9 +30,9 @@ public class LuaTileEntity implements ILuaObject
     }
 
     @Override
-    public Object GetContainedObject()
+    public LuaJavaObject GetContainedObject()
     {
-        return tileEntity;
+        return new LuaJavaObject(tileEntity);
     }
 
     public TileEntity getTileEntity()

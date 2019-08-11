@@ -111,6 +111,7 @@ public class SharedProxy
             HookLib.initialize(luaState);
             NetLib.initialize(luaState);
             ReflLib.initialize(luaState);
+            FileLib.initialize(luaState);
 
             /** Include internals */
             includeInternals();

@@ -1,5 +1,6 @@
 package fr.luacraft.core.api.libs;
 
+import com.naef.jnlua.DefaultJavaReflector;
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
@@ -9,6 +10,9 @@ import fr.luacraft.modloader.LuaScript;
 import fr.luacraft.util.LuaUtil;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.Map;
+import java.util.NavigableMap;
 
 /**
  * Base luacraft library
@@ -87,7 +91,6 @@ public class LuacraftLib
             return 1;
         }
     };
-
 
     /**
      * initialize the library

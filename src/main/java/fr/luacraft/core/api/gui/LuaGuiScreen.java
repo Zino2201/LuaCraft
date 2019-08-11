@@ -2,6 +2,7 @@ package fr.luacraft.core.api.gui;
 
 import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
@@ -77,21 +78,24 @@ public class LuaGuiScreen implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "GuiScreen";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return guiScreen;
+        return new LuaJavaObject(guiScreen);
     }
 
     public GuiScreen getGuiScreen()

@@ -1,6 +1,8 @@
 package fr.luacraft.core.api.fluids;
 
+import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraftforge.fluids.Fluid;
 
 /**
@@ -17,20 +19,23 @@ public class LuaFluid implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "Fluid";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return fluid;
+        return new LuaJavaObject(fluid);
     }
 }

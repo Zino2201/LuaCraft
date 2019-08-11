@@ -37,20 +37,23 @@ public class LuaMethod implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "Method";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return method;
+        return new LuaJavaObject(method);
     }
 }

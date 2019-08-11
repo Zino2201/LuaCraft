@@ -1,6 +1,7 @@
 package fr.luacraft.core.api.container;
 
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.inventory.Container;
 
 public class LuaContainer implements ILuaObject
@@ -25,8 +26,8 @@ public class LuaContainer implements ILuaObject
     }
 
     @Override
-    public Object GetContainedObject()
+    public LuaJavaObject GetContainedObject()
     {
-        return container;
+        return new LuaJavaObject(container);
     }
 }

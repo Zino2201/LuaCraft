@@ -3,6 +3,7 @@ package fr.luacraft.core.api.util;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 
 import java.util.HashMap;
 
@@ -68,7 +69,7 @@ public class LuaClass implements ILuaObject
     }
 
     @Override
-    public Object GetContainedObject()
+    public LuaJavaObject GetContainedObject()
     {
         return null;
     }

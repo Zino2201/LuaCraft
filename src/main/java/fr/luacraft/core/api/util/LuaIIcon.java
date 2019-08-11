@@ -1,6 +1,8 @@
 package fr.luacraft.core.api.util;
 
+import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.util.IIcon;
 
 public class LuaIIcon implements ILuaObject
@@ -13,20 +15,23 @@ public class LuaIIcon implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "Icon";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return icon;
+        return new LuaJavaObject(icon);
     }
 }

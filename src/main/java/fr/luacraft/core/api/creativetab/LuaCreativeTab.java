@@ -1,6 +1,7 @@
 package fr.luacraft.core.api.creativetab;
 
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class LuaCreativeTab implements ILuaObject
@@ -30,8 +31,8 @@ public class LuaCreativeTab implements ILuaObject
     }
 
     @Override
-    public Object GetContainedObject()
+    public LuaJavaObject GetContainedObject()
     {
-        return creativeTabs;
+        return new LuaJavaObject(creativeTabs);
     }
 }

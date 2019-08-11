@@ -1,6 +1,8 @@
 package fr.luacraft.core.api.items;
 
+import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -22,18 +24,22 @@ public class LuaItemStack implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "ItemStack";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer() {
         return true;
     }
 
     @Override
-    public Object GetContainedObject() {
-        return itemStack;
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
+    {
+        return new LuaJavaObject(itemStack);
     }
 }

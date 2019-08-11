@@ -5,6 +5,7 @@ import fr.luacraft.core.api.*;
 import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.items.LuaItem;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import fr.luacraft.core.api.util.LuaChunkCoordinates;
 import fr.luacraft.core.api.util.LuaIIcon;
 import fr.luacraft.core.api.world.LuaExplosion;
@@ -556,8 +557,8 @@ public class LuaBlock implements ILuaObject
 
     @Override
     @LuaFunction
-    public Object GetContainedObject()
+    public LuaJavaObject GetContainedObject()
     {
-        return block;
+        return new LuaJavaObject(block);
     }
 }

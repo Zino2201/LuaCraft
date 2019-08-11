@@ -24,6 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class LuacraftBlock extends Block
 {
+    @Deprecated
     private LuaClass tileEntityClass;
 
     public LuacraftBlock(String name, int material, LuaClass tileEntityClass)

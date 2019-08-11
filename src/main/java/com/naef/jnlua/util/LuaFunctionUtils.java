@@ -4,8 +4,12 @@ import java.lang.reflect.Method;
 
 public class LuaFunctionUtils
 {
-    public static boolean validLuaFunction(Method method)
+    public static boolean validLuaFunction(Class clazz,
+                                           Method method)
     {
-        return method.isAnnotationPresent(LuaFunction.class);
+        if(method.isAnnotationPresent(LuaFunction.class))
+            return true;
+
+        return false;
     }
 }

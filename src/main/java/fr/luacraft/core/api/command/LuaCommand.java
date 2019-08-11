@@ -2,6 +2,7 @@ package fr.luacraft.core.api.command;
 
 import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.command.CommandBase;
 
 public class LuaCommand implements ILuaObject
@@ -21,20 +22,23 @@ public class LuaCommand implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "CommandBase";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return commandBase;
+        return new LuaJavaObject(commandBase);
     }
 }

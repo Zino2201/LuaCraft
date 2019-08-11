@@ -19,20 +19,23 @@ public class LuaJavaClass implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "JavaClass";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return clazz;
+        return new LuaJavaObject(clazz);
     }
 }

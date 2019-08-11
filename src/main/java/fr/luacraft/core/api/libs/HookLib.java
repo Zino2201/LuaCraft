@@ -24,7 +24,7 @@ public class HookLib
             String name = l.checkString(2);
             int func = l.ref(LuaState.REGISTRYINDEX);
             if(object.IsContainer())
-                LuaHookManager.add(object.GetContainedObject(), name, func);
+                LuaHookManager.add(object.GetContainedObject().GetJavaObject(), name, func);
             else
                 LuaHookManager.add(object, name, func);
 

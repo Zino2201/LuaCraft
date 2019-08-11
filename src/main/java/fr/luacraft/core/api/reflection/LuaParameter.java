@@ -27,17 +27,21 @@ public class LuaParameter implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType() {
         return null;
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer() {
         return false;
     }
 
     @Override
-    public Object GetContainedObject() {
-        return null;
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
+    {
+        return new LuaJavaObject(parameter);
     }
 }

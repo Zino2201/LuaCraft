@@ -2,6 +2,7 @@ package fr.luacraft.core.api.world;
 
 import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -37,7 +38,7 @@ public class LuaIBlockAccess implements ILuaObject
     @Override
     public String GetType()
     {
-        return "IBlockAccess";
+        return "BlockAccess";
     }
 
     @Override
@@ -47,8 +48,8 @@ public class LuaIBlockAccess implements ILuaObject
     }
 
     @Override
-    public Object GetContainedObject()
+    public LuaJavaObject GetContainedObject()
     {
-        return blockAccess;
+        return new LuaJavaObject(blockAccess);
     }
 }

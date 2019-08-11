@@ -2,6 +2,7 @@ package fr.luacraft.core.api.nbt;
 
 import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -90,20 +91,23 @@ public class LuaNBTTagCompound implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "NBTTagCompound";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return nbtTagCompound;
+        return new LuaJavaObject(nbtTagCompound);
     }
 }

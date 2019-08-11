@@ -4,6 +4,7 @@ import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.creativetab.LuaCreativeTab;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import fr.luacraft.core.api.util.LuaIIcon;
 import fr.luacraft.util.EnumUtil;
 import net.minecraft.item.Item;
@@ -285,18 +286,21 @@ public class LuaItem implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return item;
+        return new LuaJavaObject(item);
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "Item";

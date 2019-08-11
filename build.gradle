@@ -22,12 +22,15 @@ apply plugin: 'forge'
 
 version = modVersion+"-"+mcVersion
 group = "fr.luacraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "luacraft"
+archivesBaseName = "Luacraft"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 minecraft {
     version = "1.7.10-10.13.4.1558-1.7.10"
     runDir = "eclipse"
     replace "{@version:luacraft}":modVersion
+    replace "{@version:mcversion}":mcVersion
 }
 
 dependencies {

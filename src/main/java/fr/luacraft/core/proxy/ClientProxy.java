@@ -64,6 +64,7 @@ public class ClientProxy extends SharedProxy
             int i = event.gui.height / 4 + 48;
 
             GuiButton luamodsbtn = new GuiLuaModMenuButton(
+                    (GuiMainMenu) event.gui,
                     MOD_LIST_BUTTON,
                     event.gui.width / 2 - 100,
                     i + 24 * 2);

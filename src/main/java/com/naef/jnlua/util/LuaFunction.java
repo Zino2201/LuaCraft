@@ -9,7 +9,6 @@ import java.lang.annotation.*;
  * This annotation also got a extra meta String array property for supplying metadata
  * @author Zino
  */
-@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface LuaFunction

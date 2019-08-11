@@ -14,6 +14,7 @@ import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.fluids.LuaFluid;
 import fr.luacraft.core.api.fluids.LuacraftFluidBlock;
 import fr.luacraft.core.api.items.*;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import fr.luacraft.core.api.registry.LuaGameRegistry;
 import fr.luacraft.modloader.LuacraftMod;
 import net.minecraft.block.Block;
@@ -410,20 +411,23 @@ public class LuaMod implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "LuaMod";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return mod;
+        return new LuaJavaObject(mod);
     }
 }

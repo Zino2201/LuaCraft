@@ -1,6 +1,7 @@
 package fr.luacraft.core.api.entity;
 
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.entity.Entity;
 
 public class LuaEntity implements ILuaObject
@@ -25,8 +26,8 @@ public class LuaEntity implements ILuaObject
     }
 
     @Override
-    public Object GetContainedObject()
+    public LuaJavaObject GetContainedObject()
     {
-        return entity;
+        return new LuaJavaObject(entity);
     }
 }

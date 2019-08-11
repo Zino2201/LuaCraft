@@ -166,7 +166,7 @@ public class DefaultJavaReflector implements JavaReflector {
 				continue;
 			}
 
-			if(!LuaFunctionUtils.validLuaFunction(method))
+			if(!LuaFunctionUtils.validLuaFunction(clazz, method))
 				continue;
 
 			// Attempt to find the method in a public class if the declaring
@@ -598,7 +598,7 @@ public class DefaultJavaReflector implements JavaReflector {
 			/**
 			 * Creates a new instance.
 			 */
-			public MapNext(Iterator<Map.Entry<Object, Object>> iterator) {
+			public 	MapNext(Iterator<Map.Entry<Object, Object>> iterator) {
 				this.iterator = iterator;
 			}
 

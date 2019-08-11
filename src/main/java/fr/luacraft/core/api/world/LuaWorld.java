@@ -2,6 +2,7 @@ package fr.luacraft.core.api.world;
 
 import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.world.World;
 
 /**
@@ -33,18 +34,21 @@ public class LuaWorld implements ILuaObject
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return world;
+        return new LuaJavaObject(world);
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "World";

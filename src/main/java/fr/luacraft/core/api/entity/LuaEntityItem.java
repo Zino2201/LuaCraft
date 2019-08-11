@@ -1,6 +1,8 @@
 package fr.luacraft.core.api.entity;
 
+import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.entity.item.EntityItem;
 
 public class LuaEntityItem implements ILuaObject
@@ -13,20 +15,23 @@ public class LuaEntityItem implements ILuaObject
     }
 
     @Override
+    @LuaFunction
     public String GetType()
     {
         return "EntityItem";
     }
 
     @Override
+    @LuaFunction
     public boolean IsContainer()
     {
         return true;
     }
 
     @Override
-    public Object GetContainedObject()
+    @LuaFunction
+    public LuaJavaObject GetContainedObject()
     {
-        return entityItem;
+        return new LuaJavaObject(entityItem);
     }
 }
