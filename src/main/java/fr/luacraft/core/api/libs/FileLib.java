@@ -26,7 +26,8 @@ public class FileLib
             "|",
             ":",
             "../",
-            ".."
+            "..",
+            "..\\"
     };
 
     public static final String BASE_LUACRAFT_FILE_PATH = "mods/" + Luacraft.TARGET_MC_VERSION + "/files/";
@@ -113,7 +114,6 @@ public class FileLib
             String path = l.checkString(1);
 
             String string = null;
-            boolean succeed = true;
 
             String safePath = getSafePath(path);
 
@@ -134,16 +134,28 @@ public class FileLib
             catch(IOException e)
             {
                 e.printStackTrace();
-                succeed = false;
             }
 
-            l.pushBoolean(succeed);
-            if(string == null)
-                l.pushNil();
-            else
-                l.pushString(string);
+            l.pushString(string);
 
-            return 2;
+            return 1;
+        }
+    };
+
+    public static JavaFunction Exists = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            String path = l.checkString(1);
+            String safePath = getSafePath(path);
+
+            Path filePath = Paths.get(safePath);
+            boolean fileExists = Files.exists(filePath);
+
+            l.pushBoolean(fileExists);
+
+            return 1;
         }
     };
 
@@ -177,6 +189,8 @@ public class FileLib
         l.setField(-2, "Append");
         l.pushJavaFunction(Read);
         l.setField(-2, "Read");
+        l.pushJavaFunction(Exists);
+        l.setField(-2, "Exists");
         l.setGlobal("file");
     }
 }

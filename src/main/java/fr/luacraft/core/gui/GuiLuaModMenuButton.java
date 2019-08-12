@@ -59,5 +59,16 @@ public class GuiLuaModMenuButton extends GuiButtonExt
 
         Gui.func_146110_a(this.xPosition, this.yPosition, x, y,
                 this.width, this.height, 20, 60);
+
+        if (Luacraft.getInstance().getModLoader().getObsoleteMods().size() > 0)
+        {
+            int i = menu.height / 4 + 48;
+
+            int ex = (menu.width / 2 + 2) + 119;
+            int ey = (i + 24 * 2) - 4;
+
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("!", ex,
+                    ey, 0xFF0000);
+        }
     }
 }

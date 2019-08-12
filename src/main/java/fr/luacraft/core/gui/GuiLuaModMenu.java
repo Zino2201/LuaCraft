@@ -1,16 +1,30 @@
 package fr.luacraft.core.gui;
 
 import com.google.common.base.Joiner;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ModContainer;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.modloader.LuacraftMod;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Lua mod menu
- * Based off cpw's GuiModList
+ * It is just cpw's GuiModList but modified a bit...
  */
 public class GuiLuaModMenu extends GuiScreen
 {
@@ -19,6 +33,8 @@ public class GuiLuaModMenu extends GuiScreen
     private int currentModIndex = -1;
     private LuacraftMod currentMod;
     private int listWidth;
+    private ResourceLocation cachedLogo;
+    private Dimension cachedLogoDimensions;
 
     public GuiLuaModMenu(GuiScreen mainMenu)
     {
@@ -66,6 +82,65 @@ public class GuiLuaModMenu extends GuiScreen
             int shifty = 35;
             int offset = listWidth + 20;
 
+            String logoFile = currentMod.getModInfo().getLogo();
+            if (!logoFile.isEmpty())
+            {
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                TextureManager tm = mc.getTextureManager();
+                IResourcePack pack = FMLClientHandler.instance().getResourcePackFor(currentMod.getModId());
+                try
+                {
+                    if (cachedLogo == null)
+                    {
+                        BufferedImage logo = null;
+                        if (pack!=null)
+                        {
+                            logo = pack.getPackImage();
+                        }
+                        else
+                        {
+                            InputStream logoResource = getClass().getResourceAsStream(logoFile);
+                            if (logoResource != null)
+                            {
+                                logo = ImageIO.read(logoResource);
+                            }
+                        }
+                        if (logo != null)
+                        {
+                            cachedLogo = tm.getDynamicTextureLocation("modlogo", new DynamicTexture(logo));
+                            cachedLogoDimensions = new Dimension(logo.getWidth(), logo.getHeight());
+                        }
+                    }
+                    if (cachedLogo != null)
+                    {
+                        this.mc.renderEngine.bindTexture(cachedLogo);
+                        double scaleX = cachedLogoDimensions.width / 200.0;
+                        double scaleY = cachedLogoDimensions.height / 65.0;
+                        double scale = 1.0;
+                        if (scaleX > 1 || scaleY > 1)
+                        {
+                            scale = 1.0 / Math.max(scaleX, scaleY);
+                        }
+                        cachedLogoDimensions.width *= scale;
+                        cachedLogoDimensions.height *= scale;
+                        int top = 32;
+                        Tessellator tess = Tessellator.instance;
+                        tess.startDrawingQuads();
+                        tess.addVertexWithUV(offset,                               top + cachedLogoDimensions.height,  zLevel, 0, 1);
+                        tess.addVertexWithUV(offset + cachedLogoDimensions.width,  top + cachedLogoDimensions.height,  zLevel, 1, 1);
+                        tess.addVertexWithUV(offset + cachedLogoDimensions.width,  top,                                zLevel, 1, 0);
+                        tess.addVertexWithUV(offset,                               top,                                zLevel, 0, 0);
+                        tess.draw();
+
+                        shifty += 65;
+                    }
+                }
+                catch (IOException e)
+                {
+                    ;
+                }
+            }
+
             fontRendererObj.drawStringWithShadow(String.format("%s v%s (%s)",
                     currentMod.getName(), currentMod.getVersion(), currentMod.getModId()), offset, shifty, 0xFFFFFF);
             shifty += 12;
@@ -99,6 +174,8 @@ public class GuiLuaModMenu extends GuiScreen
     {
         currentModIndex = mod;
         currentMod = Luacraft.getInstance().getModLoader().getMods().get(mod);
+        cachedLogo = null;
+        cachedLogoDimensions = null;
     }
 
     public boolean isSelected(int mod)

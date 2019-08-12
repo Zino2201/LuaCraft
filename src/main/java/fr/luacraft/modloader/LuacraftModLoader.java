@@ -182,12 +182,12 @@ public class LuacraftModLoader
     private void register(LuacraftMod mod)
     {
         mods.add(mod);
-        FMLCommonHandler.instance().addModToResourcePack(mod);
         if(considerModAsObsolete(mod))
         {
             mod.setObsolete(true);
             obsoleteMods.add(mod);
         }
+        FMLCommonHandler.instance().addModToResourcePack(mod);
     }
 
     /**

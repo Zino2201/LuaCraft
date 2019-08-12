@@ -13,6 +13,18 @@ public class LuacraftModInfo
     private String description;
     private String[] authors;
     private String website;
+    private String logo;
+
+    public LuacraftModInfo()
+    {
+        this.modid = "";
+        this.name = "";
+        this.version = "";
+        this.luacraftversion = "";
+        this.description = "";
+        this.website = "";
+        this.logo = "";
+    }
 
     public String getModId()
     {
@@ -47,5 +59,10 @@ public class LuacraftModInfo
     public String getWebsite()
     {
         return website;
+    }
+
+    public String getLogo()
+    {
+        return logo;
     }
 }

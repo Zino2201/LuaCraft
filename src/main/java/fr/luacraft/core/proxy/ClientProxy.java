@@ -76,23 +76,6 @@ public class ClientProxy extends SharedProxy
     }
 
     @SubscribeEvent
-    public void onGuiDrawScreen(GuiScreenEvent.DrawScreenEvent event)
-    {
-        if(event.gui instanceof GuiMainMenu)
-        {
-            if (Luacraft.getInstance().getModLoader().getObsoleteMods().size() > 0) {
-                int i = event.gui.height / 4 + 48;
-
-                int x = (event.gui.width / 2 + 2) + 115;
-                int y = (i + 24 * 2) + 12;
-
-                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("!", x,
-                        y, 0xFF0000);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void onGuiActionPerformed(GuiScreenEvent.ActionPerformedEvent event)
     {
         if(event.gui instanceof GuiMainMenu)

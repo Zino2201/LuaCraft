@@ -131,16 +131,7 @@ public class LuacraftMod extends LuacraftModContainer
     @Override
     public Class<?> getCustomResourcePackClass()
     {
-        try
-        {
-            return Class.forName("fr.luacraft.modloader.LuacraftFolderResourcePack", true, getClass().getClassLoader());
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
+        return LuacraftFolderResourcePack.class;
     }
 
     @Override
