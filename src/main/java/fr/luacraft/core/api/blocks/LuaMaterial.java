@@ -1,11 +1,11 @@
 package fr.luacraft.core.api.blocks;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.block.material.Material;
 
-public class LuaMaterial implements ILuaObject
+public class LuaMaterial implements ILuaContainer
 {
     private Material material;
 
@@ -16,16 +16,9 @@ public class LuaMaterial implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "Material";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

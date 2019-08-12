@@ -2,7 +2,7 @@ package fr.luacraft.core.api.hooks;
 
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

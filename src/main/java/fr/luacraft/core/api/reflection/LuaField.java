@@ -1,11 +1,16 @@
 package fr.luacraft.core.api.reflection;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 
 import java.lang.reflect.Field;
 
-public class LuaField implements ILuaObject
+/**
+ * Container for {@link Field}
+ *
+ * @author Zino
+ */
+public class LuaField implements ILuaContainer
 {
     private Field field;
 
@@ -22,16 +27,9 @@ public class LuaField implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "Field";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

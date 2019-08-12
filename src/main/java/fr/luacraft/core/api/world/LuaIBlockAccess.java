@@ -1,12 +1,12 @@
 package fr.luacraft.core.api.world;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class LuaIBlockAccess implements ILuaObject
+public class LuaIBlockAccess implements ILuaContainer
 {
     private IBlockAccess blockAccess;
 
@@ -36,15 +36,9 @@ public class LuaIBlockAccess implements ILuaObject
     }
 
     @Override
-    public String GetType()
+    public String GetTypeName()
     {
         return "BlockAccess";
-    }
-
-    @Override
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package fr.luacraft.core.api.items;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.item.ItemStack;
 
@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
  * A lua item stack
  * @author Zino
  */
-public class LuaItemStack implements ILuaObject
+public class LuaItemStack implements ILuaContainer
 {
     private ItemStack itemStack;
 
@@ -25,15 +25,9 @@ public class LuaItemStack implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "ItemStack";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer() {
-        return true;
     }
 
     @Override

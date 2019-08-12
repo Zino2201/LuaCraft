@@ -1,11 +1,11 @@
 package fr.luacraft.core.api.entity;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.entity.EntityLivingBase;
 
-public class LuaEntityLivingBase implements ILuaObject
+public class LuaEntityLivingBase implements ILuaContainer
 {
     private EntityLivingBase entity;
 
@@ -16,16 +16,9 @@ public class LuaEntityLivingBase implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "EntityLivingBase";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

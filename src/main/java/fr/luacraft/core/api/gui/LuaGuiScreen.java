@@ -1,16 +1,18 @@
 package fr.luacraft.core.api.gui;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+
+import static net.minecraft.client.resources.I18n.format;
 
 /**
  * Represents a GuiScreen in Lua
  * @author Zino
  */
-public class LuaGuiScreen implements ILuaObject
+public class LuaGuiScreen implements ILuaContainer
 {
     private GuiScreen guiScreen;
 
@@ -47,7 +49,7 @@ public class LuaGuiScreen implements ILuaObject
         if(text.contains(":"))
         {
             String[] splittedText = text.split(":");
-            text = I18n.format(splittedText[1], new Object[0]);
+            text = format(splittedText[1], new Object[0]);
         }
 
 
@@ -79,16 +81,9 @@ public class LuaGuiScreen implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "GuiScreen";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

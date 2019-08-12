@@ -1,7 +1,7 @@
 package fr.luacraft.core.api.items;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
@@ -9,12 +9,15 @@ import fr.luacraft.core.api.util.LuaIIcon;
 import fr.luacraft.util.EnumUtil;
 import net.minecraft.item.Item;
 
+import static fr.luacraft.util.EnumUtil.getActionAsInt;
+import static fr.luacraft.util.EnumUtil.getRarityAsInt;
+
 /**
  * Represetns a item in lua
  * @author Zino
  */
 @SuppressWarnings("unused")
-public class LuaItem implements ILuaObject
+public class LuaItem implements ILuaContainer
 {
     private Item item;
 
@@ -235,7 +238,7 @@ public class LuaItem implements ILuaObject
     @LuaFunction
     public int GetRarity(LuaItemStack stack)
     {
-        return EnumUtil.getRarityAsInt(item.getRarity(stack.getItemStack()));
+        return getRarityAsInt(item.getRarity(stack.getItemStack()));
     }
 
     /**
@@ -256,7 +259,7 @@ public class LuaItem implements ILuaObject
     @LuaFunction
     public int GetItemUseAction(LuaItemStack stack)
     {
-        return EnumUtil.getActionAsInt(item.getItemUseAction(stack.getItemStack()));
+        return getActionAsInt(item.getItemUseAction(stack.getItemStack()));
     }
 
     /**
@@ -287,13 +290,6 @@ public class LuaItem implements ILuaObject
 
     @Override
     @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
-    }
-
-    @Override
-    @LuaFunction
     public LuaJavaObject GetContainedObject()
     {
         return new LuaJavaObject(item);
@@ -301,7 +297,7 @@ public class LuaItem implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "Item";
     }

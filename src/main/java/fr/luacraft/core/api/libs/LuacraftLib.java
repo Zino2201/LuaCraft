@@ -4,6 +4,8 @@ import com.naef.jnlua.DefaultJavaReflector;
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.ILuaContainer;
+import fr.luacraft.core.api.ILuaObject;
 import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.core.api.modloader.LuaMod;
 import fr.luacraft.modloader.LuaScript;
@@ -92,6 +94,24 @@ public class LuacraftLib
         }
     };
 
+    public static JavaFunction IsContainer = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            ILuaObject object = l.checkJavaObject(1, ILuaObject.class);
+
+            boolean isContainer = false;
+
+            if(object instanceof ILuaContainer)
+                isContainer = true;
+
+            l.pushBoolean(isContainer);
+
+            return 1;
+        }
+    };
+
     /**
      * initialize the library
      * @param l
@@ -111,6 +131,8 @@ public class LuacraftLib
         l.setField(-2, "CreateClass");
         l.pushJavaFunction(GetFunctionRef);
         l.setField(-2, "GetFunctionRef");
+        l.pushJavaFunction(IsContainer);
+        l.setField(-2, "IsContainer");
 
         l.setGlobal("luacraft");
     }

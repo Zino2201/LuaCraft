@@ -1,14 +1,14 @@
 package fr.luacraft.core.api.gui;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.client.gui.GuiButton;
 
 /**
  * Represents a GuiButton in Lua
  */
-public class LuaGuiButton implements ILuaObject
+public class LuaGuiButton implements ILuaContainer
 {
     private GuiButton guiButton;
 
@@ -19,16 +19,9 @@ public class LuaGuiButton implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "GuiButton";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

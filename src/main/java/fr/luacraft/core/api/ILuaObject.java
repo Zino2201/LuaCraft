@@ -6,10 +6,11 @@ import fr.luacraft.core.api.reflection.LuaJavaObject;
 import java.io.Serializable;
 
 /**
- * ILuaObject is the main interface for all userdata objects
- * It can act as a JavaObject container.
+ * ILuaObject represents a Object as seen by Lua
  *
- * When it is set as a container, all hooks will reference the contained object
+ * If you want to create a {@link Object} container, use {@link ILuaContainer}
+ * To check if a {@link ILuaObject} is a {@link ILuaContainer}, use luacraft.isContainer(obj)
+ *
  * @author Zino
  */
 public interface ILuaObject extends Serializable
@@ -19,19 +20,5 @@ public interface ILuaObject extends Serializable
      * @return
      */
     @LuaFunction
-    String GetType();
-
-    /**
-     * Is a container
-     * @return
-     */
-    @LuaFunction
-    boolean IsContainer();
-
-    /**
-     * Get the contained java object, if any
-     * @return
-     */
-    @LuaFunction
-    LuaJavaObject GetContainedObject();
+    String GetTypeName();
 }

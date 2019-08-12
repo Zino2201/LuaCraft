@@ -1,6 +1,6 @@
 package fr.luacraft.core.api.entity;
 
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.tileentity.TileEntity;
 
@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
  * Represents a TileEntity in Lua
  * @author Zino
  */
-public class LuaTileEntity implements ILuaObject
+public class LuaTileEntity implements ILuaContainer
 {
     private TileEntity tileEntity;
 
@@ -18,15 +18,9 @@ public class LuaTileEntity implements ILuaObject
     }
 
     @Override
-    public String GetType()
+    public String GetTypeName()
     {
         return "TileEntity";
-    }
-
-    @Override
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

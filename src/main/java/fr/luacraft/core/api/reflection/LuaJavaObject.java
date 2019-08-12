@@ -1,13 +1,13 @@
 package fr.luacraft.core.api.reflection;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 
 /**
- * Container for a JavaObject
+ * Container for {@link Object}
  * @author Zino
  */
-public class LuaJavaObject implements ILuaObject
+public class LuaJavaObject implements ILuaContainer
 {
     private Object object;
 
@@ -24,16 +24,9 @@ public class LuaJavaObject implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "JavaObject";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

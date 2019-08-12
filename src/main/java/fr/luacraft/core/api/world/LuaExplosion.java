@@ -1,7 +1,7 @@
 package fr.luacraft.core.api.world;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.world.Explosion;
 
@@ -9,7 +9,7 @@ import net.minecraft.world.Explosion;
  * Container for Explosion
  * @author Zino
  */
-public class LuaExplosion implements ILuaObject
+public class LuaExplosion implements ILuaContainer
 {
     private Explosion explosion;
 
@@ -25,16 +25,9 @@ public class LuaExplosion implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "Explosion";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return false;
     }
 
     @Override

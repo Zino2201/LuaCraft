@@ -1,11 +1,11 @@
 package fr.luacraft.core.api.util;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.util.ChunkCoordinates;
 
-public class LuaChunkCoordinates implements ILuaObject
+public class LuaChunkCoordinates implements ILuaContainer
 {
     private ChunkCoordinates chunkCoordinates;
 
@@ -16,16 +16,9 @@ public class LuaChunkCoordinates implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "ChunkCoordinates";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

@@ -2,17 +2,20 @@ package fr.luacraft.core.api.util;
 
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 
 import java.util.HashMap;
+
+import static com.naef.jnlua.LuaState.REGISTRYINDEX;
+import static fr.luacraft.core.Luacraft.getInstance;
 
 /**
  * Represents a lua class
  * @author Zino
  */
 @Deprecated
-public class LuaClass implements ILuaObject
+public class LuaClass implements ILuaContainer
 {
     private HashMap<String, Integer> functions;
 
@@ -33,9 +36,9 @@ public class LuaClass implements ILuaObject
 
     public Object[] CallFunction(String name, int returnCount, Object... args)
     {
-        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+        LuaState l = getInstance().getProxy().getLuaState();
 
-        l.rawGet(LuaState.REGISTRYINDEX, functions.get(name));
+        l.rawGet(REGISTRYINDEX, functions.get(name));
         for(Object obj : args)
         {
             l.pushJavaObject(obj);
@@ -57,15 +60,9 @@ public class LuaClass implements ILuaObject
     }
 
     @Override
-    public String GetType()
+    public String GetTypeName()
     {
         return "Class";
-    }
-
-    @Override
-    public boolean IsContainer()
-    {
-        return false;
     }
 
     @Override

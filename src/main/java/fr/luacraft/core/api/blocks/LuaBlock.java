@@ -16,12 +16,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 
+import static fr.luacraft.util.EnumUtil.getCreatureTypeFromInt;
+import static net.minecraft.init.Blocks.fire;
+
 /**
  * Represent a Block in lua
  * @author Zino
  */
 @SuppressWarnings("unused")
-public class LuaBlock implements ILuaObject
+public class LuaBlock implements ILuaContainer
 {
     private Block block;
 
@@ -372,7 +375,7 @@ public class LuaBlock implements ILuaObject
     @LuaFunction
     public int GetFireSpreadSpeed()
     {
-        return Blocks.fire.getEncouragement(block);
+        return fire.getEncouragement(block);
     }
 
     /**
@@ -478,7 +481,7 @@ public class LuaBlock implements ILuaObject
     @LuaFunction
     public boolean CanCreatureSpawn(int creatureType, LuaIBlockAccess world, int x, int y, int z)
     {
-        return block.canCreatureSpawn(EnumUtil.getCreatureTypeFromInt(creatureType),
+        return block.canCreatureSpawn(getCreatureTypeFromInt(creatureType),
                 world.getBlockAccess(), x, y, z);
     }
 
@@ -543,14 +546,7 @@ public class LuaBlock implements ILuaObject
 
     @Override
     @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
-    }
-
-    @Override
-    @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "Block";
     }

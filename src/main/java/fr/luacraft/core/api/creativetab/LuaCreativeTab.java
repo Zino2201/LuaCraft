@@ -1,10 +1,10 @@
 package fr.luacraft.core.api.creativetab;
 
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class LuaCreativeTab implements ILuaObject
+public class LuaCreativeTab implements ILuaContainer
 {
     private CreativeTabs creativeTabs;
 
@@ -19,15 +19,9 @@ public class LuaCreativeTab implements ILuaObject
     }
 
     @Override
-    public String GetType()
+    public String GetTypeName()
     {
         return "CreativeTab";
-    }
-
-    @Override
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

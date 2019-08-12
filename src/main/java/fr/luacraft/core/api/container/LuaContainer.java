@@ -1,10 +1,10 @@
 package fr.luacraft.core.api.container;
 
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.inventory.Container;
 
-public class LuaContainer implements ILuaObject
+public class LuaContainer implements ILuaContainer
 {
     private Container container;
 
@@ -14,15 +14,9 @@ public class LuaContainer implements ILuaObject
     }
 
     @Override
-    public String GetType()
+    public String GetTypeName()
     {
         return "Container";
-    }
-
-    @Override
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package fr.luacraft.core.api.entity;
 
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.entity.Entity;
 
-public class LuaEntity implements ILuaObject
+public class LuaEntity implements ILuaContainer
 {
     private Entity entity;
 
@@ -14,15 +14,9 @@ public class LuaEntity implements ILuaObject
     }
 
     @Override
-    public String GetType()
+    public String GetTypeName()
     {
         return "Entity";
-    }
-
-    @Override
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

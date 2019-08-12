@@ -5,7 +5,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.blocks.LuacraftBlock;
 import fr.luacraft.core.api.command.LuaCommand;
@@ -27,12 +27,23 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+import static cpw.mods.fml.relauncher.Side.CLIENT;
+import static fr.luacraft.core.Luacraft.getInstance;
+import static fr.luacraft.core.api.registry.LuaGameRegistry.registerBlock;
+import static fr.luacraft.core.api.registry.LuaGameRegistry.registerItem;
+import static net.minecraftforge.client.ClientCommandHandler.instance;
+import static net.minecraftforge.common.util.EnumHelper.addArmorMaterial;
+import static net.minecraftforge.common.util.EnumHelper.addToolMaterial;
+import static net.minecraftforge.fluids.FluidContainerRegistry.*;
+import static net.minecraftforge.fluids.FluidRegistry.*;
+
 /**
  * Represents a LuacraftMod in Lua
  * @author Zino
  */
 @SuppressWarnings("unused")
-public class LuaMod implements ILuaObject
+public class LuaMod implements ILuaContainer
 {
     /**
      * Contained mod
@@ -58,7 +69,7 @@ public class LuaMod implements ILuaObject
         if(block == null)
         {
             LuaBlock luaBlock = new LuaBlock(new LuacraftBlock(id, material, null));
-            LuaGameRegistry.registerBlock(id, luaBlock.getBlock());
+            registerBlock(id, luaBlock.getBlock());
             return luaBlock;
         }
         else
@@ -76,7 +87,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItem(String id)
     {
         LuaItem item = new LuaItem(new LuacraftItem(id));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -90,7 +101,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItemSword(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemSword(id, material));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -104,7 +115,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItemPickaxe(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemPickaxe(id, material));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -118,7 +129,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItemAxe(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemAxe(id, material));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -132,7 +143,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItemShovel(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemShovel(id, material));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -146,7 +157,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItemHoe(String id, String material)
     {
         LuaItem item = new LuaItem(new LuacraftItemHoe(id, material));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -160,7 +171,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItemArmor(String id, String material, int part)
     {
         LuaItem item = new LuaItem(new LuacraftItemArmor(id, material, part));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -176,7 +187,7 @@ public class LuaMod implements ILuaObject
     public LuaItem RegisterItemFood(String id, int healAmount, float saturation, boolean isWolfFavoriteFood)
     {
         LuaItem item = new LuaItem(new LuacraftItemFood(id, healAmount, saturation, isWolfFavoriteFood));
-        LuaGameRegistry.registerItem(id, item.getItem());
+        registerItem(id, item.getItem());
         return item;
     }
 
@@ -209,8 +220,8 @@ public class LuaMod implements ILuaObject
     {
         Fluid fluid = new Fluid(id).setDensity(density).setViscosity(viscosity).setTemperature(temperature)
                 .setLuminosity(luminosity).setUnlocalizedName(id);
-        FluidRegistry.registerFluid(fluid);
-        fluid = FluidRegistry.getFluid(id);
+        registerFluid(fluid);
+        fluid = getFluid(id);
         return new LuaFluid(fluid);
     }
 
@@ -225,7 +236,7 @@ public class LuaMod implements ILuaObject
     public LuaBlock RegisterFluidBlock(String id, String fluid, int material)
     {
         LuaBlock block = new LuaBlock(new LuacraftFluidBlock(id, fluid, material));
-        LuaGameRegistry.registerBlock(id, block.getBlock());
+        registerBlock(id, block.getBlock());
         return block;
     }
 
@@ -239,12 +250,12 @@ public class LuaMod implements ILuaObject
     @LuaFunction
     public LuaItem RegisterFluidBucket(String id, String fluidBlock, String fluid)
     {
-        LuaItem item = new LuaItem(new LuacraftItemBucket(id, GameRegistry.findBlock(Luacraft.getInstance().getModLoader().getCurrentMod().getModId(),
+        LuaItem item = new LuaItem(new LuacraftItemBucket(id, findBlock(getInstance().getModLoader().getCurrentMod().getModId(),
                 fluidBlock)));
-        LuaGameRegistry.registerItem(id, item.getItem());
-        FluidContainerRegistry.registerFluidContainer(
-                FluidRegistry.getFluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME),
-                new ItemStack(item.getItem()), FluidContainerRegistry.EMPTY_BUCKET);
+        registerItem(id, item.getItem());
+        registerFluidContainer(
+                getFluidStack(fluid, BUCKET_VOLUME),
+                new ItemStack(item.getItem()), EMPTY_BUCKET);
         return item;
     }
 
@@ -256,7 +267,7 @@ public class LuaMod implements ILuaObject
     @LuaFunction
     public LuaCreativeTab AddCreativeTab(String label, final LuaItem item)
     {
-        if(Luacraft.getInstance().getProxy().getSide() == Side.CLIENT)
+        if(getInstance().getProxy().getSide() == CLIENT)
         {
             CreativeTabs creativeTab = new CreativeTabs(label) {
                 @Override
@@ -264,7 +275,7 @@ public class LuaMod implements ILuaObject
                     return item.getItem();
                 }
 
-                @SideOnly(Side.CLIENT)
+                @SideOnly(CLIENT)
                 public int func_151243_f()
                 {
                     return 0;
@@ -289,7 +300,7 @@ public class LuaMod implements ILuaObject
     public LuaCommand RegisterClientCommand(String name, String usage)
     {
         LuacraftCommand command = new LuacraftCommand(name, usage);
-        ClientCommandHandler.instance.registerCommand(command);
+        instance.registerCommand(command);
         return new LuaCommand(command);
     }
 
@@ -319,7 +330,7 @@ public class LuaMod implements ILuaObject
     @LuaFunction
     public void RegisterToolMaterial(String name, int harvestLevel, int maxUses, float efficiency, float damage, int enchantability)
     {
-        EnumHelperClient.addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
+        addToolMaterial(name, harvestLevel, maxUses, efficiency, damage, enchantability);
     }
 
     /**
@@ -332,7 +343,7 @@ public class LuaMod implements ILuaObject
     @LuaFunction
     public void RegisterArmorMaterial(String name, int durability, int[] reductionAmounts, int enchantability)
     {
-        EnumHelperClient.addArmorMaterial(name, durability, reductionAmounts, enchantability);
+        addArmorMaterial(name, durability, reductionAmounts, enchantability);
     }
 
     /**
@@ -412,16 +423,9 @@ public class LuaMod implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "LuaMod";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

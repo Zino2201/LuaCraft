@@ -6,7 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.creativetab.LuaCreativeTab;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.items.LuaItem;
@@ -94,7 +94,7 @@ public class MinecraftLib
         public int invoke(LuaState l)
         {
             String name = l.checkString(1);
-            ILuaObject object = l.checkJavaObject(2, ILuaObject.class);
+            ILuaContainer object = l.checkJavaObject(2, ILuaContainer.class);
             if(object instanceof LuaBlock)
                 OreDictionary.registerOre(name, ((LuaBlock) (object)).getBlock());
             else if(object instanceof LuaItem)

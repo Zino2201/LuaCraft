@@ -1,7 +1,7 @@
 package fr.luacraft.core.api.world;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.world.World;
 
@@ -9,7 +9,7 @@ import net.minecraft.world.World;
  * Represents a World in Lua
  * @author Zino
  */
-public class LuaWorld implements ILuaObject
+public class LuaWorld implements ILuaContainer
 {
     private World world;
 
@@ -42,14 +42,7 @@ public class LuaWorld implements ILuaObject
 
     @Override
     @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
-    }
-
-    @Override
-    @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "World";
     }

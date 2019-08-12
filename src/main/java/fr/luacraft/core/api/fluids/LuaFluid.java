@@ -1,7 +1,7 @@
 package fr.luacraft.core.api.fluids;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraftforge.fluids.Fluid;
 
@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.Fluid;
  * Represents a fluid in Lua
  * @author Zino
  */
-public class LuaFluid implements ILuaObject
+public class LuaFluid implements ILuaContainer
 {
     private Fluid fluid;
 
@@ -20,16 +20,9 @@ public class LuaFluid implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "Fluid";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

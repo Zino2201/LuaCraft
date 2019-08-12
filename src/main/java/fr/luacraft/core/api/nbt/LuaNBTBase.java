@@ -1,7 +1,7 @@
 package fr.luacraft.core.api.nbt;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.nbt.NBTBase;
 
@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTBase;
  * Represents a NBTBase in Lua
  * @author Zino
  */
-public class LuaNBTBase implements ILuaObject
+public class LuaNBTBase implements ILuaContainer
 {
     private NBTBase nbtBase;
 
@@ -20,7 +20,7 @@ public class LuaNBTBase implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "NBTBase";
     }
@@ -30,13 +30,6 @@ public class LuaNBTBase implements ILuaObject
     public LuaJavaObject GetContainedObject()
     {
         return new LuaJavaObject(nbtBase);
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     public NBTBase getNBTBase()

@@ -1,11 +1,11 @@
 package fr.luacraft.core.api.blocks;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraftforge.common.IPlantable;
 
-public class LuaIPlantable implements ILuaObject
+public class LuaIPlantable implements ILuaContainer
 {
     private IPlantable plantable;
 
@@ -16,16 +16,9 @@ public class LuaIPlantable implements ILuaObject
 
     @Override
     @LuaFunction
-    public String GetType()
+    public String GetTypeName()
     {
         return "Plantable";
-    }
-
-    @Override
-    @LuaFunction
-    public boolean IsContainer()
-    {
-        return true;
     }
 
     @Override

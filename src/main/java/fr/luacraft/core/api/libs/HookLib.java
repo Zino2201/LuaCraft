@@ -2,6 +2,7 @@ package fr.luacraft.core.api.libs;
 
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
+import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.ILuaObject;
 import fr.luacraft.core.api.hooks.LuaHookManager;
 
@@ -23,8 +24,9 @@ public class HookLib
             ILuaObject object = l.checkJavaObject(1, ILuaObject.class);
             String name = l.checkString(2);
             int func = l.ref(LuaState.REGISTRYINDEX);
-            if(object.IsContainer())
-                LuaHookManager.add(object.GetContainedObject().GetJavaObject(), name, func);
+            if(object instanceof ILuaContainer)
+                LuaHookManager.add(((ILuaContainer) object)
+                        .GetContainedObject().GetJavaObject(), name, func);
             else
                 LuaHookManager.add(object, name, func);
 
