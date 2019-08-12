@@ -97,6 +97,7 @@ public class LuacraftModLoader
     @SuppressWarnings("deprecated")
     public void performFirstExecution()
     {
+        Luacraft.getLogger().info("Performing first execution...");
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
 
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
@@ -126,6 +127,7 @@ public class LuacraftModLoader
      */
     public void peformPreInit()
     {
+        Luacraft.getLogger().info("Pre-initializing mods...");
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
@@ -142,6 +144,7 @@ public class LuacraftModLoader
      */
     public void peformInit()
     {
+        Luacraft.getLogger().info("Initializing mods...");
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
@@ -158,6 +161,7 @@ public class LuacraftModLoader
      */
     public void peformPostInit()
     {
+        Luacraft.getLogger().info("Post-initializing mods...");
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
         {
@@ -182,10 +186,12 @@ public class LuacraftModLoader
     private void register(LuacraftMod mod)
     {
         mods.add(mod);
+        Luacraft.getLogger().info("Registered mod " + mod.getName());
         if(considerModAsObsolete(mod))
         {
             mod.setObsolete(true);
             obsoleteMods.add(mod);
+            Luacraft.getLogger().warn("Mod " + mod.getName() + " is obsolete!");
         }
         FMLCommonHandler.instance().addModToResourcePack(mod);
     }

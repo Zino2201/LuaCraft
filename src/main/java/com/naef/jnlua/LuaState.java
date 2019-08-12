@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.naef.jnlua.JavaReflector.Metamethod;
+import fr.luacraft.core.api.ILuaObject;
 
 /**
  * JNLua lua class representing a Lua instance.
@@ -666,6 +667,17 @@ public class LuaState {
 	 */
 	public synchronized void pushJavaObject(Object object) {
 		check();
+
+		if(object instanceof ILuaObject)
+		{
+			if (((ILuaObject) object).IsContainer() &&
+					((ILuaObject) object).GetContainedObject().GetJavaObject() == null)
+			{
+				pushNil();
+				return;
+			}
+		}
+
 		getConverter().convertJavaObject(this, object);
 	}
 
