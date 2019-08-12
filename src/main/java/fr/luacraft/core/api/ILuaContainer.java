@@ -9,7 +9,7 @@ import fr.luacraft.core.api.reflection.LuaJavaObject;
  * If a ILuaContainer that contains null is passed into Lua,
  * JNLua will automatically push nil instead
  *
- * To check if a {@link ILuaObject} is a {@link ILuaContainer}, use luacraft.isContainer(obj)
+ * To check if a {@link ILuaObject} is a {@link ILuaContainer}, use luacraft.IsContainer(obj)
  *
  * @author Zino
  */

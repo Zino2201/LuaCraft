@@ -61,20 +61,9 @@ public class Luacraft
 
         modLoader = new LuacraftModLoader();
         /** Load all mods */
-
-        if(!LuaNativeLoader.isInDevEnvironnement())
-        {
-            File luamodDir = new File(event.getModConfigurationDirectory().getParentFile(), "luamods");
-            if (!luamodDir.exists())
-                luamodDir.mkdirs();
-            modLoader.addSearchDirectory(luamodDir.getPath());
-        }
-        else
-        {
-            // TODO: Setup a config file with support for supplying search dirs
-            modLoader.addSearchDirectory("D:\\Projects\\LuaCraft\\luamods");
-            modLoader.addSearchDirectory("C:\\Users\\Zino\\IdeaProjects\\LuaCraft\\luamods");
-        }
+        File luamodDir = new File(event.getModConfigurationDirectory().getParentFile(), "luamods");
+        if (!luamodDir.exists())
+            luamodDir.mkdirs();modLoader.addSearchDirectory(luamodDir.getPath());
 
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", 1);
         bar.step("Searching mods");
@@ -134,11 +123,15 @@ public class Luacraft
 
                 builder.add(str);
             }
-            builder.add(String.format("%d lua mod%s loaded, %s obsolete%s",
-                    modLoader.getMods().size(),
-                    modLoader.getMods().size() > 1 ? "s" : "",
-                    modLoader.getObsoleteMods().size(),
-                    modLoader.getObsoleteMods().size() > 1 ? "s" : ""));
+            if(modLoader.getMods().size() > 0)
+                builder.add(String.format("%d lua mod%s loaded, %s obsolete%s",
+                        modLoader.getMods().size(),
+                        modLoader.getMods().size() > 1 ? "s" : "",
+                        modLoader.getObsoleteMods().size(),
+                        modLoader.getObsoleteMods().size() > 1 ? "s" : ""));
+            else
+                builder.add("No lua mod loaded");
+
             List<String> brandings = builder.build();
             FieldUtils.writeField(FMLCommonHandler.instance(), "brandings", brandings,
                     true);
