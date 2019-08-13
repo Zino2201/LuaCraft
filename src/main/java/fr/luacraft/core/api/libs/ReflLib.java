@@ -2,7 +2,6 @@ package fr.luacraft.core.api.libs;
 
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
-import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.reflection.LuaField;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import fr.luacraft.core.api.reflection.LuaMethod;
@@ -121,7 +120,6 @@ public class ReflLib
             return 1;
         }
     };
-
 
     public static void initialize(LuaState l)
     {

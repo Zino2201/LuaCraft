@@ -1,20 +1,17 @@
 package fr.luacraft.core.api.libs;
 
-import com.naef.jnlua.DefaultJavaReflector;
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.ILuaObject;
-import fr.luacraft.core.api.util.LuaClass;
+import fr.luacraft.core.api.meta.LuaMetaUtil;
+import fr.luacraft.core.api.meta.TestMeta;
 import fr.luacraft.core.api.modloader.LuaMod;
+import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.modloader.LuaScript;
-import fr.luacraft.util.LuaUtil;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.Map;
-import java.util.NavigableMap;
 
 /**
  * Base luacraft library
@@ -112,6 +109,17 @@ public class LuacraftLib
         }
     };
 
+    public static JavaFunction Test = new JavaFunction()
+    {
+        @Override
+        public int invoke(LuaState l)
+        {
+            LuaMetaUtil.pushJavaObject(new TestMeta(), "TestMeta");
+
+            return 1;
+        }
+    };
+
     /**
      * initialize the library
      * @param l
@@ -133,6 +141,8 @@ public class LuacraftLib
         l.setField(-2, "GetFunctionRef");
         l.pushJavaFunction(IsContainer);
         l.setField(-2, "IsContainer");
+        l.pushJavaFunction(Test);
+        l.setField(-2, "Test");
 
         l.setGlobal("luacraft");
     }

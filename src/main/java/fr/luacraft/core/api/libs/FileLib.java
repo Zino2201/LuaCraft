@@ -4,16 +4,19 @@ import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
+/**
+ * Provide safe IO capabilities for mods
+ * @author Zino
+ */
 @LuaLibrary
 public class FileLib
 {
@@ -54,7 +57,7 @@ public class FileLib
                     dir.mkdirs();
                 if(!Files.exists(Paths.get(safePath)))
                     Files.createFile(Paths.get(safePath));
-                Files.write(Paths.get(safePath), content.getBytes(), StandardOpenOption.WRITE);
+                Files.write(Paths.get(safePath), content.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
             }
             catch (IOException e)
             {

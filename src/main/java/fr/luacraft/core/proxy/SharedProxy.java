@@ -2,9 +2,13 @@ package fr.luacraft.core.proxy;
 
 import com.naef.jnlua.LuaState;
 import com.naef.jnlua.NativeSupport;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -12,24 +16,21 @@ import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.command.LuacraftCommand;
 import fr.luacraft.core.api.entity.LuacraftTileEntity;
-import fr.luacraft.core.api.libs.*;
+import fr.luacraft.core.api.libs.LuaLibrary;
+import fr.luacraft.core.api.meta.LuaMetaClass;
 import fr.luacraft.core.api.network.LuacraftPacketHandler;
-import fr.luacraft.core.api.registry.LuaGameRegistry;
-import fr.luacraft.core.api.world.LuacraftWorldGen;
+import fr.luacraft.core.api.util.LuaTimerManager;
 import fr.luacraft.core.gui.LuacraftGuiHandler;
 import fr.luacraft.modloader.LuaScript;
 import fr.luacraft.modloader.LuacraftMod;
-import fr.luacraft.util.LuaUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.client.MinecraftForgeClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.reflections.Reflections;
 
 import java.io.*;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Shared proxy
@@ -77,6 +78,84 @@ public class SharedProxy
         this.luaState = new LuaState();
     }
 
+    public void setupLua()
+    {
+        /** Load lua libraries */
+        luaState.openLib(LuaState.Library.BASE);
+        luaState.openLib(LuaState.Library.PACKAGE);
+        luaState.openLib(LuaState.Library.TABLE);
+        //luaState.openLib(LuaState.Library.IO);
+        luaState.openLib(LuaState.Library.OS);
+        luaState.openLib(LuaState.Library.STRING);
+        luaState.openLib(LuaState.Library.MATH);
+        luaState.openLib(LuaState.Library.DEBUG);
+        luaState.openLib(LuaState.Library.BIT32);
+        luaState.openLib(LuaState.Library.JAVA);
+        luaState.openLib(LuaState.Library.COROUTINE);
+
+        /** Set _R to registry index */
+        luaState.pushValue(LuaState.REGISTRYINDEX);
+        luaState.setGlobal("_R");
+
+        /** Load shared libraries annotated with {@link LuaLibrary} */
+        Luacraft.getLogger().info("Registering shared libraries...");
+        Luacraft.getLogger().info(registerLibraries(ProxyType.SHARED) + " shared libraries registered");
+
+        /** Register meta types annotated with {@link LuaMetaClass} */
+        Luacraft.getLogger().info("Registering meta classes...");
+        Set<Class<?>> metaClasses =
+                new Reflections("fr.luacraft.core.api").getTypesAnnotatedWith(LuaMetaClass.class);
+        if (!metaClasses.isEmpty())
+        {
+            for (Class<?> clazz : metaClasses)
+            {
+                try
+                {
+                    MethodUtils.invokeStaticMethod(clazz, "initialize", luaState);
+                }
+                catch (NoSuchMethodException | IllegalAccessException |
+                        InvocationTargetException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        Luacraft.getLogger().info(metaClasses.size() + " meta classes registered");
+
+        /** Include internals */
+        includeInternals();
+    }
+
+    protected int registerLibraries(ProxyType proxyType)
+    {
+        int registered = 0;
+
+        Set<Class<?>> libClasses =
+                new Reflections("fr.luacraft.core.api").getTypesAnnotatedWith(LuaLibrary.class);
+        if (!libClasses.isEmpty())
+        {
+            for (Class<?> clazz : libClasses)
+            {
+                LuaLibrary ann = clazz.getAnnotation(LuaLibrary.class);
+
+                if (ann.side() == proxyType)
+                {
+                    try
+                    {
+                        MethodUtils.invokeStaticMethod(clazz, "initialize", luaState);
+                        registered++;
+                    }
+                    catch (NoSuchMethodException | IllegalAccessException |
+                            InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        return registered;
+    }
+
     /**
      * Pre init event
      * @param event
@@ -86,44 +165,15 @@ public class SharedProxy
         GameRegistry.registerTileEntity(LuacraftTileEntity.class, "luacraft_tile_entity");
         NetworkRegistry.INSTANCE.registerGuiHandler(Luacraft.getInstance(), new LuacraftGuiHandler());
 
-        synchronized (luaState)
-        {
-            /** Load lua libraries */
-            luaState.openLib(LuaState.Library.BASE);
-            luaState.openLib(LuaState.Library.PACKAGE);
-            luaState.openLib(LuaState.Library.TABLE);
-            luaState.openLib(LuaState.Library.IO);
-            luaState.openLib(LuaState.Library.OS);
-            luaState.openLib(LuaState.Library.STRING);
-            luaState.openLib(LuaState.Library.MATH);
-            luaState.openLib(LuaState.Library.DEBUG);
-            luaState.openLib(LuaState.Library.BIT32);
-            luaState.openLib(LuaState.Library.JAVA);
-            luaState.openLib(LuaState.Library.COROUTINE);
+        setupLua();
 
-            /** Set _R to registry index */
-            luaState.pushValue(LuaState.REGISTRYINDEX);
-            luaState.setGlobal("_R");
+        /** Perform first execution */
+        Luacraft.getInstance().getModLoader().performFirstExecution();
 
-            /** Load shared libraries */
-            LuacraftLib.initialize(luaState);
-            MinecraftLib.initialize(luaState);
-            HookLib.initialize(luaState);
-            NetLib.initialize(luaState);
-            ReflLib.initialize(luaState);
-            FileLib.initialize(luaState);
-
-            /** Include internals */
-            includeInternals();
-
-            /** Perform first execution */
-            Luacraft.getInstance().getModLoader().performFirstExecution();
-
-            /**
-             * Call preinit hooks on mods
-             */
-            Luacraft.getInstance().getModLoader().peformPreInit();
-        }
+        /**
+         * Call preinit hooks on mods
+         */
+        Luacraft.getInstance().getModLoader().peformPreInit();
     }
 
     /**
@@ -182,6 +232,12 @@ public class SharedProxy
     public void serverStopping(FMLServerStoppingEvent event)
     {
 
+    }
+
+    @SubscribeEvent
+    public void onServerTick(TickEvent.ServerTickEvent event)
+    {
+        LuaTimerManager.tickTimers();
     }
 
     /**

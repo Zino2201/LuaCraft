@@ -8,7 +8,7 @@
       "url": "nogitsu.eu",
       "updateUrl": "",
       "authorList": ["Zino", "Nogitsu"],
-      "credits": "Andre Naef for JNLua library",
+      "credits": "Andre Naef for JNLua library\ngithub.com/ronmano for reflections library\n",
       "logoFile": "assets/luacraft/textures/logo.png",
       "screenshots": [],
       "dependencies": []

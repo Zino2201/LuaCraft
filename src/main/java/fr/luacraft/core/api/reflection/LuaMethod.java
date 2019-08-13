@@ -40,6 +40,23 @@ public class LuaMethod implements ILuaContainer
         return ret;
     }
 
+    @LuaFunction
+    public boolean HasAnnotation(String clazz)
+    {
+        try
+        {
+            Class c = Class.forName(clazz);
+            if(c != null)
+                return method.isAnnotationPresent(c);
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     @Override
     @LuaFunction
     public String GetTypeName()

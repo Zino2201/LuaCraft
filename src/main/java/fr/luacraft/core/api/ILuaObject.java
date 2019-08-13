@@ -1,7 +1,6 @@
 package fr.luacraft.core.api;
 
 import com.naef.jnlua.util.LuaFunction;
-import fr.luacraft.core.api.reflection.LuaJavaObject;
 
 import java.io.Serializable;
 

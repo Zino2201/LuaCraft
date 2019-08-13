@@ -5,6 +5,9 @@
 
 package com.naef.jnlua;
 
+import com.naef.jnlua.util.AbstractTableList;
+import com.naef.jnlua.util.AbstractTableMap;
+
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,14 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.naef.jnlua.util.AbstractTableList;
-import com.naef.jnlua.util.AbstractTableMap;
-
 /**
  * Default implementation of the <code>Converter</code> interface.
  */
 public class DefaultConverter implements Converter {
-	// -- Static
+	// -- Staticjn
 	/**
 	 * Raw byte array.
 	 */

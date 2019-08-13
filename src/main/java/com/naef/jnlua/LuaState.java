@@ -5,6 +5,9 @@
 
 package com.naef.jnlua;
 
+import com.naef.jnlua.JavaReflector.Metamethod;
+import fr.luacraft.core.api.ILuaContainer;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,10 +19,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.naef.jnlua.JavaReflector.Metamethod;
-import fr.luacraft.core.api.ILuaContainer;
-import fr.luacraft.core.api.ILuaContainer;
 
 /**
  * JNLua lua class representing a Lua instance.
@@ -681,6 +680,16 @@ public class LuaState {
 		getConverter().convertJavaObject(this, object);
 	}
 
+	public synchronized void pushUserdata(Object object)
+	{
+		check();
+
+		if (object == null)
+			lua_pushnil();
+		else
+			lua_pushuserdata(object);
+	}
+
 	/**
 	 * Pushes a Java object on the stack. The object is pushed "as is", i.e.
 	 * without conversion.
@@ -914,6 +923,12 @@ public class LuaState {
 		return lua_isnumber(index) != 0;
 	}
 
+
+	public boolean isUserdata(int index) {
+		check();
+		return lua_isuserdata(index) != 0;
+	}
+
 	/**
 	 * Returns whether the value at the specified stack index is a string or a
 	 * number (which is always convertible to a string.)
@@ -1110,6 +1125,11 @@ public class LuaState {
 	public synchronized int toInteger(int index) {
 		check();
 		return lua_tointeger(index);
+	}
+
+	public synchronized Object toUserdata(int index) {
+		check();
+		return lua_touserdata(index);
 	}
 
 	/**
@@ -1487,55 +1507,6 @@ public class LuaState {
 	public synchronized void newTable() {
 		check();
 		lua_newtable();
-	}
-
-	/**
-	 * [LUACRAFT]
-	 * Create a new metatable
-	 * @param meta
-	 */
-	public synchronized void newMetatable(String meta)
-	{
-		check();
-
-		/*pushValue(REGISTRYINDEX);
-		getField(-1, meta);
-		if(isNil(-1))
-		{
-			pop(1);
-			newTable();
-			pushValue(-1);
-			setField(-2, meta);
-			getField(-1, meta);
-		}
-		remove(-2);
-		*/
-
-		pushValue(REGISTRYINDEX);
-		getField(-1, meta);
-		if(isNil(-1))
-		{
-			pop(1);
-			newTable(0, 2);
-			pushString(meta);
-			setField(-2, "__name");
-			pushValue(-1);
-			setField(REGISTRYINDEX, meta);
-		}
-		remove(-2);
-	}
-
-	/**
-	 * [LUACRAFT]
-	 * Push java object with specified metatable
-	 * @param object
-	 * @param meta
-	 */
-	public synchronized void pushJavaObjectWithMeta(Object object, String meta)
-	{
-		pushJavaObject(object);
-		newMetatable(meta);
-		setMetatable(-2);
 	}
 
 	/**
@@ -1979,6 +1950,15 @@ public class LuaState {
 		return checkInteger(index);
 	}
 
+	public synchronized Object checkUserdata(int index)
+	{
+		check();
+		if (!isUserdata(index))
+			throw getArgTypeException(index, LuaType.USERDATA);
+
+		return toUserdata(index);
+	}
+
 	/**
 	 * Checks if the value of the specified function argument is convertible to
 	 * a Java object of the specified type. If so, the argument value is
@@ -2358,6 +2338,8 @@ public class LuaState {
 
 	private native void lua_pushjavaobject(Object object);
 
+	private native void lua_pushuserdata(Object object);
+
 	private native void lua_pushnil();
 
 	private native void lua_pushnumber(double n);
@@ -2373,6 +2355,8 @@ public class LuaState {
 	private native int lua_isjavafunction(int index);
 
 	private native int lua_isjavaobject(int index);
+
+	private native int lua_isuserdata(int index);
 
 	private native int lua_isnil(int index);
 
@@ -2405,6 +2389,8 @@ public class LuaState {
 	private native JavaFunction lua_tojavafunction(int index);
 
 	private native Object lua_tojavaobject(int index);
+
+	private native Object lua_touserdata(int index);
 
 	private native double lua_tonumber(int index);
 

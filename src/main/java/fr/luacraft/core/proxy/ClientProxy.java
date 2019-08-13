@@ -1,23 +1,17 @@
 package fr.luacraft.core.proxy;
 
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.libs.GuiLib;
-import fr.luacraft.core.api.libs.I18NLib;
+import fr.luacraft.core.api.libs.LuaLibrary;
 import fr.luacraft.core.gui.GuiLuaModMenu;
 import fr.luacraft.core.gui.GuiLuaModMenuButton;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
-
-import javax.annotation.Nonnull;
 
 /**
  * Client proxy
@@ -34,11 +28,18 @@ public class ClientProxy extends SharedProxy
     }
 
     @Override
+    public void setupLua()
+    {
+        super.setupLua();
+
+        /** Load client libraries annotated with {@link LuaLibrary} */
+        Luacraft.getLogger().info("Registering client libraries...");
+        Luacraft.getLogger().info(registerLibraries(ProxyType.CLIENT) + " client libraries registered");
+    }
+
+    @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        GuiLib.initialize(luaState);
-        I18NLib.initialize(luaState);
-
         MinecraftForge.EVENT_BUS.register(this);
 
         super.preInit(event);
