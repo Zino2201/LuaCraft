@@ -6,7 +6,7 @@ import com.naef.jnlua.LuaState;
 @LuaMetaClass
 public class TestMeta
 {
-    public static JavaFunction Fuck = new JavaFunction()
+    public static JavaFunction Test = new JavaFunction()
     {
         public int invoke(LuaState l) {
             System.exit(0);
