@@ -3,8 +3,10 @@ package fr.luacraft.core.api.meta;
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.reflection.LuaJavaObject;
-import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Utils for manipulating and creating metatable
@@ -17,37 +19,19 @@ public class LuaMetaUtil
      * __index function
      * Use reflection
      */
-    private static JavaFunction __index = new JavaFunction()
+    private static JavaFunction __index = l ->
     {
-        public int invoke(LuaState l)
-        {
-            Object self = l.checkUserdata(1);
-            String name = l.checkString(2);
+        Object self = l.checkUserdata(1);
 
-            if(self instanceof ILuaMetaContainer)
-            {
-                try
-                {
-                    Object calledField = FieldUtils.readField(self, name, true);
-                    if(calledField instanceof JavaFunction)
-                    {
-                        return ((JavaFunction) calledField).invoke(l);
-                    }
-                    else
-                    {
-                        l.pushJavaObject(new LuaJavaObject(calledField));
+        l.getMetatable(1);
+        l.pushValue(2);
 
-                        return 1;
-                    }
-                }
-                catch (IllegalAccessException e)
-                {
-                    e.printStackTrace();
-                }
-            }
+        l.pushValue(-1);
+        l.getTable( -3);
+        if (!l.isNil(-1))
+            return 1;
 
-            return 0;
-        }
+        return 0;
     };
 
     /**
@@ -95,17 +79,16 @@ public class LuaMetaUtil
     {
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();
 
-        /** Check if metatable name is not taken */
         l.pushValue(l.REGISTRYINDEX);
         l.getField(-1, name);
-        if(!l.isNil(-1))
-            return;
-
-        /** It is not, create a new metatable */
-        l.pop(1);
-        l.newTable();
-        l.pushValue(-1);
-        l.setField(l.REGISTRYINDEX, name);
+        if (l.isNil(-1))
+        {
+            l.pop(1);
+            l.newTable();
+            l.setField(-2, name);
+            l. getField(-1, name);
+        }
+        l.remove(-2);
     }
 
     /**
@@ -121,4 +104,52 @@ public class LuaMetaUtil
         newMetatable(meta);
         l.setMetatable(-2);
     }
+
+    public static void createMetaForClass(Class clazz, String meta)
+    {
+        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+
+        /** If table exists, don't do anything */
+        l.pushValue(l.REGISTRYINDEX);
+        l.getField(-1, meta);
+        if(!l.isNil(-1))
+            return;
+
+        /** Create metatable, and using reflection create {@link LuaMetaClassMethod} JavaFunctions
+         for each Java method */
+        newMetatable(meta);
+        addBasicMetamethods();
+        Method[] mthds = clazz.getMethods();
+        for(Method method : mthds)
+        {
+            String methodName = StringUtils.capitalize(method.getName());
+            pushJavaFunction(methodName, new LuaMetaClassMethod(method)
+            {
+                @Override
+                public int invoke(LuaState l)
+                {
+                    Object self = l.checkUserdata(1, Object.class);
+                    Object[] args = new Object[method.getParameterCount()];
+                    for(int i = 0; i < args.length; i++)
+                    {
+                        args[i] = l.checkJavaObject(2 + i, Object.class);
+                    }
+
+                    try
+                    {
+                        Object ret = method.invoke(self, args);
+                            l.pushJavaObject(ret);
+                            return 1;
+                        }
+                        catch (IllegalAccessException | InvocationTargetException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                        return 0;
+                    }
+                });
+            }
+            closeMetaStatement();
+        }
 }

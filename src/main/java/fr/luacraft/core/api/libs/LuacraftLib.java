@@ -5,8 +5,8 @@ import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.ILuaObject;
+import fr.luacraft.core.api.items.LuacraftItem;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
-import fr.luacraft.core.api.meta.TestMeta;
 import fr.luacraft.core.api.modloader.LuaMod;
 import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.modloader.LuaScript;
@@ -114,8 +114,7 @@ public class LuacraftLib
         @Override
         public int invoke(LuaState l)
         {
-            LuaMetaUtil.pushJavaObject(new TestMeta(), "TestMeta");
-
+            LuaMetaUtil.pushJavaObject(new LuacraftItem("cc"), "Item");
             return 1;
         }
     };

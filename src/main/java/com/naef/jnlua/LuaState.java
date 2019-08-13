@@ -1959,6 +1959,25 @@ public class LuaState {
 		return toUserdata(index);
 	}
 
+	public synchronized <T> T checkUserdata(int index, Class<T> clazz)
+	{
+		check();
+		if (!isUserdata(index))
+		{
+			checkArg(
+					index,
+					false,
+					String.format("%s expected, got %s",
+							clazz.getCanonicalName(), typeName(index)));
+		}
+
+		Object obj = toUserdata(index);
+		if(clazz.isInstance(obj))
+			return (T) obj;
+
+		return null;
+	}
+
 	/**
 	 * Checks if the value of the specified function argument is convertible to
 	 * a Java object of the specified type. If so, the argument value is
