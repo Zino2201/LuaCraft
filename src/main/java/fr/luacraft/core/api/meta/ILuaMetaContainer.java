@@ -11,6 +11,7 @@ import fr.luacraft.core.api.ILuaContainer;
  *
  * @author Zino
  */
+@Deprecated
 public interface ILuaMetaContainer extends ILuaContainer
 {
     /**

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 /**
  * Utils for manipulating and creating metatable
@@ -15,11 +16,27 @@ import java.lang.reflect.Method;
  */
 public class LuaMetaUtil
 {
+    private static HashMap<Class, String> metaClasses = new HashMap<Class, String>();
+
     /**
      * __index function
-     * Use reflection
      */
     private static JavaFunction __index = l ->
+    {
+        Object self = l.checkUserdata(1);
+
+        l.getMetatable(1);
+        l.pushValue(2);
+
+        l.pushValue(-1);
+        l.getTable( -3);
+        if (!l.isNil(-1))
+            return 1;
+
+        return 0;
+    };
+
+    private static JavaFunction __call = l ->
     {
         Object self = l.checkUserdata(1);
 
@@ -86,7 +103,7 @@ public class LuaMetaUtil
             l.pop(1);
             l.newTable();
             l.setField(-2, name);
-            l. getField(-1, name);
+            l.getField(-1, name);
         }
         l.remove(-2);
     }
@@ -101,8 +118,59 @@ public class LuaMetaUtil
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();
 
         l.pushUserdata(object);
-        newMetatable(meta);
+        getMetatable(meta);
         l.setMetatable(-2);
+    }
+
+    public static void getMetatable(String name)
+    {
+        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+
+        l.getField(l.REGISTRYINDEX, name);
+    }
+
+    public static void createMetamethodsFromClass(Class clazz)
+    {
+        Method[] mthds = clazz.getMethods();
+        for(Method method : mthds)
+        {
+            String methodName = StringUtils.capitalize(method.getName());
+            pushJavaFunction(methodName, new LuaMetaClassMethod(method)
+            {
+                @Override
+                public int invoke(LuaState l)
+                {
+                    if(method.isAnnotationPresent(LuaMetaHook.class))
+                    {
+                        Object self = l.checkUserdata(1, Object.class);
+                        Object[] args = new Object[method.getParameterCount()];
+                        for (int i = 0; i < args.length; i++)
+                        {
+                            Class clazz = method.getParameterTypes()[i];
+
+                            if (l.isUserdata(2 + i))
+                                args[i] = l.checkUserdata(2 + i, clazz);
+                            else if (l.isJavaObject(2 + i, clazz))
+                                args[i] = l.checkJavaObject(2 + i, clazz);
+                        }
+
+                        try
+                        {
+                            Object ret = method.invoke(self, args);
+                            l.pushJavaObject(ret);
+                            return 1;
+                        }
+                        catch (IllegalAccessException | InvocationTargetException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    l.pushNil();
+                    return 1;
+                }
+            });
+        }
     }
 
     public static void createMetaForClass(Class clazz, String meta)
@@ -119,37 +187,46 @@ public class LuaMetaUtil
          for each Java method */
         newMetatable(meta);
         addBasicMetamethods();
-        Method[] mthds = clazz.getMethods();
-        for(Method method : mthds)
+        createMetamethodsFromClass(clazz);
+        closeMetaStatement();
+
+        metaClasses.put(clazz, meta);
+    }
+
+    public static void addMetatableForClass(Class clazz, String metatable)
+    {
+        metaClasses.put(clazz, metatable);
+    }
+
+    /**
+     * Get metatable name for object
+     * @param object
+     * @return
+     */
+    public static String getMetatableForObject(Object object)
+    {
+        for(Class clazz : metaClasses.keySet())
         {
-            String methodName = StringUtils.capitalize(method.getName());
-            pushJavaFunction(methodName, new LuaMetaClassMethod(method)
-            {
-                @Override
-                public int invoke(LuaState l)
-                {
-                    Object self = l.checkUserdata(1, Object.class);
-                    Object[] args = new Object[method.getParameterCount()];
-                    for(int i = 0; i < args.length; i++)
-                    {
-                        args[i] = l.checkJavaObject(2 + i, Object.class);
-                    }
-
-                    try
-                    {
-                        Object ret = method.invoke(self, args);
-                            l.pushJavaObject(ret);
-                            return 1;
-                        }
-                        catch (IllegalAccessException | InvocationTargetException e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                        return 0;
-                    }
-                });
-            }
-            closeMetaStatement();
+            if(clazz.isInstance(object))
+                return metaClasses.get(clazz);
         }
+
+        return null;
+    }
+
+    /**
+     * Get value from metatable
+     * @param l
+     * @param name
+     * @param var
+     * @param varType
+     * @param <T>
+     * @return
+     */
+    public static <T> T getValueFromMetatable(LuaState l, String name, String var, Class<T> varType)
+    {
+        l.getField(l.REGISTRYINDEX, name);
+        l.getField(-1, var);
+        return l.toJavaObject(-1, varType);
+    }
 }

@@ -26,7 +26,7 @@ public class LuacraftItemHooks
     public static boolean onItemUse(Item item, ItemStack stack, EntityPlayer player, World world, int x,
                                     int y, int z, int hand, float hitX, float hitY, float hitZ)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnItemUse",
@@ -47,7 +47,7 @@ public class LuacraftItemHooks
     public static boolean onItemUseFirst(Item item, ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
                                   int side, float hitX, float hitY, float hitZ)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnItemUseFirst",
@@ -68,7 +68,7 @@ public class LuacraftItemHooks
     public static boolean onBlockDestroyed(Item item, ItemStack stack, World world, Block block,
                                     int x, int y, int z, EntityLivingBase entity)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnBlockDestroyed",
@@ -83,7 +83,7 @@ public class LuacraftItemHooks
 
     public static void onArmorTick(Item item, World world, EntityPlayer player, ItemStack stack)
     {
-        LuaHookManager.call(
+        LuaHookManagerOLD.call(
                 item,
                 "OnArmorTick",
                 new LuaWorld(world),
@@ -93,7 +93,7 @@ public class LuacraftItemHooks
 
     public static boolean onDroppedByPlayer(Item item, ItemStack stack, EntityPlayer player)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnDroppedByPlayer",
@@ -105,7 +105,7 @@ public class LuacraftItemHooks
 
     public static void onCreated(Item item, ItemStack stack, World world, EntityPlayer player)
     {
-        LuaHookManager.call(
+        LuaHookManagerOLD.call(
                 item,
                 "OnCreated",
                 new LuaItemStack(stack),
@@ -115,7 +115,7 @@ public class LuacraftItemHooks
 
     public static boolean onLeftClickEntity(Item item, ItemStack stack, EntityPlayer player, Entity entity)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnLeftClickEntity",
@@ -128,7 +128,7 @@ public class LuacraftItemHooks
 
     public static boolean onBlockStartBreak(Item item, ItemStack itemstack, int X, int Y, int Z, EntityPlayer player)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnBlockStartBreak",
@@ -144,7 +144,7 @@ public class LuacraftItemHooks
     public static ItemStack onItemRightClick(Item item, ItemStack stack, World world,
                                            EntityPlayer player)
     {
-        LuaItemStack ret = LuaHookManager.call(
+        LuaItemStack ret = LuaHookManagerOLD.call(
                 LuaItemStack.class,
                 item,
                 "OnItemRightClick",
@@ -157,7 +157,7 @@ public class LuacraftItemHooks
 
     public static void onPlayerStoppedUsing(Item item, ItemStack stack, World world, EntityPlayer player, int timeLeft)
     {
-        LuaHookManager.call(
+        LuaHookManagerOLD.call(
                 item,
                 "OnPlayerStoppedUsing",
                 new LuaItemStack(stack),
@@ -168,7 +168,7 @@ public class LuacraftItemHooks
 
     public static boolean onEntitySwing(Item item, EntityLivingBase entityLiving, ItemStack stack)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnEntitySwing",
@@ -180,7 +180,7 @@ public class LuacraftItemHooks
 
     public static boolean onEntityItemUpdate(Item item, EntityItem entityItem)
     {
-        Boolean bool = LuaHookManager.call(
+        Boolean bool = LuaHookManagerOLD.call(
                 Boolean.class,
                 item,
                 "OnEntityItemUpdate",
@@ -192,7 +192,7 @@ public class LuacraftItemHooks
     public static void onUpdate(Item item, ItemStack stack, World world, Entity entity, int itemSlot,
                            boolean isSelected)
     {
-        LuaHookManager.call(
+        LuaHookManagerOLD.call(
                 item,
                 "OnUpdate",
                 new LuaItemStack(stack),
@@ -204,7 +204,7 @@ public class LuacraftItemHooks
 
     public static void onUsingTick(Item item, ItemStack stack, EntityPlayer player, int count)
     {
-        LuaHookManager.call(
+        LuaHookManagerOLD.call(
                 item,
                 "OnUsingTick",
                 new LuaItemStack(stack),

@@ -1,9 +1,10 @@
 package fr.luacraft.core.api.blocks;
 
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.core.api.entity.LuacraftTileEntity;
 import fr.luacraft.core.api.hooks.LuacraftBlockHooks;
+import fr.luacraft.core.api.meta.LuaMetaHook;
+import fr.luacraft.core.api.util.LuaClass;
 import fr.luacraft.util.EnumUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -38,6 +39,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
                                     int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
     {
@@ -57,6 +59,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public int onBlockPlaced(World world, int x, int y, int z,
                              int side, float hitX, float hitY, float hitZ, int metadata)
     {
@@ -76,6 +79,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
     {
         super.onBlockClicked(world, x, y, z, player);
@@ -84,6 +88,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean onBlockEventReceived(World world, int x, int y, int z, int side, int metadata)
     {
         super.onBlockEventReceived(world, x, y, z, side, metadata);
@@ -92,6 +97,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockAdded(World world, int x, int y, int z)
     {
         super.onBlockAdded(world, x, y, z);
@@ -100,6 +106,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
     {
         super.onBlockDestroyedByExplosion(world, x, y, z, explosion);
@@ -108,6 +115,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int metadata)
     {
         super.onBlockDestroyedByPlayer(world, x, y, z, metadata);
@@ -116,6 +124,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
     {
         super.onBlockExploded(world, x, y, z, explosion);
@@ -124,6 +133,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockHarvested(World world, int x, int y, int z, int metadata, EntityPlayer player)
     {
         super.onBlockHarvested(world, x, y, z, metadata, player);
@@ -132,6 +142,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, stack);
@@ -140,6 +151,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onBlockPreDestroy(World world, int x, int y, int z, int metadata)
     {
         super.onBlockPreDestroy(world, x, y, z, metadata);
@@ -148,6 +160,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onNeighborBlockChange(World world, int x, int y, int z, Block otherBlock)
     {
         super.onNeighborBlockChange(world, x, y, z, otherBlock);
@@ -156,6 +169,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
     {
         super.onEntityCollidedWithBlock(world, x, y, z, entity);
@@ -164,6 +178,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onEntityWalking(World world, int x, int y, int z, Entity entity)
     {
         super.onEntityWalking(world, x, y, z, entity);
@@ -172,6 +187,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onFallenUpon(World world, int x, int y, int z, Entity entity, float fallDistance)
     {
         super.onFallenUpon(world, x, y, z, entity, fallDistance);
@@ -180,6 +196,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
     {
         super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
@@ -188,6 +205,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onPlantGrow(World world, int x, int y, int z, int sourceX, int sourceY, int sourceZ)
     {
         super.onPlantGrow(world, x, y, z, sourceX, sourceY, sourceZ);
@@ -196,6 +214,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public void onPostBlockPlaced(World world, int x, int y, int z, int metadata)
     {
         super.onPostBlockPlaced(world, x, y, z, metadata);
@@ -204,6 +223,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
     {
         Boolean bool = LuacraftBlockHooks.canConnectRedstone(this, world, x, y, z, side);
@@ -212,6 +232,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canProvidePower()
     {
         Boolean bool = LuacraftBlockHooks.canProvidePower(this);
@@ -220,6 +241,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
     {
         Boolean bool = LuacraftBlockHooks.canEntityDestroy(this, world, x, y, z, entity);
@@ -228,6 +250,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
     {
         Boolean bool = LuacraftBlockHooks.canCreatureSpawn(this, type, world, x, y, z);
@@ -236,6 +259,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canBlockStay(World world, int x, int y, int z)
     {
         Boolean bool = LuacraftBlockHooks.canBlockStay(this, world, x, y, z);
@@ -244,6 +268,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
     {
         Boolean bool = LuacraftBlockHooks.canPlaceTorchOnTop(this, world, x, y, z);
@@ -252,6 +277,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canDropFromExplosion(Explosion explosion)
     {
         Boolean bool = LuacraftBlockHooks.canDropFromExplosion(this, explosion);
@@ -260,6 +286,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canHarvestBlock(EntityPlayer player, int meta)
     {
         Boolean bool = LuacraftBlockHooks.canHarvestBlock(this, player, meta);
@@ -268,6 +295,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canPlaceBlockAt(World world, int x, int y, int z)
     {
         Boolean bool = LuacraftBlockHooks.canPlaceBlockAt(this, world, x, y, z);
@@ -276,6 +304,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z)
     {
         Boolean bool = LuacraftBlockHooks.canBeReplacedByLeaves(this, world, x, y, z);
@@ -284,6 +313,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canCollideCheck(int meta, boolean boat)
     {
         Boolean bool = LuacraftBlockHooks.canCollideCheck(this, meta, boat);
@@ -292,6 +322,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
     {
         Boolean bool = LuacraftBlockHooks.canPlaceBlockOnSide(this, world, x, y, z, side);
@@ -300,6 +331,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canRenderInPass(int pass)
     {
         Boolean bool = LuacraftBlockHooks.canRenderInPass(this, pass);
@@ -308,6 +340,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z)
     {
         Boolean bool = LuacraftBlockHooks.canSustainLeaves(this, world, x, y, z);
@@ -316,6 +349,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction,
                                    IPlantable plantable)
     {
@@ -326,6 +360,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack)
     {
         Boolean bool = LuacraftBlockHooks.canReplace(this, world, x, y, z,
@@ -335,6 +370,7 @@ public class LuacraftBlock extends Block
     }
 
     @Override
+    @LuaMetaHook
     public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
     {
         Boolean bool = LuacraftBlockHooks.canSilkHarvest(this, world, player, x, y, z,

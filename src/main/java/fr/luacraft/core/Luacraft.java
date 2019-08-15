@@ -1,7 +1,6 @@
 package fr.luacraft.core;
 
 import com.google.common.collect.ImmutableList;
-import com.naef.jnlua.NativeSupport;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -63,11 +62,11 @@ public class Luacraft
         /** Load all mods */
         File luamodDir = new File(event.getModConfigurationDirectory().getParentFile(), "luamods");
         if (!luamodDir.exists())
-            luamodDir.mkdirs();modLoader.addSearchDirectory(luamodDir.getPath());
+            luamodDir.mkdirs();modLoader.addSearchPath(luamodDir.getPath());
 
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", 1);
         bar.step("Searching mods");
-        modLoader.loadMods();
+        modLoader.searchAndLoadMods();
         ProgressManager.pop(bar);
 
         /** Before executing mods, inject Luacraft infos to Forge brandings */

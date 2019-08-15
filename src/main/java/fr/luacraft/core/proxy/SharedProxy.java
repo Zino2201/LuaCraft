@@ -22,6 +22,7 @@ import fr.luacraft.core.api.network.LuacraftPacketHandler;
 import fr.luacraft.core.api.util.LuaTimerManager;
 import fr.luacraft.core.gui.LuacraftGuiHandler;
 import fr.luacraft.modloader.LuaScript;
+import fr.luacraft.modloader.LuaScriptType;
 import fr.luacraft.modloader.LuacraftMod;
 import net.minecraft.client.gui.GuiScreen;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -168,12 +169,12 @@ public class SharedProxy
         setupLua();
 
         /** Perform first execution */
-        Luacraft.getInstance().getModLoader().performFirstExecution();
+        Luacraft.getInstance().getModLoader().executeAutorun();
 
         /**
          * Call preinit hooks on mods
          */
-        Luacraft.getInstance().getModLoader().peformPreInit();
+        Luacraft.getInstance().getModLoader().performPreInit();
     }
 
     /**
@@ -187,7 +188,7 @@ public class SharedProxy
         /**
          * Call init hooks on mods
          */
-        Luacraft.getInstance().getModLoader().peformInit();
+        Luacraft.getInstance().getModLoader().performInit();
     }
 
     /**
@@ -199,7 +200,7 @@ public class SharedProxy
         /**
          * Call postinit hooks on mods
          */
-        Luacraft.getInstance().getModLoader().peformPostInit();
+        Luacraft.getInstance().getModLoader().performPostInit();
     }
 
     /**
@@ -248,7 +249,8 @@ public class SharedProxy
         Luacraft.getLogger().info("Loading and executing internals...");
         InputStream in = getClass().getClassLoader()
                 .getResourceAsStream("assets/luacraft/lua/internal.lua");
-        executeScript(new LuaScript(new File("lua/internal.lua"), "internal.lua", true),
+        executeScript(new LuaScript(new File("lua/internal.lua"), "internal.lua",
+                        true, LuaScriptType.INTERNAL),
                 in);
     }
 

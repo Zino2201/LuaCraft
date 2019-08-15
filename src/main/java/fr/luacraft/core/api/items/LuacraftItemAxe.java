@@ -1,14 +1,7 @@
 package fr.luacraft.core.api.items;
 
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.blocks.LuaBlock;
-import fr.luacraft.core.api.entity.LuaEntity;
-import fr.luacraft.core.api.entity.LuaEntityItem;
-import fr.luacraft.core.api.entity.LuaEntityLivingBase;
-import fr.luacraft.core.api.entity.LuaEntityPlayer;
-import fr.luacraft.core.api.hooks.LuaHookManager;
 import fr.luacraft.core.api.hooks.LuacraftItemHooks;
-import fr.luacraft.core.api.world.LuaWorld;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

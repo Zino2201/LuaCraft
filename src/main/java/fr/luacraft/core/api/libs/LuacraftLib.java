@@ -5,13 +5,11 @@ import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.ILuaObject;
-import fr.luacraft.core.api.items.LuacraftItem;
+import fr.luacraft.core.api.blocks.LuacraftBlock;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
 import fr.luacraft.core.api.modloader.LuaMod;
+import fr.luacraft.core.api.registry.LuaGameRegistry;
 import fr.luacraft.core.api.util.LuaClass;
-import fr.luacraft.modloader.LuaScript;
-
-import java.io.File;
 
 /**
  * Base luacraft library
@@ -26,11 +24,16 @@ public class LuacraftLib
         @Override
         public int invoke(LuaState l)
         {
+            try {
+                throw new Exception("NOT IMPLEMENTED");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // FIXME: Will not work with lua mods inside archives
-            String file = l.checkString(1);
-            File target = new File(Luacraft.getInstance().getProxy().getCurrentScript().getFile().getParent(),
-                    file);
-            Luacraft.getInstance().getProxy().executeScript(new LuaScript(target, target.getName()));
+            //String file = l.checkString(1);
+            //File target = new File(Luacraft.getInstance().getProxy().getCurrentScript().getFile().getParent(),
+               //     file);
+            //Luacraft.getInstance().getProxy().executeScript(new LuaScript(target, target.getName()));
             return 0;
         }
     };
@@ -114,7 +117,9 @@ public class LuacraftLib
         @Override
         public int invoke(LuaState l)
         {
-            LuaMetaUtil.pushJavaObject(new LuacraftItem("cc"), "Item");
+            LuacraftBlock b = new LuacraftBlock("tio", 0, null);
+            LuaGameRegistry.registerBlock("tio", b);
+            LuaMetaUtil.pushJavaObject(b, "Block");
             return 1;
         }
     };

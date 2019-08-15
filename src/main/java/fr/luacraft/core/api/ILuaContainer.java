@@ -13,6 +13,7 @@ import fr.luacraft.core.api.reflection.LuaJavaObject;
  *
  * @author Zino
  */
+@Deprecated
 public interface ILuaContainer extends ILuaObject
 {
     /**

@@ -1,54 +1,39 @@
 package fr.luacraft.core.api.meta.blocks;
 
-import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
-import fr.luacraft.core.api.meta.ILuaMetaContainer;
-import fr.luacraft.core.api.meta.LuaMetaClass;
+import cpw.mods.fml.common.registry.GameRegistry;
+import fr.luacraft.core.api.blocks.LuacraftBlock;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
-import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.block.Block;
 
-@LuaMetaClass
-public class LuaBlockMeta implements ILuaMetaContainer
+/**
+ * Meta class utils for Block
+ */
+public class LuaBlockMeta
 {
-    private Block block;
-
-    public LuaBlockMeta(Block block)
+    public static void createBlockMetaClassBase(LuaState l, String meta)
     {
-        this.block = block;
+        LuaMetaUtil.newMetatable(meta);
+        LuaMetaUtil.createMetamethodsFromClass(Block.class);
+        l.pushString("unnamed");
+        l.setField(-2, "UnlocalizedName");
+        l.pushInteger(1);
+        l.setField(-2, "Material");
     }
 
-    private static JavaFunction GetUnlocalizedName = l ->
+    public static void registerBlock(LuaState l, String metaClass)
     {
-        Block self = (Block) l.checkUserdata(1);
+        /** Get block main properties */
+        String unlocalizedName = LuaMetaUtil.getValueFromMetatable(l,
+                metaClass, "UnlocalizedName", String.class);
 
-        l.pushString(self.getUnlocalizedName());
+        int material = LuaMetaUtil.getValueFromMetatable(l,
+                metaClass, "Material", Integer.class);
 
-        return 1;
-    };
+        Block block = new LuacraftBlock(unlocalizedName, material, null);
 
-    public static void initialize(LuaState l)
-    {
-        LuaMetaUtil.newMetatable("Block");
-        LuaMetaUtil.addBasicMetamethods();
-        LuaMetaUtil.pushJavaFunction("GetUnlocalizedName", GetUnlocalizedName);
-        LuaMetaUtil.closeMetaStatement();
-    }
+        /** Set some properties */
 
-    public Block getBlock()
-    {
-        return block;
-    }
-
-    @Override
-    public LuaJavaObject GetContainedObject()
-    {
-        return new LuaJavaObject(block);
-    }
-
-    @Override
-    public String GetTypeName()
-    {
-        return "Block";
+        GameRegistry.registerBlock(block, unlocalizedName);
     }
 }

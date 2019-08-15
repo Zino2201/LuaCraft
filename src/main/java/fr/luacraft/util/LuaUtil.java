@@ -2,13 +2,7 @@ package fr.luacraft.util;
 
 import com.naef.jnlua.LuaState;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import java.io.*;
 
 /**
  * Lua utils functions
@@ -33,5 +27,11 @@ public class LuaUtil
             stackSize = formattedID[2];
         ItemStack stack = GameRegistry.findItemStack(modid, id, Integer.parseInt(stackSize));
         return stack;
+    }
+
+    public static void deleteGlobal(LuaState l, String global)
+    {
+        l.pushNil();
+        l.setGlobal(global);
     }
 }

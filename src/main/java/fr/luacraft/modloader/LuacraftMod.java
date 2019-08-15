@@ -2,8 +2,13 @@ package fr.luacraft.modloader;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import cpw.mods.fml.common.ModMetadata;
-import fr.luacraft.core.api.hooks.LuaHookManager;
+import com.naef.jnlua.LuaState;
+import com.sun.xml.internal.ws.util.StringUtils;
+import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.hooks.LuaHookManagerOLD;
+import fr.luacraft.core.api.meta.LuaMetaUtil;
+import fr.luacraft.core.api.meta.blocks.LuaBlockMeta;
+import fr.luacraft.util.LuaUtil;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,12 +58,14 @@ public class LuacraftMod extends LuacraftModContainer
      */
     private boolean isObsolete;
 
-    public LuacraftMod(File modDir, File infoFile)
+    private LuacraftModLoader.PotentialMod potentialMod;
+
+    public LuacraftMod(LuacraftModLoader.PotentialMod mod)
     {
         try
         {
             Gson gson = new Gson();
-            JsonReader reader = new JsonReader(new FileReader(infoFile));
+            JsonReader reader = new JsonReader(new FileReader(mod.getModInfo()));
 
             LuacraftModInfo modInfo = gson.fromJson(reader, LuacraftModInfo.class);
             setModInfo(modInfo);
@@ -68,8 +75,9 @@ public class LuacraftMod extends LuacraftModContainer
             e.printStackTrace();
         }
 
+        this.potentialMod = mod;
         this.scripts = new ArrayList<LuaScript>();
-        this.modDir = modDir;
+        this.modDir = mod.getRoot();
         this.registryData = new LuacraftModRegistryData();
         this.logger = LogManager.getLogger(getName());
         this.scriptDirectories = new ArrayList<File>();
@@ -94,7 +102,19 @@ public class LuacraftMod extends LuacraftModContainer
             {
                 if(file.getAbsolutePath().endsWith(".lua"))
                 {
-                    scripts.add(new LuaScript(file, file.getName()));
+                    LuaScriptType type = null;
+                    switch(file.getParentFile().getName())
+                    {
+                        case "blocks":
+                            type = LuaScriptType.BLOCK;
+                        break;
+                        case "autorun":
+                            type = LuaScriptType.AUTORUN;
+                            break;
+                        default:
+                            type = LuaScriptType.UNKNOWN;
+                    }
+                    scripts.add(new LuaScript(file, file.getName(), type));
                 }
             }
         }
@@ -105,17 +125,35 @@ public class LuacraftMod extends LuacraftModContainer
      */
     public void preInit()
     {
-        LuaHookManager.call(this, "OnPreInit");
+        LuaHookManagerOLD.call(this, "OnPreInit");
+
+        /** Now preinitialize blocks */
+        List<LuaScript> blockScripts = getAllScriptsOfType(LuaScriptType.BLOCK);
+        for(LuaScript script : blockScripts)
+        {
+            LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+
+            String meta = "Block" + StringUtils.capitalize(script.getFile().getName());
+            LuaBlockMeta.createBlockMetaClassBase(l, meta);
+            l.setGlobal("BLOCK");
+            LuaMetaUtil.closeMetaStatement();
+
+            Luacraft.getInstance().getProxy().executeScript(script);
+
+            LuaBlockMeta.registerBlock(l, meta);
+            LuaUtil.deleteGlobal(l, meta);
+            l.setTop(0);
+        }
     }
 
     public void init()
     {
-        LuaHookManager.call(this, "OnInit");
+        LuaHookManagerOLD.call(this, "OnInit");
     }
 
     public void postInit()
     {
-        LuaHookManager.call(this, "OnPostInit");
+        LuaHookManagerOLD.call(this, "OnPostInit");
     }
 
     /**
@@ -187,5 +225,16 @@ public class LuacraftMod extends LuacraftModContainer
     public boolean isObsolete()
     {
         return isObsolete;
+    }
+
+    public List<LuaScript> getAllScriptsOfType(LuaScriptType type)
+    {
+        List<LuaScript> list = new ArrayList<>();
+
+        for(LuaScript script : scripts)
+            if(script.getType() == type)
+                list.add(script);
+
+            return list;
     }
 }

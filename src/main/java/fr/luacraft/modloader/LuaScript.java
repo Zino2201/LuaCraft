@@ -23,17 +23,21 @@ public class LuaScript
      */
     private boolean isInArchive;
 
-    public LuaScript(File file, String name)
+    private LuaScriptType type;
+
+    public LuaScript(File file, String name, LuaScriptType type)
     {
         this.file = file;
         this.name = name;
+        this.type = type;
     }
 
-    public LuaScript(File file, String name, boolean isInArchive)
+    public LuaScript(File file, String name, boolean isInArchive, LuaScriptType type)
     {
         this.file = file;
         this.name = name;
         this.isInArchive = isInArchive;
+        this.type = type;
     }
 
     public File getFile()
@@ -49,5 +53,10 @@ public class LuaScript
     public boolean isInArchive()
     {
         return isInArchive;
+    }
+
+    public LuaScriptType getType()
+    {
+        return type;
     }
 }

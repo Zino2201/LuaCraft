@@ -4,7 +4,7 @@ import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.ILuaObject;
-import fr.luacraft.core.api.hooks.LuaHookManager;
+import fr.luacraft.core.api.hooks.LuaHookManagerOLD;
 
 /**
  * Hook library
@@ -25,10 +25,10 @@ public class HookLib
             String name = l.checkString(2);
             int func = l.ref(LuaState.REGISTRYINDEX);
             if(object instanceof ILuaContainer)
-                LuaHookManager.add(((ILuaContainer) object)
+                LuaHookManagerOLD.add(((ILuaContainer) object)
                         .GetContainedObject().GetJavaObject(), name, func);
             else
-                LuaHookManager.add(object, name, func);
+                LuaHookManagerOLD.add(object, name, func);
 
             return 0;
         }
@@ -45,7 +45,7 @@ public class HookLib
             ILuaObject object = l.checkJavaObject(1, ILuaObject.class);
             String name = l.checkString(2);
 
-            LuaHookManager.call(object, name);
+            LuaHookManagerOLD.call(object, name);
 
             return 0;
         }

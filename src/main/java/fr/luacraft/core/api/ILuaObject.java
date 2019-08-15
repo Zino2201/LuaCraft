@@ -12,6 +12,7 @@ import java.io.Serializable;
  *
  * @author Zino
  */
+@Deprecated
 public interface ILuaObject extends Serializable
 {
     /**
