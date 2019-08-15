@@ -247,9 +247,15 @@ public class SharedProxy
     private void includeInternals()
     {
         Luacraft.getLogger().info("Loading and executing internals...");
+        executeInternal("internal.lua");
+        executeInternal("hook.lua");
+    }
+
+    private void executeInternal(String file)
+    {
         InputStream in = getClass().getClassLoader()
-                .getResourceAsStream("assets/luacraft/lua/internal.lua");
-        executeScript(new LuaScript(new File("lua/internal.lua"), "internal.lua",
+                .getResourceAsStream("assets/luacraft/lua/" + file);
+        executeScript(new LuaScript(new File("lua/" + file), file,
                         true, LuaScriptType.INTERNAL),
                 in);
     }

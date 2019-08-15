@@ -1,8 +1,7 @@
 package fr.luacraft.core.api.hooks;
 
 import com.naef.jnlua.LuaState;
-
-import java.util.HashMap;
+import fr.luacraft.core.api.meta.LuaMetaUtil;
 
 /**
  * Lua hook manager
@@ -11,38 +10,21 @@ import java.util.HashMap;
  */
 public class LuaHookManager
 {
-    private static HashMap<String, HashMap<String, Integer>> hooks = new HashMap<>();
-
-    public static void add(String event, String id, int function)
+    public static Object[] call(LuaState l, String event, Object... params)
     {
-        if(hooks.get(event) != null)
-        {
-            for(String ids : hooks.get(event).keySet())
-            {
-                if(ids.equals(id))
-                    return;
-            }
-        }
+        l.getGlobal("hook");
+        l.getField(-1, "Call");
+        l.pushString(event);
+        for(Object object : params)
+            LuaMetaUtil.pushJavaObject(object, LuaMetaUtil.getMetatableForObject(object));
+        l.call(params != null ? params.length + 1 : 1, 6);
 
-        HashMap<String, Integer> eventHashmap = new HashMap<>();
-        eventHashmap.put(id, function);
-        hooks.put(event, eventHashmap);
-    }
+        Object[] returns = new Object[6];
+        for(int i = 1; i < 7; i++)
+            returns[i - 1] = l.toUserdata(-i);
 
-    public void call(LuaState l, String event, Object... params)
-    {
-        if(hooks.get(event) != null)
-        {
-            for(int function : hooks.get(event).values())
-            {
-                l.rawGet(LuaState.REGISTRYINDEX, function);
-                for(Object obj : params)
-                {
-                    l.pushJavaObject(obj);
-                }
+        l.pop(6);
 
-                l.call(params != null ? params.length : 0, 0);
-            }
-        }
+        return returns;
     }
 }

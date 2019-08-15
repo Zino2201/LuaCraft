@@ -3,13 +3,14 @@ package fr.luacraft.modloader;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.naef.jnlua.LuaState;
-import com.sun.xml.internal.ws.util.StringUtils;
 import fr.luacraft.core.Luacraft;
+import fr.luacraft.core.api.hooks.LuaHookManager;
 import fr.luacraft.core.api.hooks.LuaHookManagerOLD;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
 import fr.luacraft.core.api.meta.blocks.LuaBlockMeta;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -125,14 +126,14 @@ public class LuacraftMod extends LuacraftModContainer
      */
     public void preInit()
     {
-        LuaHookManagerOLD.call(this, "OnPreInit");
+        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+
+        LuaHookManager.call(l, "OnPreInit");
 
         /** Now preinitialize blocks */
         List<LuaScript> blockScripts = getAllScriptsOfType(LuaScriptType.BLOCK);
         for(LuaScript script : blockScripts)
         {
-            LuaState l = Luacraft.getInstance().getProxy().getLuaState();
-
             String meta = "Block" + StringUtils.capitalize(script.getFile().getName());
             LuaBlockMeta.createBlockMetaClassBase(l, meta);
             l.setGlobal("BLOCK");

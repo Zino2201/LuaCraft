@@ -10,7 +10,7 @@ import fr.luacraft.core.api.hooks.LuaHookManagerOLD;
  * Hook library
  * @author Zino
  */
-@LuaLibrary
+@Deprecated
 public class HookLib
 {
     /**

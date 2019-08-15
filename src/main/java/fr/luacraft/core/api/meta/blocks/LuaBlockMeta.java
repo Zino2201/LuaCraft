@@ -3,14 +3,24 @@ package fr.luacraft.core.api.meta.blocks;
 import com.naef.jnlua.LuaState;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fr.luacraft.core.api.blocks.LuacraftBlock;
+import fr.luacraft.core.api.meta.LuaMetaClass;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
 import net.minecraft.block.Block;
 
 /**
- * Meta class utils for Block
+ * Meta class + utils for Block
  */
+@LuaMetaClass
 public class LuaBlockMeta
 {
+    public static void initialize(LuaState l)
+    {
+        LuaMetaUtil.newMetatable("Block");
+        LuaMetaUtil.addBasicMetamethods();
+        LuaMetaUtil.createMetamethodsFromClass(Block.class);
+        LuaMetaUtil.closeMetaStatement();
+    }
+
     public static void createBlockMetaClassBase(LuaState l, String meta)
     {
         LuaMetaUtil.newMetatable(meta);

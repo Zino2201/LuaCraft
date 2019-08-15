@@ -1,5 +1,6 @@
 package fr.luacraft.core.api.hooks;
 
+import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.blocks.LuaIPlantable;
 import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
@@ -49,7 +50,7 @@ public class LuacraftBlockHooks
     public static int onBlockPlaced(Block block, World world, int x, int y, int z,
                              int side, float hitX, float hitY, float hitZ, int metadata)
     {
-        Integer md = LuaHookManagerOLD.call(
+       /** Integer md = LuaHookManagerOLD.call(
                 Integer.class,
                 block,
                 "OnBlockPlaced",
@@ -64,6 +65,13 @@ public class LuacraftBlockHooks
                 metadata);
 
         return md == null ? metadata : md;
+        */
+
+       LuaHookManager.call(
+               Luacraft.getInstance().getProxy().getLuaState(),
+               "OnBlockPlaced");
+
+       return metadata;
     }
 
     public static void onBlockClicked(Block block, World world, int x, int y, int z, EntityPlayer player)

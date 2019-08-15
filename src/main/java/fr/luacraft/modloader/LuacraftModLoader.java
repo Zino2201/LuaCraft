@@ -19,6 +19,7 @@ import java.util.List;
  *
  * Search luamods into specified search paths and load them
  */
+@SuppressWarnings("deprecation")
 // TODO: Implement obsolete system
 public class LuacraftModLoader
 {
@@ -128,7 +129,7 @@ public class LuacraftModLoader
      */
     public void executeAutorun()
     {
-        Luacraft.getLogger().info("Performing first execution...");
+        Luacraft.getLogger().info("Executing autoruns...");
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
 
         for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
