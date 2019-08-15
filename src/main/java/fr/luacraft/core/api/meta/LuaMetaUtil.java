@@ -229,4 +229,11 @@ public class LuaMetaUtil
         l.getField(-1, var);
         return l.toJavaObject(-1, varType);
     }
+
+    public static void addMetamethodHook(LuaState l, String metaName,
+                                         String metamethod, String event)
+    {
+        l.getField(l.REGISTRYINDEX, metaName);
+        l.getField(-1, metamethod);
+    }
 }

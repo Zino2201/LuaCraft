@@ -10,6 +10,15 @@ import fr.luacraft.core.api.meta.LuaMetaUtil;
  */
 public class LuaHookManager
 {
+    public static void add(LuaState l, String event, Object id, int function)
+    {
+        l.getGlobal("hook");
+        l.getField(-1, "Add");
+        l.pushString(event);
+        l.pushJavaObject(id);
+        l.pushValue(function);
+    }
+
     public static Object[] call(LuaState l, String event, Object... params)
     {
         l.getGlobal("hook");

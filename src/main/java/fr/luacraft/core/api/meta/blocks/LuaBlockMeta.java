@@ -24,7 +24,7 @@ public class LuaBlockMeta
     public static void createBlockMetaClassBase(LuaState l, String meta)
     {
         LuaMetaUtil.newMetatable(meta);
-        LuaMetaUtil.createMetamethodsFromClass(Block.class);
+        //LuaMetaUtil.createMetamethodsFromClass(Block.class);
         l.pushString("unnamed");
         l.setField(-2, "UnlocalizedName");
         l.pushInteger(1);
@@ -41,7 +41,6 @@ public class LuaBlockMeta
                 metaClass, "Material", Integer.class);
 
         Block block = new LuacraftBlock(unlocalizedName, material, null);
-
         /** Set some properties */
 
         GameRegistry.registerBlock(block, unlocalizedName);
