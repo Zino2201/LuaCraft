@@ -137,7 +137,6 @@ public class LuacraftMod extends LuacraftModContainer
             String meta = "Block" + StringUtils.capitalize(script.getFile().getName());
             LuaBlockMeta.createBlockMetaClassBase(l, meta);
             l.setGlobal("BLOCK");
-            LuaMetaUtil.closeMetaStatement();
 
             Luacraft.getInstance().getProxy().executeScript(script);
 

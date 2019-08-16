@@ -5,6 +5,7 @@ import fr.luacraft.core.api.blocks.LuaIPlantable;
 import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.items.LuaItemStack;
+import fr.luacraft.core.api.meta.blocks.LuaBlockMeta;
 import fr.luacraft.core.api.world.LuaExplosion;
 import fr.luacraft.core.api.world.LuaIBlockAccess;
 import fr.luacraft.core.api.world.LuaWorld;
@@ -67,9 +68,20 @@ public class LuacraftBlockHooks
         return md == null ? metadata : md;
         */
 
-       LuaHookManager.call(
+       String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+       LuaHookManager.callMetatable(
                Luacraft.getInstance().getProxy().getLuaState(),
-               "OnBlockPlaced");
+               "OnBlockPlaced",
+               meta,
+               world,
+               x,
+               y,
+               z,
+               side,
+               hitX,
+               hitY,
+               hitZ,
+               metadata);
 
        return metadata;
     }

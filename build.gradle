@@ -15,14 +15,18 @@ buildscript {
     }
 }
 
+configurations {
+    customCompile
+}
+
 def mcVersion = "1.7.10"
 def modVersion = "0.1.0"
 
 apply plugin: 'forge'
 
-version = modVersion+"-"+mcVersion
+version = modVersion
 group = "fr.luacraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Luacraft"
+archivesBaseName = "["+mcVersion+"] Luacraft"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -31,6 +35,7 @@ minecraft {
     runDir = "eclipse"
     replace "{@version:luacraft}":modVersion
     replace "{@version:mcversion}":mcVersion
+    replace "{@devenv}":"ndevenv"
 }
 
 dependencies {
@@ -47,7 +52,10 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    compile 'org.reflections:reflections:0.9.11'
+    //compile ''
+
+    customCompile 'org.reflections:reflections:0.9.11'
+    compile configurations.customCompile
 }
 
 processResources
@@ -68,4 +76,9 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+jar {
+    from sourceSets.api.output
+    from(configurations.customCompile.collect { it.isDirectory() ? it : zipTree(it) }) { exclude 'META-INF/**' }
 }

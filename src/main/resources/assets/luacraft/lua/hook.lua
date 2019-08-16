@@ -15,6 +15,10 @@ function hook.Add(event, name, func)
 end
 
 function hook.Call(event, ...)
+    return hook.CallTable(event, nil, ...)
+end
+
+function hook.CallTable(event, tableName, ...)
     local hooktable = Hooks[event]
 
     if not (hooktable == nil) then
@@ -24,12 +28,21 @@ function hook.Call(event, ...)
             if IsString(k) then
                 a, b, c, d, e, f = v(...)
             else
-                a, b, c, d, e, f = v( k, ... )
+                a, b, c, d, e, f = v(k, ...)
             end
 
             if not (a == nil) then
                 return a, b, c, d, e, f
             end
+        end
+    end
+
+    local table = _R[tableName]
+
+    if not (table == nil) then
+        local func = table[event]
+        if not (func == nil) then
+            return func(...)
         end
     end
 end

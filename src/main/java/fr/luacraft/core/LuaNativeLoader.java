@@ -89,8 +89,7 @@ public class LuaNativeLoader implements NativeSupport.Loader
      */
     public static boolean isInDevEnvironnement()
     {
-        // TODO: Detect eclipse because this code only detect InteliJ
-        String classPath = System.getProperty("java.class.path");
-        return classPath.contains("idea_rt.jar");
+        String isInDev = "{@devenv}";
+        return isInDev.equals("ndevenv");
     }
 }

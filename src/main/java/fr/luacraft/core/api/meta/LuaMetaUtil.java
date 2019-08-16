@@ -117,9 +117,16 @@ public class LuaMetaUtil
     {
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();
 
-        l.pushUserdata(object);
-        getMetatable(meta);
-        l.setMetatable(-2);
+        if(meta != null)
+        {
+            l.pushUserdata(object);
+            getMetatable(meta);
+            l.setMetatable(-2);
+        }
+        else
+        {
+            l.pushJavaObject(object);
+        }
     }
 
     public static void getMetatable(String name)
