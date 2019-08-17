@@ -243,4 +243,14 @@ public class LuaMetaUtil
         l.getField(l.REGISTRYINDEX, metaName);
         l.getField(-1, metamethod);
     }
+
+    public static boolean hasMetaMethod(LuaState l, String metaClass, String metaMethod)
+    {
+        l.getField(l.REGISTRYINDEX, metaClass);
+        l.getField(-1, metaMethod);
+        if(l.isNil(-1))
+            return false;
+
+        return true;
+    }
 }

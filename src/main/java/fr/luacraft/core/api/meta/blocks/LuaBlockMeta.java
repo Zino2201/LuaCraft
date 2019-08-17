@@ -34,6 +34,18 @@ public class LuaBlockMeta
         l.setField(-2, "UnlocalizedName");
         l.pushInteger(1);
         l.setField(-2, "Material");
+        l.pushString("tabBuildingBlocks");
+        l.setField(-2, "CreativeTab");
+        l.pushNumber(0);
+        l.setField(-2, "Hardness");
+        l.pushNumber(0);
+        l.setField(-2, "LightLevel");
+        l.pushNumber(0);
+        l.setField(-2, "Resistance");
+        l.pushInteger(0);
+        l.setField(-2, "LightOpacity");
+        l.pushBoolean(false);
+        l.setField(-2, "UnBreakable");
     }
 
     public static void registerBlock(LuaState l, String metaClass)
@@ -52,6 +64,13 @@ public class LuaBlockMeta
         idMetaMap.put(unlocalizedName, metaClass);
 
         /** Set some properties */
+        block.setHardness(LuaMetaUtil.getValueFromMetatable(l, metaClass, "Hardness", Float.class));
+        block.setLightLevel(LuaMetaUtil.getValueFromMetatable(l, metaClass, "LightLevel", Float.class));
+        block.setResistance(LuaMetaUtil.getValueFromMetatable(l, metaClass, "Resistance", Float.class));
+        block.setLightOpacity(LuaMetaUtil.getValueFromMetatable(l, metaClass, "LightOpacity", Integer.class));
+
+        if(LuaMetaUtil.getValueFromMetatable(l, metaClass, "UnBreakable", Boolean.class))
+            block.setBlockUnbreakable();
 
         /** Call inits hooks */
         LuaHookManager.callMetatable(l, "PreInit", metaClass);

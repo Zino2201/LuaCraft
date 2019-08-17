@@ -5,6 +5,7 @@ import fr.luacraft.core.api.blocks.LuaIPlantable;
 import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.items.LuaItemStack;
+import fr.luacraft.core.api.meta.LuaMetaUtil;
 import fr.luacraft.core.api.meta.blocks.LuaBlockMeta;
 import fr.luacraft.core.api.world.LuaExplosion;
 import fr.luacraft.core.api.world.LuaIBlockAccess;
@@ -31,43 +32,32 @@ public class LuacraftBlockHooks
     public static boolean onBlockActivated(Block block, World world, int x, int y, int z, EntityPlayer player,
                                     int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
     {
-        Boolean bool = LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
-                "OnBlockActivated",
-                new LuaWorld(world),
-                x,
-                y,
-                z,
-                new LuaEntityPlayer(player),
-                p_149727_6_,
-                p_149727_7_,
-                p_149727_8_,
-                p_149727_9_);
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
 
-        return bool == null ? false : bool;
+        if(LuaMetaUtil.hasMetaMethod(Luacraft.getInstance().getProxy().getLuaState(), meta,
+                "OnBlockActivated"))
+        {
+            return (Boolean) LuaHookManager.callMetatable(
+                    Luacraft.getInstance().getProxy().getLuaState(),
+                    "OnBlockActivated",
+                    meta,
+                    world,
+                    x,
+                    y,
+                    z,
+                    player,
+                    p_149727_6_,
+                    p_149727_7_,
+                    p_149727_8_,
+                    p_149727_9_)[0];
+        }
+
+        return false;
     }
 
     public static int onBlockPlaced(Block block, World world, int x, int y, int z,
                              int side, float hitX, float hitY, float hitZ, int metadata)
     {
-       /** Integer md = LuaHookManagerOLD.call(
-                Integer.class,
-                block,
-                "OnBlockPlaced",
-                new LuaWorld(world),
-                x,
-                y,
-                z,
-                side,
-                hitX,
-                hitY,
-                hitZ,
-                metadata);
-
-        return md == null ? metadata : md;
-        */
-
        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
        LuaHookManager.callMetatable(
                Luacraft.getInstance().getProxy().getLuaState(),
@@ -82,45 +72,54 @@ public class LuacraftBlockHooks
                hitY,
                hitZ,
                metadata);
-
        return metadata;
     }
 
     public static void onBlockClicked(Block block, World world, int x, int y, int z, EntityPlayer player)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockClicked",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
-                new LuaEntityPlayer(player));
+                player);
     }
 
     public static boolean onBlockEventReceived(Block block, World world, int x, int y, int z, int side, int metadata)
     {
-        Boolean bool = LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
-                "OnBlockEventReceieved",
-                new LuaWorld(world),
-                x,
-                y,
-                z,
-                side,
-                metadata
-        );
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
 
-        return bool == null ? false : bool;
+        if(LuaMetaUtil.hasMetaMethod(Luacraft.getInstance().getProxy().getLuaState(), meta,
+                "OnBlockEventReceived"))
+        {
+            return (Boolean) LuaHookManager.callMetatable(
+                    Luacraft.getInstance().getProxy().getLuaState(),
+                    "OnBlockEventReceived",
+                    meta,
+                    world,
+                    x,
+                    y,
+                    z,
+                    side,
+                    metadata)[0];
+        }
+
+        return false;
     }
 
     public static void onBlockAdded(Block block, World world, int x, int y, int z)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockAdded",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z);
@@ -129,22 +128,28 @@ public class LuacraftBlockHooks
     public static void onBlockDestroyedByExplosion(Block block, World world, int x, int y, int z,
                                                    Explosion explosion)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockDestroyedByExplosion",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
-                new LuaExplosion(explosion));
+                explosion);
     }
 
     public static void onBlockDestroyedByPlayer(Block block, World world, int x, int y, int z, int metadata)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockDestroyedByPlayer",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
@@ -153,50 +158,62 @@ public class LuacraftBlockHooks
 
     public static void onBlockExploded(Block block, World world, int x, int y, int z, Explosion explosion)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockExploded",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
-                new LuaExplosion(explosion));
+                explosion);
     }
 
     public static void onBlockHarvested(Block block, World world, int x, int y, int z, int metadata,
                                         EntityPlayer player)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockHarvested",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
                 metadata,
-                new LuaEntityPlayer(player));
+                player);
     }
 
     public static void onBlockPlacedBy(Block block, World world, int x, int y, int z,
                                        EntityLivingBase entity, ItemStack stack)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockPlacedBy",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
-                new LuaEntityLivingBase(entity),
-                new LuaItemStack(stack));
+                entity,
+                stack);
     }
 
     public static void onBlockPreDestroy(Block block, World world, int x, int y, int z, int metadata)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockPreDestroy",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
@@ -206,9 +223,12 @@ public class LuacraftBlockHooks
     public static void onNeighborBlockChange(Block block, World world, int x, int y, int z, Block
                                              otherBlock)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnNeighborBlockChange",
+                meta,
                 world,
                 x,
                 y,
@@ -219,10 +239,13 @@ public class LuacraftBlockHooks
     public static void onEntityCollidedWithBlock(Block block, World world, int x, int y, int z,
                                                  Entity entity)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnEntityCollidedWithBlock",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
@@ -232,10 +255,13 @@ public class LuacraftBlockHooks
     public static void onEntityWalking(Block block, World world, int x, int y, int z,
                                                  Entity entity)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnEntityWalking",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
@@ -245,10 +271,13 @@ public class LuacraftBlockHooks
     public static void onFallenUpon(Block block, World world, int x, int y, int z,
                                     Entity entity, float fallDistance)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnFallenUpon",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
@@ -260,9 +289,12 @@ public class LuacraftBlockHooks
                                         int x, int y, int z,
                                         int tileX, int tileY, int tileZ)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnNeighborChange",
+                meta,
                 blockAccess,
                 x,
                 y,
@@ -275,9 +307,12 @@ public class LuacraftBlockHooks
     public static void onPlantGrow(Block block, World world, int x, int y, int z,
                                    int sourceX, int sourceY, int sourceZ)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnPlantGrow",
+                meta,
                 world,
                 x,
                 y,
@@ -289,10 +324,13 @@ public class LuacraftBlockHooks
 
     public static void onPostBlockPlaced(Block block, World world, int x, int y, int z, int metadata)
     {
-        LuaHookManagerOLD.call(
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnPostBlockPlaced",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
@@ -301,205 +339,239 @@ public class LuacraftBlockHooks
 
     public static Boolean canConnectRedstone(Block block, IBlockAccess world, int x, int y, int z, int side)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
-                "CanConnectRedstone",
-                new LuaIBlockAccess(world),
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
+                "OnPostBlockPlaced",
+                meta,
+                world,
                 x,
                 y,
                 z,
-                side);
+                side)[0];
     }
 
     public static Boolean canProvidePower(Block block)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
-                "CanProvidePower");
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
+                "CanProvidePower",
+                meta)[0];
     }
 
     public static Boolean canEntityDestroy(Block block, IBlockAccess world, int x, int y, int z, Entity entity)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanEntityDestroy",
-                new LuaIBlockAccess(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
-                entity);
+                entity)[0];
     }
 
     public static Boolean canCreatureSpawn(Block block, EnumCreatureType type, IBlockAccess world,
                                            int x, int y, int z)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanCreatureSpawn",
+                meta,
                 EnumUtil.getCreatureTypeAsInt(type),
-                new LuaIBlockAccess(world),
+                world,
                 x,
                 y,
-                z);
+                z)[0];
     }
 
     public static Boolean canBlockStay(Block block, World world, int x, int y, int z)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanBlockStay",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
-                z);
+                z)[0];
     }
 
     public static Boolean canPlaceTorchOnTop(Block block, World world, int x, int y, int z)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanPlaceTorchOnTop",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
-                z);
+                z)[0];
     }
 
     public static Boolean canDropFromExplosion(Block block, Explosion explosion)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanDropFromExplosion",
-                new LuaExplosion(explosion));
+                meta,
+                explosion)[0];
     }
 
-    public static Boolean canHarvestBlock(Block block, EntityPlayer player, int meta)
+    public static Boolean canHarvestBlock(Block block, EntityPlayer player, int metadata)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanHarvestBlock",
-                new LuaEntityPlayer(player),
-                meta);
+                meta,
+                player,
+                metadata)[0];
     }
 
     public static Boolean canPlaceBlockAt(Block block, World world, int x, int y, int z)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanPlaceBlockAt",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
-                z);
+                z)[0];
     }
 
     public static Boolean canBeReplacedByLeaves(Block block, IBlockAccess world, int x, int y, int z)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanBeReplacedByLeaves",
-                new LuaIBlockAccess(world),
+                meta,
+                world,
                 x,
                 y,
-                z);
+                z)[0];
     }
 
-    public static Boolean canCollideCheck(Block block, int meta, boolean boat)
+    public static Boolean canCollideCheck(Block block, int metadata, boolean boat)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanCollideCheck",
                 meta,
-                boat);
+                metadata,
+                boat)[0];
     }
 
     public static Boolean canPlaceBlockOnSide(Block block, World world, int x, int y, int z, int side)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanPlaceBlockOnSide",
-                new LuaWorld(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
-                side);
+                side)[0];
     }
 
     public static Boolean canRenderInPass(Block block, int pass)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanRenderInPass",
-                pass);
+                meta,
+                pass)[0];
     }
 
     public static Boolean canSustainLeaves(Block block, IBlockAccess world, int x, int y, int z)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanSustainLeaves",
-                new LuaIBlockAccess(world),
+                meta,
+                world,
                 x,
                 y,
-                z);
+                z)[0];
     }
 
     public static Boolean canSustainPlant(Block block, IBlockAccess world, int x, int y, int z,
                                           ForgeDirection direction, IPlantable plantable)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanSustainPlant",
-                new LuaIBlockAccess(world),
+                meta,
+                world,
                 x,
                 y,
                 z,
                 EnumUtil.getForgeDirectionAsInt(direction),
-                new LuaIPlantable(plantable));
+                plantable)[0];
     }
 
     public static Boolean canReplace(Block block, World world, int x, int y, int z, int side,
                                      ItemStack stack)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "CanReplace",
+                meta,
                 world,
                 x,
                 y,
                 z,
                 side,
-                stack);
+                stack)[0];
     }
 
     public static Boolean canSilkHarvest(Block block, World world, EntityPlayer player, int x, int y, int z,
                                   int metadata)
     {
-        return LuaHookManagerOLD.call(
-                Boolean.class,
-                block,
-                "CanSilkHarvest",
-                new LuaWorld(world),
-                new LuaEntityPlayer(player),
+        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
+
+        return (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
+                "canSilkHarvest",
+                meta,
+                world,
+                player,
                 x,
                 y,
                 z,
-                metadata);
+                metadata)[0];
     }
 }

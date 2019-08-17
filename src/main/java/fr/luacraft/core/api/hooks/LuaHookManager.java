@@ -58,7 +58,7 @@ public class LuaHookManager
 
         Object[] returns = new Object[6];
         for(int i = 1; i < 7; i++)
-            returns[i - 1] = l.toUserdata(-i);
+            returns[6 - i] = l.toJavaObject(-i, Object.class);
 
         l.pop(6);
 
