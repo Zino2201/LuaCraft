@@ -55,6 +55,7 @@ dependencies {
     //compile ''
 
     customCompile 'org.reflections:reflections:0.9.11'
+    customCompile 'com.google.guava:guava:24.1.1-jre'
     compile configurations.customCompile
 }
 

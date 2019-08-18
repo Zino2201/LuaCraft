@@ -2,6 +2,7 @@ package fr.luacraft.core.api.hooks;
 
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Lua hook manager
@@ -17,10 +18,14 @@ public class LuaHookManager
         l.pushString(event);
         l.pushJavaObject(id);
         l.pushValue(function);
+
+        l.setTop(0);
     }
 
     public static Object[] call(LuaState l, String event, Object... params)
     {
+        l.setTop(0);
+
         l.getGlobal("hook");
         l.getField(-1, "Call");
         l.pushString(event);
@@ -32,7 +37,7 @@ public class LuaHookManager
         for(int i = 1; i < 7; i++)
             returns[i - 1] = l.toUserdata(-i);
 
-        l.pop(6);
+        l.setTop(0);
 
         return returns;
     }
@@ -48,6 +53,8 @@ public class LuaHookManager
     public static Object[] callMetatable(LuaState l, String event, String metaTable,
                                      Object... params)
     {
+        l.setTop(0);
+
         l.getGlobal("hook");
         l.getField(-1, "CallTable");
         l.pushString(event);
@@ -58,9 +65,11 @@ public class LuaHookManager
 
         Object[] returns = new Object[6];
         for(int i = 1; i < 7; i++)
-            returns[6 - i] = l.toJavaObject(-i, Object.class);
+            returns[i] = l.toJavaObject(-i, Object.class);
 
-        l.pop(6);
+        ArrayUtils.reverse(returns);
+
+        l.setTop(0);
 
         return returns;
     }

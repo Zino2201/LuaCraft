@@ -26,8 +26,7 @@ public class LuaNativeLoader implements NativeSupport.Loader
         // TODO: Implement OSX and Linux
 
         if(isInDevEnvironnement())
-            nativeDir = "C:\\Users\\Zino\\IdeaProjects\\LuaCraft\\src\\main\\resources\\natives\\";
-        //nativeDir = "D:\\Projects\\LuaCraft\\src\\main\\resources\\natives\\";
+            nativeDir = "D:\\Projects\\LuaCraft\\src\\main\\resources\\natives\\";
 
         if(SystemUtils.IS_OS_WINDOWS)
         {
@@ -89,7 +88,7 @@ public class LuaNativeLoader implements NativeSupport.Loader
      */
     public static boolean isInDevEnvironnement()
     {
-        String isInDev = "{@devenv}";
-        return isInDev.equals("ndevenv");
+        String classPath = System.getProperty("java.class.path");
+        return classPath.contains("idea_rt.jar");
     }
 }
