@@ -1,5 +1,8 @@
 package fr.luacraft.modloader;
 
+import com.naef.jnlua.LuaState;
+import fr.luacraft.modloader.scripts.ILuaScriptType;
+
 import java.io.File;
 
 /**
@@ -23,21 +26,24 @@ public class LuaScript
      */
     private boolean isInArchive;
 
-    private LuaScriptType type;
+    private ILuaScriptType type;
 
-    public LuaScript(File file, String name, LuaScriptType type)
+    public LuaScript(File file, String name, ILuaScriptType type)
     {
-        this.file = file;
-        this.name = name;
-        this.type = type;
+        this(file, name, false, type);
     }
 
-    public LuaScript(File file, String name, boolean isInArchive, LuaScriptType type)
+    public LuaScript(File file, String name, boolean isInArchive, ILuaScriptType type)
     {
         this.file = file;
         this.name = name;
-        this.isInArchive = isInArchive;
         this.type = type;
+        this.isInArchive = isInArchive;
+    }
+
+    public void execute(LuaState l)
+    {
+        type.execute(l, this);
     }
 
     public File getFile()
@@ -55,7 +61,7 @@ public class LuaScript
         return isInArchive;
     }
 
-    public LuaScriptType getType()
+    public ILuaScriptType getType()
     {
         return type;
     }

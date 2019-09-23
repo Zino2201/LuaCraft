@@ -1,6 +1,5 @@
 package fr.luacraft.core.api.gui;
 
-import fr.luacraft.core.api.hooks.LuaHookManagerOLD;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -39,7 +38,7 @@ public class LuacraftGuiScreen extends GuiScreen
     {
         super.initGui();
 
-        LuaHookManagerOLD.call(this, "OnInit");
+        //LuaHookManagerOLD.call(this, "OnInit");
     }
 
     @Override
@@ -47,7 +46,7 @@ public class LuacraftGuiScreen extends GuiScreen
     {
         super.keyTyped(typedChar, keyCode);
 
-        LuaHookManagerOLD.call(this, "OnKeyTyped", typedChar, keyCode);
+        //LuaHookManagerOLD.call(this, "OnKeyTyped", typedChar, keyCode);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class LuacraftGuiScreen extends GuiScreen
     {
         super.updateScreen();
 
-        LuaHookManagerOLD.call(this, "OnUpdateScreen");
+        //LuaHookManagerOLD.call(this, "OnUpdateScreen");
     }
 
     @Override
@@ -65,7 +64,7 @@ public class LuacraftGuiScreen extends GuiScreen
 
         super.drawScreen(mX, mY, partialTicks);
 
-        LuaHookManagerOLD.call(this, "OnDrawScreen", mX, mY, partialTicks);
+        //LuaHookManagerOLD.call(this, "OnDrawScreen", mX, mY, partialTicks);
     }
 
     @Override
@@ -73,7 +72,7 @@ public class LuacraftGuiScreen extends GuiScreen
     {
         super.mouseClicked(x, y, button);
 
-        LuaHookManagerOLD.call(this, "OnMouseClicked", x, y, button);
+       // LuaHookManagerOLD.call(this, "OnMouseClicked", x, y, button);
     }
 
     @Override

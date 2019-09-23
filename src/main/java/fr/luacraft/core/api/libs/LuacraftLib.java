@@ -5,10 +5,7 @@ import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.ILuaContainer;
 import fr.luacraft.core.api.ILuaObject;
-import fr.luacraft.core.api.blocks.LuacraftBlock;
-import fr.luacraft.core.api.meta.LuaMetaUtil;
 import fr.luacraft.core.api.modloader.LuaMod;
-import fr.luacraft.core.api.registry.LuaGameRegistry;
 import fr.luacraft.core.api.util.LuaClass;
 
 /**
@@ -33,7 +30,7 @@ public class LuacraftLib
             //String file = l.checkString(1);
             //File target = new File(Luacraft.getInstance().getProxy().getCurrentScript().getFile().getParent(),
                //     file);
-            //Luacraft.getInstance().getProxy().executeScript(new LuaScript(target, target.getName()));
+            //Luacraft.getInstance().getProxy().executeScript(new LuaScriptType(target, target.getName()));
             return 0;
         }
     };

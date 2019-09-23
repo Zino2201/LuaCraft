@@ -22,8 +22,8 @@ import fr.luacraft.core.api.network.LuacraftPacketHandler;
 import fr.luacraft.core.api.util.LuaTimerManager;
 import fr.luacraft.core.gui.LuacraftGuiHandler;
 import fr.luacraft.modloader.LuaScript;
-import fr.luacraft.modloader.LuaScriptType;
 import fr.luacraft.modloader.LuacraftMod;
+import fr.luacraft.modloader.scripts.ILuaScriptType;
 import net.minecraft.client.gui.GuiScreen;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -31,6 +31,8 @@ import org.reflections.Reflections;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -70,6 +72,11 @@ public class SharedProxy
      */
     private LuaScript currentScript;
 
+    /**
+     * All found lua script types
+     */
+    private List<ILuaScriptType> scriptTypes;
+
     public SharedProxy()
     {
         NativeSupport.getInstance().setLoader(new LuaNativeLoader());
@@ -77,6 +84,36 @@ public class SharedProxy
         this.type = ProxyType.SHARED;
         this.scriptPrefix = SHARED_SCRIPT_PREFIX;
         this.luaState = new LuaState();
+        this.scriptTypes = new ArrayList<>();
+    }
+
+    /**
+     * Called before modloader search mods
+     */
+    public void preModloader()
+    {
+        /** Find lua script types */
+        Luacraft.getLogger().info("Finding lua script types...");
+        Set<Class<? extends ILuaScriptType>> luaScriptTypes =
+                new Reflections("fr.luacraft").getSubTypesOf(ILuaScriptType.class);
+        if (!luaScriptTypes.isEmpty())
+        {
+            for (Class<? extends ILuaScriptType> clazz : luaScriptTypes)
+            {
+                try
+                {
+                    scriptTypes.add(clazz.newInstance());
+                }
+                catch (InstantiationException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (IllegalAccessException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void setupLua()
@@ -256,7 +293,7 @@ public class SharedProxy
         InputStream in = getClass().getClassLoader()
                 .getResourceAsStream("assets/luacraft/lua/" + file);
         executeScript(new LuaScript(new File("lua/" + file), file,
-                        true, LuaScriptType.INTERNAL),
+                        true, null),
                 in);
     }
 
@@ -356,6 +393,35 @@ public class SharedProxy
                 }
             }
         }
+    }
+
+    public ILuaScriptType getLuaScriptTypeForScript(File script)
+    {
+        for(ILuaScriptType scriptType : scriptTypes)
+        {
+            if(scriptType.getDirectoryName() != null)
+            {
+                if (scriptType.getDirectoryName().equals(script.getParentFile().getName()))
+                {
+                    if(scriptType.getFilename() != null)
+                    {
+                        if(scriptType.getFilename().equals(script.getName()))
+                            return scriptType;
+                    }
+                    else
+                    {
+                        return scriptType;
+                    }
+                }
+            }
+            else
+            {
+                if(scriptType.getFilename().equals(script.getName()))
+                    return scriptType;
+            }
+        }
+
+        return null;
     }
 
     /**

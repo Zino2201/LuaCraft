@@ -1,6 +1,5 @@
 package fr.luacraft.core.api.command;
 
-import fr.luacraft.core.api.hooks.LuaHookManagerOLD;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 
@@ -43,7 +42,7 @@ public class LuacraftCommand extends CommandBase
     {
         // TODO: Sender, args
 
-        LuaHookManagerOLD.call(this, "OnCalled", new LuaCommandSender(sender), args);
+        //LuaHookManager.call(this, "OnCalled", new LuaCommandSender(sender), args);
     }
 
     @Override

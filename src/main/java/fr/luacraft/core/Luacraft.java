@@ -62,7 +62,10 @@ public class Luacraft
         /** Load all mods */
         File luamodDir = new File(event.getModConfigurationDirectory().getParentFile(), "luamods");
         if (!luamodDir.exists())
-            luamodDir.mkdirs();modLoader.addSearchPath(luamodDir.getPath());
+            luamodDir.mkdirs();
+        modLoader.addSearchPath(luamodDir.getPath());
+
+        proxy.preModloader();
 
         ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", 1);
         bar.step("Searching mods");

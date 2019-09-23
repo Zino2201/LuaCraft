@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 /**
  * Utils for manipulating and creating metatable
- * See {@link ILuaMetaContainer}
  * @author Zino
  */
 public class LuaMetaUtil

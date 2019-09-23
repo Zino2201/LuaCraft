@@ -140,7 +140,7 @@ public class LuacraftModLoader
 
             GameRegistry.registerWorldGenerator(new LuacraftWorldGen(mod), 2);
 
-            for(LuaScript script : mod.getAllScriptsOfType(LuaScriptType.AUTORUN))
+            for(LuaScript script : mod.getAllScriptsOfType("Autorun"))
             {
                 // TODO: Remove prefix system if not needed
                 //if(script.getName().contains(scriptPrefix) || script.getName().contains(SHARED_SCRIPT_PREFIX))
