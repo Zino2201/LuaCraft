@@ -6,8 +6,11 @@ import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.hooks.LuaHookManager;
 import fr.luacraft.core.api.hooks.LuaHookManagerOLD;
+import fr.luacraft.core.api.items.LuaItem;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
 import fr.luacraft.core.api.meta.blocks.LuaBlockMeta;
+import fr.luacraft.core.api.meta.blocks.LuaItemMeta;
+import fr.luacraft.core.api.meta.blocks.LuaModMeta;
 import fr.luacraft.util.LuaUtil;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
@@ -103,19 +106,29 @@ public class LuacraftMod extends LuacraftModContainer
             {
                 if(file.getAbsolutePath().endsWith(".lua"))
                 {
-                    LuaScriptType type = null;
-                    switch(file.getParentFile().getName())
+                    if(file.getName().equals("main.lua"))
                     {
-                        case "blocks":
-                            type = LuaScriptType.BLOCK;
-                        break;
-                        case "autorun":
-                            type = LuaScriptType.AUTORUN;
-                            break;
-                        default:
-                            type = LuaScriptType.UNKNOWN;
+                        scripts.add(new LuaScript(file, file.getName(), LuaScriptType.MAIN));
                     }
-                    scripts.add(new LuaScript(file, file.getName(), type));
+                    else
+                        {
+                        LuaScriptType type = null;
+                        switch (file.getParentFile().getName())
+                        {
+                            case "blocks":
+                                type = LuaScriptType.BLOCK;
+                                break;
+                            case "items":
+                                type = LuaScriptType.ITEM;
+                                break;
+                            case "autorun":
+                                type = LuaScriptType.AUTORUN;
+                                break;
+                            default:
+                                type = LuaScriptType.UNKNOWN;
+                        }
+                        scripts.add(new LuaScript(file, file.getName(), type));
+                    }
                 }
             }
         }
@@ -128,7 +141,26 @@ public class LuacraftMod extends LuacraftModContainer
     {
         LuaState l = Luacraft.getInstance().getProxy().getLuaState();
 
-        LuaHookManager.call(l, "OnPreInit");
+        /**
+         * Call preinit hook for main.lua
+         */
+        List<LuaScript> mainScripts = getAllScriptsOfType(LuaScriptType.MAIN);
+        for(LuaScript script : mainScripts)
+        {
+            String meta = "LuaMod_" + getName();
+            LuaModMeta.createModMetaBaseClass(l, meta);
+            l.setGlobal("MOD");
+
+            Luacraft.getInstance().getProxy().executeScript(script);
+
+            LuaHookManager.callMetatable(l,
+                    "OnPreInit",
+                    meta);
+
+            LuaUtil.deleteGlobal(l, meta);
+            LuaUtil.resetStack(l);
+        }
+
 
         /** Now preinitialize blocks */
         List<LuaScript> blockScripts = getAllScriptsOfType(LuaScriptType.BLOCK);
@@ -142,18 +174,51 @@ public class LuacraftMod extends LuacraftModContainer
 
             LuaBlockMeta.registerBlock(l, meta);
             LuaUtil.deleteGlobal(l, meta);
-            l.setTop(0);
+            LuaUtil.resetStack(l);
+        }
+
+        /** Items */
+        List<LuaScript> itemScripts = getAllScriptsOfType(LuaScriptType.ITEM);
+        for(LuaScript script : itemScripts)
+        {
+            String meta = "Item" + StringUtils.capitalize(script.getFile().getName());
+            LuaItemMeta.createItemMetaClassBase(l, meta);
+            l.setGlobal("ITEM");
+
+            Luacraft.getInstance().getProxy().executeScript(script);
+
+            LuaItemMeta.registerItem(l, meta);
+            LuaUtil.deleteGlobal(l, meta);
+            LuaUtil.resetStack(l);
         }
     }
 
     public void init()
     {
-        LuaHookManagerOLD.call(this, "OnInit");
+        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+
+        List<LuaScript> mainScripts = getAllScriptsOfType(LuaScriptType.MAIN);
+        for(LuaScript script : mainScripts)
+        {
+            String meta = "LuaMod_" + getName();
+            LuaHookManager.callMetatable(l,
+                    "OnInit",
+                    meta);
+        }
     }
 
     public void postInit()
     {
-        LuaHookManagerOLD.call(this, "OnPostInit");
+        LuaState l = Luacraft.getInstance().getProxy().getLuaState();
+
+        List<LuaScript> mainScripts = getAllScriptsOfType(LuaScriptType.MAIN);
+        for(LuaScript script : mainScripts)
+        {
+            String meta = "LuaMod_" + getName();
+            LuaHookManager.callMetatable(l,
+                    "OnPostInit",
+                    meta);
+        }
     }
 
     /**

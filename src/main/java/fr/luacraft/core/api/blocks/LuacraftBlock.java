@@ -45,7 +45,7 @@ public class LuacraftBlock extends Block
     {
         super.onBlockActivated(world, x, y, z, player, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
 
-        return LuacraftBlockHooks.onBlockActivated(
+        Boolean bool = LuacraftBlockHooks.onBlockActivated(
                 this,
                 world,
                 x,
@@ -56,6 +56,8 @@ public class LuacraftBlock extends Block
                 p_149727_7_,
                 p_149727_8_,
                 p_149727_9_);
+
+        return bool == null ? false : bool;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class LuacraftBlock extends Block
     {
         super.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, metadata);
 
-        return LuacraftBlockHooks.onBlockPlaced(
+        Integer meta = LuacraftBlockHooks.onBlockPlaced(
                 this,
                 world,
                 x,
@@ -76,6 +78,7 @@ public class LuacraftBlock extends Block
                 hitY,
                 hitZ,
                 metadata);
+        return meta == null ? metadata : meta;
     }
 
     @Override
@@ -328,15 +331,6 @@ public class LuacraftBlock extends Block
         Boolean bool = LuacraftBlockHooks.canPlaceBlockOnSide(this, world, x, y, z, side);
 
         return bool == null ? super.canPlaceBlockOnSide(world, x, y, z, side) : bool;
-    }
-
-    @Override
-    @LuaMetaHook
-    public boolean canRenderInPass(int pass)
-    {
-        Boolean bool = LuacraftBlockHooks.canRenderInPass(this, pass);
-
-        return bool == null ? super.canRenderInPass(pass) : bool;
     }
 
     @Override

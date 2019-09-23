@@ -45,4 +45,6 @@ function hook.CallTable(event, tableName, ...)
             return func(...)
         end
     end
+
+    return nil
 end

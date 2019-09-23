@@ -170,12 +170,30 @@ public class LuacraftModLoader
 
     public void performInit()
     {
-
+        Luacraft.getLogger().info("Initializing mods...");
+        ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
+        for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
+        {
+            bar.step("Init: " + mod.getName());
+            setCurrentMod(mod);
+            mod.init();
+        }
+        ProgressManager.pop(bar);
+        Luacraft.getInstance().getProxy().resetModContainerToLuacraft();
     }
 
     public void performPostInit()
     {
-
+        Luacraft.getLogger().info("Post-initializing mods...");
+        ProgressManager.ProgressBar bar = ProgressManager.push("LuaCraft", Luacraft.getInstance().getModLoader().getMods().size());
+        for(LuacraftMod mod : Luacraft.getInstance().getModLoader().getMods())
+        {
+            bar.step("Post-init: " + mod.getName());
+            setCurrentMod(mod);
+            mod.postInit();
+        }
+        ProgressManager.pop(bar);
+        Luacraft.getInstance().getProxy().resetModContainerToLuacraft();
     }
 
     public void setCurrentMod(LuacraftMod mod)

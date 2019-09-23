@@ -29,7 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class LuacraftBlockHooks
 {
-    public static boolean onBlockActivated(Block block, World world, int x, int y, int z, EntityPlayer player,
+    public static Boolean onBlockActivated(Block block, World world, int x, int y, int z, EntityPlayer player,
                                     int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
     {
         String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
@@ -49,13 +49,13 @@ public class LuacraftBlockHooks
                     p_149727_6_,
                     p_149727_7_,
                     p_149727_8_,
-                    p_149727_9_)[0];
+                    p_149727_9_);
         }
 
         return false;
     }
 
-    public static int onBlockPlaced(Block block, World world, int x, int y, int z,
+    public static Integer onBlockPlaced(Block block, World world, int x, int y, int z,
                              int side, float hitX, float hitY, float hitZ, int metadata)
     {
        String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
@@ -89,7 +89,7 @@ public class LuacraftBlockHooks
                 player);
     }
 
-    public static boolean onBlockEventReceived(Block block, World world, int x, int y, int z, int side, int metadata)
+    public static Boolean onBlockEventReceived(Block block, World world, int x, int y, int z, int side, int metadata)
     {
         String meta = LuaBlockMeta.getMetaClassForBlock(block.getUnlocalizedName());
 
@@ -105,7 +105,7 @@ public class LuacraftBlockHooks
                     y,
                     z,
                     side,
-                    metadata)[0];
+                    metadata);
         }
 
         return false;
@@ -349,7 +349,7 @@ public class LuacraftBlockHooks
                 x,
                 y,
                 z,
-                side)[0];
+                side);
     }
 
     public static Boolean canProvidePower(Block block)
@@ -359,7 +359,7 @@ public class LuacraftBlockHooks
         return (Boolean) LuaHookManager.callMetatable(
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanProvidePower",
-                meta)[0];
+                meta);
     }
 
     public static Boolean canEntityDestroy(Block block, IBlockAccess world, int x, int y, int z, Entity entity)
@@ -374,7 +374,7 @@ public class LuacraftBlockHooks
                 x,
                 y,
                 z,
-                entity)[0];
+                entity);
     }
 
     public static Boolean canCreatureSpawn(Block block, EnumCreatureType type, IBlockAccess world,
@@ -390,7 +390,7 @@ public class LuacraftBlockHooks
                 world,
                 x,
                 y,
-                z)[0];
+                z);
     }
 
     public static Boolean canBlockStay(Block block, World world, int x, int y, int z)
@@ -404,7 +404,7 @@ public class LuacraftBlockHooks
                 world,
                 x,
                 y,
-                z)[0];
+                z);
     }
 
     public static Boolean canPlaceTorchOnTop(Block block, World world, int x, int y, int z)
@@ -418,7 +418,7 @@ public class LuacraftBlockHooks
                 world,
                 x,
                 y,
-                z)[0];
+                z);
     }
 
     public static Boolean canDropFromExplosion(Block block, Explosion explosion)
@@ -429,7 +429,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanDropFromExplosion",
                 meta,
-                explosion)[0];
+                explosion);
     }
 
     public static Boolean canHarvestBlock(Block block, EntityPlayer player, int metadata)
@@ -441,7 +441,7 @@ public class LuacraftBlockHooks
                 "CanHarvestBlock",
                 meta,
                 player,
-                metadata)[0];
+                metadata);
     }
 
     public static Boolean canPlaceBlockAt(Block block, World world, int x, int y, int z)
@@ -455,7 +455,7 @@ public class LuacraftBlockHooks
                 world,
                 x,
                 y,
-                z)[0];
+                z);
     }
 
     public static Boolean canBeReplacedByLeaves(Block block, IBlockAccess world, int x, int y, int z)
@@ -469,7 +469,7 @@ public class LuacraftBlockHooks
                 world,
                 x,
                 y,
-                z)[0];
+                z);
     }
 
     public static Boolean canCollideCheck(Block block, int metadata, boolean boat)
@@ -481,7 +481,7 @@ public class LuacraftBlockHooks
                 "CanCollideCheck",
                 meta,
                 metadata,
-                boat)[0];
+                boat);
     }
 
     public static Boolean canPlaceBlockOnSide(Block block, World world, int x, int y, int z, int side)
@@ -496,7 +496,7 @@ public class LuacraftBlockHooks
                 x,
                 y,
                 z,
-                side)[0];
+                side);
     }
 
     public static Boolean canRenderInPass(Block block, int pass)
@@ -507,7 +507,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanRenderInPass",
                 meta,
-                pass)[0];
+                pass);
     }
 
     public static Boolean canSustainLeaves(Block block, IBlockAccess world, int x, int y, int z)
@@ -521,7 +521,7 @@ public class LuacraftBlockHooks
                 world,
                 x,
                 y,
-                z)[0];
+                z);
     }
 
     public static Boolean canSustainPlant(Block block, IBlockAccess world, int x, int y, int z,
@@ -538,7 +538,7 @@ public class LuacraftBlockHooks
                 y,
                 z,
                 EnumUtil.getForgeDirectionAsInt(direction),
-                plantable)[0];
+                plantable);
     }
 
     public static Boolean canReplace(Block block, World world, int x, int y, int z, int side,
@@ -555,7 +555,7 @@ public class LuacraftBlockHooks
                 y,
                 z,
                 side,
-                stack)[0];
+                stack);
     }
 
     public static Boolean canSilkHarvest(Block block, World world, EntityPlayer player, int x, int y, int z,
@@ -572,6 +572,6 @@ public class LuacraftBlockHooks
                 x,
                 y,
                 z,
-                metadata)[0];
+                metadata);
     }
 }

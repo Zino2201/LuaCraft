@@ -15,5 +15,6 @@ public enum LuaScriptType
     DIMENSION,
     CREATIVETAB,
     TOOL,
+    MAIN,
     UNKNOWN
 }

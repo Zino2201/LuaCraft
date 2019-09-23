@@ -34,4 +34,9 @@ public class LuaUtil
         l.pushNil();
         l.setGlobal(global);
     }
+
+    public static void resetStack(LuaState l)
+    {
+        l.pop(l.getTop());
+    }
 }

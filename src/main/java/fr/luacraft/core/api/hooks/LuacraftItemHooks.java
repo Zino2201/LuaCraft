@@ -1,11 +1,13 @@
 package fr.luacraft.core.api.hooks;
 
+import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.blocks.LuaBlock;
 import fr.luacraft.core.api.entity.LuaEntity;
 import fr.luacraft.core.api.entity.LuaEntityItem;
 import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.items.LuaItemStack;
+import fr.luacraft.core.api.meta.blocks.LuaItemMeta;
 import fr.luacraft.core.api.world.LuaWorld;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -26,13 +28,14 @@ public class LuacraftItemHooks
     public static boolean onItemUse(Item item, ItemStack stack, EntityPlayer player, World world, int x,
                                     int y, int z, int hand, float hitX, float hitY, float hitZ)
     {
-        Boolean bool = LuaHookManagerOLD.call(
-                Boolean.class,
-                item,
+        String meta = LuaItemMeta.getMetaClassForItem(item.getUnlocalizedName());
+        Boolean bool = (Boolean) LuaHookManager.callMetatable(
+                Luacraft.getInstance().getProxy().getLuaState(),
                 "OnItemUse",
-                new LuaItemStack(stack),
-                new LuaEntityPlayer(player),
-                new LuaWorld(world),
+                meta,
+                stack,
+                player,
+                world,
                 x,
                 y,
                 z,

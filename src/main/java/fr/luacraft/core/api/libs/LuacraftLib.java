@@ -117,10 +117,8 @@ public class LuacraftLib
         @Override
         public int invoke(LuaState l)
         {
-            LuacraftBlock b = new LuacraftBlock("tio", 0, null);
-            LuaGameRegistry.registerBlock("tio", b);
-            LuaMetaUtil.pushJavaObject(b, "Block");
-            return 1;
+            System.exit(2201);
+            return 0;
         }
     };
 
