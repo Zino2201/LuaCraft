@@ -10,11 +10,9 @@ import fr.luacraft.core.api.util.LuaChunkCoordinates;
 import fr.luacraft.core.api.util.LuaIIcon;
 import fr.luacraft.core.api.world.LuaExplosion;
 import fr.luacraft.core.api.world.LuaIBlockAccess;
-import fr.luacraft.core.api.world.LuaWorld;
-import fr.luacraft.util.EnumUtil;
+import fr.luacraft.core.api.world.LuacraftWorld;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 
 import static fr.luacraft.util.EnumUtil.getCreatureTypeFromInt;
 import static net.minecraft.init.Blocks.fire;
@@ -342,7 +340,7 @@ public class LuaBlock implements ILuaContainer
      * @return
      */
     @LuaFunction
-    public LuaItem GetItem(LuaWorld world, int x, int y, int z)
+    public LuaItem GetItem(LuacraftWorld world, int x, int y, int z)
     {
         return new LuaItem(block.getItem(world.getWorld(), x, y, z));
     }
@@ -388,7 +386,7 @@ public class LuaBlock implements ILuaContainer
      * @return
      */
     @LuaFunction
-    public float GetPlayerRelativeBlockHardness(LuaWorld world, LuaEntityPlayer player, int x, int y, int z)
+    public float GetPlayerRelativeBlockHardness(LuacraftWorld world, LuaEntityPlayer player, int x, int y, int z)
     {
         return block.getPlayerRelativeBlockHardness(player.getEntityPlayer(), world.getWorld(),
                 x, y, z);
@@ -435,7 +433,7 @@ public class LuaBlock implements ILuaContainer
      * @return
      */
     @LuaFunction
-    public boolean CanPlaceBlockAt(LuaWorld world, int x, int y, int z)
+    public boolean CanPlaceBlockAt(LuacraftWorld world, int x, int y, int z)
     {
         return block.canPlaceBlockAt(world.getWorld(), x, y, z);
     }
@@ -449,7 +447,7 @@ public class LuaBlock implements ILuaContainer
      * @return
      */
     @LuaFunction
-    public boolean CanBlockStay(LuaWorld world, int x, int y, int z)
+    public boolean CanBlockStay(LuacraftWorld world, int x, int y, int z)
     {
         return block.canBlockStay(world.getWorld(), x, y, z);
     }

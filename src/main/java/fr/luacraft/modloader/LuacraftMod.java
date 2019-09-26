@@ -5,12 +5,8 @@ import com.google.gson.stream.JsonReader;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.hooks.LuaHookManager;
-import fr.luacraft.core.api.meta.blocks.LuaBlockMeta;
-import fr.luacraft.core.api.meta.blocks.LuaItemMeta;
 import fr.luacraft.modloader.scripts.ILuaScriptType;
-import fr.luacraft.util.LuaUtil;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -87,7 +83,7 @@ public class LuacraftMod extends LuacraftModContainer
         this.registryData = new LuacraftModRegistryData();
         this.logger = LogManager.getLogger(getName());
         this.scriptDirectories = new ArrayList<File>();
-        this.metaName = "LuaMod_" + getName();
+        this.metaName = "LuaMod_" + getModId();
 
         lookForScripts(modDir);
     }

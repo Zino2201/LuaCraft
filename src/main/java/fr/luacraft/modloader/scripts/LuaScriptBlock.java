@@ -40,7 +40,7 @@ public class LuaScriptBlock implements ILuaScriptType
     @Override
     public void execute(LuaState l, LuaScript script)
     {
-        String meta = "LuaMod_" + Luacraft.getInstance().getModLoader().getCurrentMod().getName() +
+        String meta = Luacraft.getInstance().getModLoader().getCurrentMod().getMetaName() +
                 "_Block_" + StringUtils.capitalize(FilenameUtils.removeExtension(script.getFile().getName()));
         LuaBlockMeta.createBlockMetaClassBase(l, meta);
         l.setGlobal("BLOCK");

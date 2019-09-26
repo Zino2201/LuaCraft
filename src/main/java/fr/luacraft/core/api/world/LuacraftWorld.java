@@ -2,6 +2,7 @@ package fr.luacraft.core.api.world;
 
 import com.naef.jnlua.util.LuaFunction;
 import fr.luacraft.core.api.ILuaContainer;
+import fr.luacraft.core.api.meta.LuaMetaHook;
 import fr.luacraft.core.api.reflection.LuaJavaObject;
 import net.minecraft.world.World;
 
@@ -9,11 +10,11 @@ import net.minecraft.world.World;
  * Represents a World in Lua
  * @author Zino
  */
-public class LuaWorld implements ILuaContainer
+public class LuacraftWorld
 {
     private World world;
 
-    public LuaWorld(World world)
+    public LuacraftWorld(World world)
     {
         this.world = world;
     }
@@ -27,23 +28,9 @@ public class LuaWorld implements ILuaContainer
      * Return if world is remote
      * @return
      */
-    @LuaFunction
+    @LuaMetaHook
     public boolean IsRemote()
     {
         return world.isRemote;
-    }
-
-    @Override
-    @LuaFunction
-    public LuaJavaObject GetContainedObject()
-    {
-        return new LuaJavaObject(world);
-    }
-
-    @Override
-    @LuaFunction
-    public String GetTypeName()
-    {
-        return "World";
     }
 }

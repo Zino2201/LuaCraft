@@ -2,7 +2,7 @@ package fr.luacraft.modloader.scripts;
 
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.meta.blocks.LuaItemMeta;
+import fr.luacraft.core.api.meta.items.LuaItemMeta;
 import fr.luacraft.modloader.LuaScript;
 import fr.luacraft.util.LuaUtil;
 import org.apache.commons.io.FilenameUtils;
@@ -37,7 +37,7 @@ public class LuaScriptItem implements ILuaScriptType
     @Override
     public void execute(LuaState l, LuaScript script)
     {
-        String meta = "LuaMod_" + Luacraft.getInstance().getModLoader().getCurrentMod().getName() +
+        String meta = Luacraft.getInstance().getModLoader().getCurrentMod().getMetaName() +
                 "_Item_" + StringUtils.capitalize(FilenameUtils.removeExtension(script.getFile().getName()));
         LuaItemMeta.createItemMetaClassBase(l, meta);
         l.setGlobal("ITEM");

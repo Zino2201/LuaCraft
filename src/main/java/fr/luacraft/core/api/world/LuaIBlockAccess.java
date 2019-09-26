@@ -26,11 +26,11 @@ public class LuaIBlockAccess implements ILuaContainer
      * @return
      */
     @LuaFunction
-    public LuaWorld TryCastToWorld()
+    public LuacraftWorld TryCastToWorld()
     {
-        LuaWorld world = null;
+        LuacraftWorld world = null;
         if(blockAccess instanceof World)
-            world = new LuaWorld((World) blockAccess);
+            world = new LuacraftWorld((World) blockAccess);
 
         return world;
     }

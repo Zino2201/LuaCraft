@@ -3,7 +3,7 @@ package fr.luacraft.modloader.scripts;
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.Luacraft;
 import fr.luacraft.core.api.hooks.LuaHookManager;
-import fr.luacraft.core.api.meta.blocks.LuaModMeta;
+import fr.luacraft.core.api.meta.LuaModMeta;
 import fr.luacraft.modloader.LuaScript;
 import fr.luacraft.util.LuaUtil;
 

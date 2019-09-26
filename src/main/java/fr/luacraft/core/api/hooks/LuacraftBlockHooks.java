@@ -1,15 +1,9 @@
 package fr.luacraft.core.api.hooks;
 
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.blocks.LuaIPlantable;
-import fr.luacraft.core.api.entity.LuaEntityLivingBase;
-import fr.luacraft.core.api.entity.LuaEntityPlayer;
-import fr.luacraft.core.api.items.LuaItemStack;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
 import fr.luacraft.core.api.meta.blocks.LuaBlockMeta;
-import fr.luacraft.core.api.world.LuaExplosion;
-import fr.luacraft.core.api.world.LuaIBlockAccess;
-import fr.luacraft.core.api.world.LuaWorld;
+import fr.luacraft.core.api.world.LuacraftWorld;
 import fr.luacraft.util.EnumUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -41,7 +35,7 @@ public class LuacraftBlockHooks
                     Luacraft.getInstance().getProxy().getLuaState(),
                     "OnBlockActivated",
                     meta,
-                    world,
+                    new LuacraftWorld(world),
                     x,
                     y,
                     z,
@@ -63,7 +57,7 @@ public class LuacraftBlockHooks
                Luacraft.getInstance().getProxy().getLuaState(),
                "OnBlockPlaced",
                meta,
-               world,
+               new LuacraftWorld(world),
                x,
                y,
                z,
@@ -82,7 +76,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockClicked",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -100,7 +94,7 @@ public class LuacraftBlockHooks
                     Luacraft.getInstance().getProxy().getLuaState(),
                     "OnBlockEventReceived",
                     meta,
-                    world,
+                    new LuacraftWorld(world),
                     x,
                     y,
                     z,
@@ -119,7 +113,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockAdded",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z);
@@ -134,7 +128,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockDestroyedByExplosion",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -149,7 +143,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockDestroyedByPlayer",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -164,7 +158,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockExploded",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -180,7 +174,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockHarvested",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -197,7 +191,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockPlacedBy",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -213,7 +207,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnBlockPreDestroy",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -229,7 +223,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnNeighborBlockChange",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -245,7 +239,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnEntityCollidedWithBlock",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -261,7 +255,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnEntityWalking",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -277,7 +271,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnFallenUpon",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -313,7 +307,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnPlantGrow",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -330,7 +324,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "OnPostBlockPlaced",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -401,7 +395,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanBlockStay",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z);
@@ -415,7 +409,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanPlaceTorchOnTop",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z);
@@ -452,7 +446,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanPlaceBlockAt",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z);
@@ -492,7 +486,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanPlaceBlockOnSide",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -550,7 +544,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "CanReplace",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,
@@ -567,7 +561,7 @@ public class LuacraftBlockHooks
                 Luacraft.getInstance().getProxy().getLuaState(),
                 "canSilkHarvest",
                 meta,
-                world,
+                new LuacraftWorld(world),
                 player,
                 x,
                 y,

@@ -1,4 +1,4 @@
-package fr.luacraft.core.api.meta.blocks;
+package fr.luacraft.core.api.meta;
 
 import com.naef.jnlua.LuaState;
 import fr.luacraft.core.api.meta.LuaMetaClass;

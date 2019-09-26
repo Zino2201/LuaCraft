@@ -1,13 +1,11 @@
-package fr.luacraft.core.api.meta.blocks;
+package fr.luacraft.core.api.meta.items;
 
 import com.naef.jnlua.LuaState;
 import cpw.mods.fml.common.registry.GameRegistry;
-import fr.luacraft.core.api.blocks.LuacraftBlock;
 import fr.luacraft.core.api.hooks.LuaHookManager;
 import fr.luacraft.core.api.items.LuacraftItem;
 import fr.luacraft.core.api.meta.LuaMetaClass;
 import fr.luacraft.core.api.meta.LuaMetaUtil;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 import java.util.HashMap;

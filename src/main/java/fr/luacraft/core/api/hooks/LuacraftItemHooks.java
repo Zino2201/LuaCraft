@@ -1,14 +1,10 @@
 package fr.luacraft.core.api.hooks;
 
 import fr.luacraft.core.Luacraft;
-import fr.luacraft.core.api.blocks.LuaBlock;
-import fr.luacraft.core.api.entity.LuaEntity;
-import fr.luacraft.core.api.entity.LuaEntityItem;
-import fr.luacraft.core.api.entity.LuaEntityLivingBase;
 import fr.luacraft.core.api.entity.LuaEntityPlayer;
 import fr.luacraft.core.api.items.LuaItemStack;
-import fr.luacraft.core.api.meta.blocks.LuaItemMeta;
-import fr.luacraft.core.api.world.LuaWorld;
+import fr.luacraft.core.api.meta.items.LuaItemMeta;
+import fr.luacraft.core.api.world.LuacraftWorld;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -56,7 +52,7 @@ public class LuacraftItemHooks
                 meta,
                 new LuaItemStack(stack),
                 new LuaEntityPlayer(player),
-                new LuaWorld(world),
+                new LuacraftWorld(world),
                 x,
                 y,
                 z,

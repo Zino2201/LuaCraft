@@ -2,6 +2,7 @@ package fr.luacraft.core.api.meta;
 
 import com.naef.jnlua.JavaFunction;
 import com.naef.jnlua.LuaState;
+import fr.luacraft.core.LuaNativeLoader;
 import fr.luacraft.core.Luacraft;
 import org.apache.commons.lang3.StringUtils;
 
