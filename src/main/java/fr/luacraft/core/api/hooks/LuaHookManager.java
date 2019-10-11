@@ -63,7 +63,7 @@ public class LuaHookManager
             l.pushString(event);
             l.pushString(metaTable);
             for (Object object : params)
-                LuaMetaUtil.pushJavaObject(object, LuaMetaUtil.getMetatableForObject(object));
+               LuaMetaUtil.pushJavaObject(object, LuaMetaUtil.getMetatableForObject(object));
             l.call(params.length + 2, 1);
 
             Object ret = l.toJavaObject(-1, Object.class);
@@ -76,14 +76,17 @@ public class LuaHookManager
         {
             e.printStackTrace();
 
-            Minecraft.getMinecraft().thePlayer
-                    .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "--- BEGIN OF LUA ERROR ---"));
-            Minecraft.getMinecraft().thePlayer
-                    .addChatMessage(new ChatComponentText("Something bad happened when trying to call metafunction " + event + " for meta " + metaTable));
-            Minecraft.getMinecraft().thePlayer
-                    .addChatMessage(new ChatComponentText(e.toString()));
-            Minecraft.getMinecraft().thePlayer
-                    .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "--- END OF LUA ERROR ---"));
+            if( Minecraft.getMinecraft().thePlayer != null)
+            {
+                Minecraft.getMinecraft().thePlayer
+                        .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "--- BEGIN OF LUA ERROR ---"));
+                Minecraft.getMinecraft().thePlayer
+                        .addChatMessage(new ChatComponentText("Something bad happened when trying to call metafunction " + event + " for meta " + metaTable));
+                Minecraft.getMinecraft().thePlayer
+                        .addChatMessage(new ChatComponentText(e.toString()));
+                Minecraft.getMinecraft().thePlayer
+                        .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "--- END OF LUA ERROR ---"));
+            }
         }
 
         return null;
